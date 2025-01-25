@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ToughTechs151.tt151extpack",
+        "wpilibsuite.vscode-wpilib",
+        "vscjava.vscode-java-dependency",
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "ms-vscode.cpptools"
+    ]
+}

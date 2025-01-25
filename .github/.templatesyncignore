@@ -1,0 +1,2 @@
+# Ignore workflows. They require extra permissions. Better to sync them manually, if at all.
+.github/workflows/*

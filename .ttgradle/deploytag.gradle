@@ -1,0 +1,58 @@
+// This task is run everytime a new set of bits are deplaoyed to the Robot.
+// It creates a Git tag on the current commit, and puts a list of the files
+// in the workspace that have been changed since that commit. If these tags
+// are then pushed to the upstream repositiory the tags can be used to
+// track what versions of code have been sent to the robot. Since the date
+// time are encoded, these can be used to match up with the telemetry logs.
+
+// Tags are not pushed upstream by default, so we set push.followTags
+// so the tags will make it into the repo.
+
+import java.text.SimpleDateFormat
+
+task deployGitTag() {
+
+    doLast {
+        String deploy_host = ""
+        String changes_str = ""
+        String now_str = ""
+        String tag_name = ""
+        String tag_comment = ""
+
+        // Get the hostname in case there is more than one drive station.
+        try {
+            deploy_host = java.net.InetAddress.getLocalHost().getHostName()
+        } catch (all) {
+            deploy_host = "unknownHost"
+        }
+
+        // Get the list of changed files.
+        try {
+            changes_str = new File("$projectDir/src/main/resources/changes.txt").getText('UTF-8')
+        } catch (all) {
+            changes_str "UnknownChanges"
+        }
+
+        // Build the tag and comment strings.
+        changes_str = changes_str.replaceAll(",", " ")
+        changes_str = changes_str.replaceAll("\\s+", ",")
+        now_str = new SimpleDateFormat("yyMMddHHmmss").format(new Date())
+        tag_name = "deploy-${now_str}"
+        tag_comment = '"deploy,' + "${deploy_host},${changes_str}" + '"'
+
+        exec {
+            commandLine "git", "config", "push.followTags", "true"
+        }
+        // Execute the git tag command.
+        exec {
+            commandLine "git", "tag", "-a", "${tag_name}", "-m", "${tag_comment}"
+        }
+
+        // Comment the following line if you don't want feed back.
+        println "GitTag ${tag_name} ${tag_comment}."
+    }
+}
+
+deployroborio.configure { finalizedBy deployGitTag}
+// Uncomment the following line if you want tags for simulator runs.
+// simulateExternalJavaRelease.configure { finalizedBy deployGitTag}

@@ -1,0 +1,2 @@
+Do not delete this file. It is a placholder in Git to trick gradle into checking
+if all resource files are up to date.

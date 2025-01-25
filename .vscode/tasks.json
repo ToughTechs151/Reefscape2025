@@ -1,0 +1,230 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Formatter: Apply All",
+        "type": "shell",
+        "command": "./gradlew",
+        "args": [
+          "spotlessApply"
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "Javadoc: Generate",
+        "type": "shell",
+        "command": "./gradlew",
+        "args": [
+          "javadoc"
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "Check all",
+        "type": "shell",
+        "command": "./gradlew",
+        "args": [
+          "check"
+        ],
+        "problemMatcher": [],
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Spotbugs: Open Report",
+        "type": "shell",
+        "command": "invoke-item",
+        "args": [
+          "${workspaceFolder}/build/reports/spotbugs/main.html"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Git: Clear User",
+        "type": "shell",
+        "command": "git config --global --unset user.name; git config --global --unset user.email",
+        "problemMatcher": []
+      },
+      {
+        "label": "Git: Set User",
+        "type": "shell",
+        "command": "git config --global user.name \"${input:userPrompt}\" ; git config --global user.email \"${input:emailPrompt}\" ",
+        "problemMatcher": []
+      },
+      {
+        "label": "Javadocs: Open",
+        "type": "shell",
+        "command": "invoke-item",
+        "args": [
+          "${workspaceFolder}/build/docs/javadoc/index.html"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Spotbugs: Run",
+        "type": "shell",
+        "command": "./gradlew",
+        "args": [
+          "spotbugsMain"
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "Echo input",
+        "type": "shell",
+        "hide": true,
+        "command": "echo \"${input:echoPrompt}  ${input:echoPick} ${input:echoPrompt} ${command:extension.pickNodeProcess}\"",
+        "problemMatcher": []
+      },
+      {
+        "label": "WPILIB: Open API docs.",
+        "type": "shell",
+        "command": "Start-Process",
+        "args": [
+          "https://github.wpilib.org/allwpilib/docs/release/java/index.html"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Sonarcloud: Open Project Page.",
+        "type": "shell",
+        "command": "Start-Process",
+        "args": [
+          "https://sonarcloud.io/project/overview?id=${config:sonarcloud.orgname}_${config:sonarcloud.projectname}"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Roborio: Show Configuration page",
+        "type": "shell",
+        "command": "Start-Process",
+        "args": [
+          "http://${input:hostPrompt}:8080"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Roborio: Copy logs",
+        "type": "shell",
+        "command": "winscp.execom",
+        "args": [
+          "/command",
+          "open sftp://${config:roborio.username}@${config:roborio.hostname}",
+          "get *.wpilog",
+          "exit"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "RoboRio: SSH",
+        "type": "process",
+        "command": "putty",
+        "args": [
+          "-ssh",
+          "${config:roborio.username}@${config:roborio.hostname}"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false,
+          "close": true
+        },
+        "problemMatcher": []
+      }
+    ],
+    "inputs":[
+      {
+        "id": "echoPrompt",
+        "description": "Please enter a value",
+        "default": "test echo",
+        "type": "promptString"
+      },      
+      {
+        "id": "hostPrompt",
+        "description": "Please enter a hostname",
+        // "default": "roborio-151-frc.local",
+        "default": "${config:roborio.hostname",
+        "type": "promptString"
+      },
+      {
+        "id": "echoPick",
+        "description": "Select one of the values",
+        "default": "two",
+        "type": "pickString",
+        "options": ["one", "two", "three"]
+      },
+      {
+        "id": "userPrompt",
+        "description": "Please enter your Git user name.",
+        "default": "",
+        "type": "promptString"
+      },
+      {
+        "id": "emailPrompt",
+        "description": "Please enter your email address.",
+        "default": "",
+        "type": "promptString"
+      },
+    ]
+}

@@ -1,0 +1,113 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.server.launchMode": "Standard",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "bin/": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true,
+"**/FRC_2*.wpilog": true,
+    "**/FRC_2*.csv": true,
+    "**/datalogtool*.json": true,
+    "**/simgui*.json": true,
+    "**/*~": true
+  },
+  "java.test.config": [
+    {
+      "name": "WPIlibUnitTests",
+      "workingDirectory": "${workspaceFolder}/build/jni/release",
+      "vmargs": [ "-Djava.library.path=${workspaceFolder}/build/jni/release" ],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release" ,
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
+      }
+    }
+  ],
+  "java.checkstyle.configuration": "${workspaceFolder}\\config\\style\\tt151_checks.xml",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.test.defaultConfig": "WPIlibUnitTests",
+  // Set cSpell to Hint so spelling doesn't show up in problems list.
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.customDictionaries": {
+    "custom-dictionary-workspace": {
+      "name": "custom-dictionary-workspace",
+      "path": "${workspaceFolder}/.vscode/custom-dictionary-workspace.txt",
+      "addWords": true,
+      "scope": "workspace"
+    }
+  },
+  "workbench.colorCustomizations": {
+    // With cSpell level set to hint, change hints to be more obvious.
+    "editorHint.foreground": "#ff0000",
+    "editorHint.border": "#ff0000"
+  },
+  "githubIssues.issueBranchTitle": "issue${issueNumber}/${sanitizedIssueTitle}",
+  "sonarlint.connectedMode.project": {
+    "connectionId": "toughtechs151",
+    "projectKey": "ToughTechs151_Crescendo2024"
+  },
+  "java.checkstyle.version": "10.12.1",
+  "githubPullRequests.createOnPublishBranch": "never",
+  "githubPullRequests.notifications": "pullRequests",
+  "taskExplorer.enableExplorerView": false,
+  "taskExplorer.enableSideBar": true,
+  "taskExplorer.showHiddenWsTasks": false,
+  "taskExplorer.exclude": [
+    "**/.vscode-test/**",
+    "**/Assets/**",
+    "**/bin/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/doc/**",
+    "**/example/**",
+    "**/examples/**",
+    "**/ext/**",
+    "**/obj/**",
+    "**/out/**",
+    "**/output/**",
+    "**/packages/**",
+    "**/release/**",
+    "**/releases/**",
+    "**/samples/**",
+    "**/sdks/**",
+    "**/static/**",
+    "**/target/**",
+    "**/test/**",
+    "**/third_party/**",
+    "**/vendor/**",
+    "**/work/**",
+    "**/.ttgradle/**"
+  ],
+  "git.fetchOnPull": true,
+  "VsCodeTaskButtons.tasks": [
+    {
+      "label": "Reformat",
+      "task": "gradle: spotlessApply",
+      "tooltip": "Reformat all the files using Spotless"
+    }
+  ],
+  "VsCodeTaskButtons.showCounter": false,
+  "roborio.username": "lvuser",
+  "roborio.hostname": "roborio-151-frc.local",
+  "sonarcloud.orgname": "ToughTechs151",
+  "sonarcloud.projectname": "Crescendo2024",
+  "java.completion.favoriteStaticMembers": [
+    "org.assertj.core.api.Assertion.*",
+    "org.junit.Assert.*",
+    "org.junit.Assume.*",
+    "org.junit.jupiter.api.Assertions.*",
+    "org.junit.jupiter.api.Assumptions.*",
+    "org.junit.jupiter.api.DynamicContainer.*",
+    "org.junit.jupiter.api.DynamicTest.*",
+    "org.mockito.Mockito.*",
+    "org.mockito.ArgumentMatchers.*",
+    "org.mockito.Answers.*"
+  ],
+
+}

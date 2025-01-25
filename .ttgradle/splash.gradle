@@ -1,0 +1,132 @@
+import java.text.SimpleDateFormat
+
+// Functions to write output to Splash Screen info
+def getGitHash = {
+    ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "log", "-n", "1", "--oneline", "--decorate", "HEAD"
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getGitBranch = {
+    ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "rev-parse", "--abbrev-ref", "HEAD"
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getGitFilesChanged = {
+    ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "diff", "--name-only", "HEAD"
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().replace("\n", ", ").replace("src/main/java/frc/robot/", "")
+}
+
+def getGitRemote = {
+    ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "remote", "--verbose"
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().replace("\n", ", ").replace("src/main/java/frc/robot/", "")
+}
+
+def getGitUser = {
+    ->
+    def stdout = new ByteArrayOutputStream()
+
+    exec {
+        commandLine "git", "config", "user.name"
+        ignoreExitValue true
+        standardOutput = stdout
+    }
+    def stdoutglobal = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "config", "--global", "user.name"
+        ignoreExitValue true
+        standardOutput = stdoutglobal
+    }
+    return stdout.toString().trim() + "  global:" + stdoutglobal.toString().trim()
+}
+
+task emptyDeployFiles() {
+
+    String deployDir = "$projectDir/src/main/deploy"
+
+    println "Emptying deploy files."
+    new File("$deployDir/deployhost.txt").text = "Empty"
+    new File("$deployDir/deploytime.txt").text = "Empty"
+}
+
+task versionTxt(dependsOn: compileJava)  {
+
+    onlyIf { compileJava.didWork }
+    // Things in the resources directory get packaged into
+    // the jar file. This means we can figure out where a
+    // jar file came from.
+    String resourcesDir = "$projectDir/src/main/resources"
+
+    doLast {
+        println "Populating version files."
+
+        new File("$resourcesDir/branch.txt").text = getGitBranch()
+        new File("$resourcesDir/commit.txt").text = getGitHash()
+        new File("$resourcesDir/changes.txt").text = getGitFilesChanged()
+        new File("$resourcesDir/remote.txt").text = getGitRemote()
+        new File("$resourcesDir/user.txt").text = getGitUser()
+
+
+        String hostname = System.getenv("COMPUTERNAME")
+        String projectDir = "Build hostname: $hostname " + "and project folder: $projectDir\n"
+
+        new File("$resourcesDir/buildtime.txt").text = projectDir +
+                "Build Date Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())
+    }
+}
+
+task deployHost() {
+    String deployDir = "$projectDir/src/main/deploy"
+
+    doLast {
+        String deploy_host = ""
+        try {
+            deploy_host = java.net.InetAddress.getLocalHost().getHostName()
+        } catch (all) {
+            deploy_host = "unknown"
+        }
+
+        println "Writing deploy files in ${deployDir}."
+        new File("$deployDir/deployhost.txt").text = deploy_host
+        new File("$deployDir/deploytime.txt").text =
+                new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date())
+    }
+}
+
+// Even though the resources directory is special, it is not there by default.
+// This isn't really necessary since we created the placholder file in the
+// resources folder, but better to be safe.
+task ensureResources() {
+
+    def folder = new File("$projectDir/src/main/resources")
+    if (!folder.exists() ) {
+        folder.mkdirs()
+    }
+}
+
+processResources.dependsOn versionTxt
+jar.dependsOn versionTxt
+// Make sure we have the resources directory.
+tasks.getByName('versionTxt').dependsOn(ensureResources)
+tasks.getByName('simulateExternalJavaDebug').dependsOn(deployHost)
+tasks.getByName('simulateExternalJavaRelease').dependsOn(deployHost)
+deploy.targets.roborio.artifacts.frcStaticFileDeploy.dependsOn(deployHost)
