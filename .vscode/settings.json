@@ -50,7 +50,7 @@
   "githubIssues.issueBranchTitle": "issue${issueNumber}/${sanitizedIssueTitle}",
   "sonarlint.connectedMode.project": {
     "connectionId": "toughtechs151",
-    "projectKey": "ToughTechs151_Crescendo2024"
+    "projectKey": "ToughTechs151_Reefscape2025"
   },
   "java.checkstyle.version": "10.12.1",
   "githubPullRequests.createOnPublishBranch": "never",
@@ -96,7 +96,7 @@
   "roborio.username": "lvuser",
   "roborio.hostname": "roborio-151-frc.local",
   "sonarcloud.orgname": "ToughTechs151",
-  "sonarcloud.projectname": "Crescendo2024",
+  "sonarcloud.projectname": "Reefscape2025",
   "java.completion.favoriteStaticMembers": [
     "org.assertj.core.api.Assertion.*",
     "org.junit.Assert.*",
