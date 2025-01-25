@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,9 +38,11 @@ public class RobotContainer {
       new CommandXboxController(OIConstants.OPERATOR_CONTROLLER_PORT);
 
   // Now all the subsystems.
-  // The Arm.
+
+  private final LEDSubsystem led = new LEDSubsystem();
+
   private final ArmSubsystem robotArm = new ArmSubsystem(ArmSubsystem.initializeHardware());
-  // The Intake.
+
   private final IntakeSubsystem robotIntake =
       new IntakeSubsystem(IntakeSubsystem.initializeHardware());
 
