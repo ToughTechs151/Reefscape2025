@@ -119,4 +119,16 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
   }
+
+  public static final class DriveConstants {
+    public static final double ROBOT_MASS = 40.0 * 0.453592; // 40lbs * kg per pound
+    public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+    public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms spark max velocity lag
+    // Speed for Neo Vortex at 6700 RPM, 6.75:1 gears and 4" wheels
+    public static final double MAX_SPEED  = Units.feetToMeters(6700/6.75/60*4*Math.PI/12);
+    public static final double SPEED_SCALING = 0.5; // Scale joystick inputs to limit speed
+    public static final double SPEED_SCALING_3 = Math.pow(SPEED_SCALING, 1/3.0); // Scale for inputs^3
+  
+    public static final Boolean ENABLE_VISION  = true;
+  }
 }
