@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive =
           new SwerveParser(directory)
               .createSwerveDrive(
-                  Constants.MAX_SPEED,
+                  DriveConstants.MAX_SPEED,
                   new Pose2d(
                       new Translation2d(Meter.of(1), Meter.of(4)), Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON files.
@@ -96,7 +97,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // periodically when they are not moving.
     //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the
     // internal encoder and push the offsets onto it. Throws warning if not possible
-    if (Constants.ENABLE_VISION) {
+    if (DriveConstants.ENABLE_VISION) {
       setupPhotonVision();
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
       swerveDrive.stopOdometryThread();
@@ -116,7 +117,7 @@ public class SwerveSubsystem extends SubsystemBase {
         new SwerveDrive(
             driveCfg,
             controllerCfg,
-            Constants.MAX_SPEED,
+            DriveConstants.MAX_SPEED,
             new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
   }
 
@@ -128,7 +129,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    if (Constants.ENABLE_VISION) {
+    if (DriveConstants.ENABLE_VISION) {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }
@@ -609,7 +610,7 @@ public class SwerveSubsystem extends SubsystemBase {
         headingX,
         headingY,
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        DriveConstants.MAX_SPEED);
   }
 
   /**
@@ -629,7 +630,7 @@ public class SwerveSubsystem extends SubsystemBase {
         scaledInputs.getY(),
         angle.getRadians(),
         getHeading().getRadians(),
-        Constants.MAX_SPEED);
+        DriveConstants.MAX_SPEED);
   }
 
   /**
