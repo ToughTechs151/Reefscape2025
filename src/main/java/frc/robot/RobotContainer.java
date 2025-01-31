@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 
@@ -43,6 +44,9 @@ public class RobotContainer {
 
   private final ArmSubsystem robotArm = new ArmSubsystem(ArmSubsystem.initializeHardware());
 
+  private final ElevatorSubsystem robotElevator =
+      new ElevatorSubsystem(ElevatorSubsystem.initializeHardware());
+
   private final IntakeSubsystem robotIntake =
       new IntakeSubsystem(IntakeSubsystem.initializeHardware());
 
@@ -53,6 +57,7 @@ public class RobotContainer {
 
     // Publish subsystem data including commands
     SmartDashboard.putData(robotArm);
+    SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotIntake);
 
     // Configure the button bindings
@@ -89,10 +94,21 @@ public class RobotContainer {
                 .andThen(robotArm::disable)
                 .withName("Arm: Move to Back Position"));
 
-    // Disable the arm controller when the 'X' button is pressed on the operator's controller.
-    // NOTE: This is intended for initial arm testing and should be removed in the final robot
-    // to prevent accidental disable resulting in lowering of the arm.
-    operatorController.x().onTrue(Commands.runOnce(robotArm::disable));
+    // Move the elevator to the low position when the 'A' button is pressed.
+    operatorController
+        .x()
+        .onTrue(
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LOW_POSITION)
+                .withName("Elevator: Move to Low Position"));
+
+    // Move the elevator to the high position when the 'B' button is pressed.
+    operatorController
+        .y()
+        .onTrue(
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_HIGH_POSITION)
+                .withName("Elevator: Move to High Position"));
 
     // Run the intake forward when the right bumper is pressed.
     operatorController
@@ -103,17 +119,6 @@ public class RobotContainer {
     operatorController
         .leftBumper()
         .whileTrue(robotIntake.runReverse().withName("Intake: Run Reverse"));
-
-    // Run the intake until a note is loaded and move the arm back when the Y button is pressed and
-    // held.
-    operatorController
-        .y()
-        .whileTrue(
-            robotIntake
-                .loadNote()
-                .andThen(robotArm.moveToPosition(Constants.ArmConstants.ARM_BACK_POSITION_RADS))
-                .andThen(robotArm::disable)
-                .withName("Intake: Load Note"));
   }
 
   /**
@@ -158,6 +163,15 @@ public class RobotContainer {
    */
   public ArmSubsystem getArmSubsystem() {
     return robotArm;
+  }
+
+  /**
+   * Use this to get the Elevator Subsystem.
+   *
+   * @return a reference to the Elevator Subsystem
+   */
+  public ElevatorSubsystem getElevatorSubsystem() {
+    return robotElevator;
   }
 
   /**
