@@ -169,10 +169,8 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms spark max velocity lag
     // Speed for Neo Vortex at 6700 RPM, 6.75:1 gears and 4" wheels
     public static final double MAX_SPEED = Units.feetToMeters(6700 / 6.75 / 60 * 4 * Math.PI / 12);
-    public static final double SPEED_SCALING = 0.5; // Scale joystick inputs to limit speed
-    public static final double SPEED_SCALING_3 =
-        Math.pow(SPEED_SCALING, 1 / 3.0); // Scale for inputs^3
 
     public static final Boolean ENABLE_VISION = true;
+    public static final Boolean USE_ALLIANCE = false;
   }
 }
