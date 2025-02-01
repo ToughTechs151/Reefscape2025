@@ -124,9 +124,11 @@ public class RobotContainer {
 
     driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
 
-    driverController.b().whileTrue(
-        drivebase.driveToPose(
-            new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
+    driverController
+        .b()
+        .whileTrue(
+            drivebase.driveToPose(
+                new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
 
     // ---------- Operator Controller ----------
     // Move the arm to the low position when the 'A' button is pressed on the operator's controller.
