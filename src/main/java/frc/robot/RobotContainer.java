@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,6 +20,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import java.io.File;
+import swervelib.SwerveInputStream;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +43,8 @@ public class RobotContainer {
       new CommandXboxController(OIConstants.OPERATOR_CONTROLLER_PORT);
 
   // Now all the subsystems.
+  private final SwerveSubsystem drivebase =
+      new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
   private final LEDSubsystem led = new LEDSubsystem();
 
@@ -50,15 +56,53 @@ public class RobotContainer {
   private final IntakeSubsystem robotIntake =
       new IntakeSubsystem(IntakeSubsystem.initializeHardware());
 
+  /**
+   * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
+   * velocity.
+   */
+  SwerveInputStream driveAngularVelocity =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> driverController.getLeftY() * -1,
+              () -> driverController.getLeftX() * -1)
+          .withControllerRotationAxis(() -> driverController.getRightX() * -1)
+          .deadband(OIConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(true);
+
+  // Applies deadbands and inverts controls because joysticks
+  // are back-right positive while robot
+  // controls are front-left positive
+  // left stick controls translation
+  // right stick controls the angular velocity of the robot
+  Command driveFieldOrientedAngularVelocity =
+      drivebase.driveFieldOriented(driveAngularVelocity).withName("Angular Velocity");
+
+  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
+  // This doesn't do what we want in 2025.1.1
+  SwerveInputStream driveRobotOriented =
+      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
+
+  // Applies deadbands and inverts controls because joysticks
+  // are back-right positive while robot
+  // controls are front-left positive
+  // left stick controls translation
+  // right stick controls the angular velocity of the robot
+  Command driveRobotOrientedAngularVelocity =
+      drivebase.driveFieldOriented(driveRobotOriented).withName("Robot Oriented");
+
   private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     // Publish subsystem data including commands
+    SmartDashboard.putData(drivebase);
     SmartDashboard.putData(robotArm);
     SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotIntake);
+
+    drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -73,6 +117,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // ---------- Driver Controller ----------
+
+    driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
 
     // ---------- Operator Controller ----------
     // Move the arm to the low position when the 'A' button is pressed on the operator's controller.

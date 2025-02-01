@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import swervelib.math.Matter;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -57,7 +59,7 @@ public final class Constants {
       throw new IllegalStateException("ArmConstants Utility Class");
     }
 
-    public static final int MOTOR_PORT = 6;
+    public static final int MOTOR_PORT = 16;
     public static final int BEAM_BREAKER_PORT = 1;
     public static final int CURRENT_LIMIT = 40;
 
@@ -92,7 +94,7 @@ public final class Constants {
     }
 
     // These are fake gains; in actuality these must be determined individually for each robot
-    public static final int MOTOR_PORT = 8;
+    public static final int MOTOR_PORT = 18;
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
@@ -125,7 +127,7 @@ public final class Constants {
       throw new IllegalStateException("IntakeConstants Utility Class");
     }
 
-    public static final int INTAKE_MOTOR_PORT = 7;
+    public static final int INTAKE_MOTOR_PORT = 17;
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
@@ -152,5 +154,25 @@ public final class Constants {
 
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
+
+    // Joystick Deadband
+    public static final double DEADBAND = 0.1;
+    public static final double LEFT_Y_DEADBAND = 0.1;
+    public static final double RIGHT_X_DEADBAND = 0.1;
+    public static final double TURN_CONSTANT = 6;
+  }
+
+  public static final class DriveConstants {
+    public static final double ROBOT_MASS = 40.0 * 0.453592; // 40lbs * kg per pound
+    public static final Matter CHASSIS =
+        new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+    public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms spark max velocity lag
+    // Speed for Neo Vortex at 6700 RPM, 6.75:1 gears and 4" wheels
+    public static final double MAX_SPEED = Units.feetToMeters(6700 / 6.75 / 60 * 4 * Math.PI / 12);
+    public static final double SPEED_SCALING = 0.5; // Scale joystick inputs to limit speed
+    public static final double SPEED_SCALING_3 =
+        Math.pow(SPEED_SCALING, 1 / 3.0); // Scale for inputs^3
+
+    public static final Boolean ENABLE_VISION = true;
   }
 }

@@ -1,0 +1,135 @@
+{
+  "Docking": {
+    "Data": []
+  },
+  "MainWindow": {
+    "GLOBAL": {
+      "font": "Proggy Dotted",
+      "fps": "120",
+      "height": "971",
+      "maximized": "1",
+      "style": "0",
+      "userScale": "2",
+      "width": "1900",
+      "xpos": "0",
+      "ypos": "29"
+    }
+  },
+  "Window": {
+    "###/FMSInfo": {
+      "Collapsed": "0",
+      "Pos": "7,163",
+      "Size": "202,194"
+    },
+    "###/SmartDashboard/Arm Sim": {
+      "Collapsed": "0",
+      "Pos": "277,462",
+      "Size": "302,200"
+    },
+    "###/SmartDashboard/ArmSubsystem": {
+      "Collapsed": "0",
+      "Pos": "1501,387",
+      "Size": "297,98"
+    },
+    "###/SmartDashboard/Elevator Sim": {
+      "Collapsed": "0",
+      "Pos": "642,472",
+      "Size": "348,200"
+    },
+    "###/SmartDashboard/ElevatorSubsystem": {
+      "Collapsed": "0",
+      "Pos": "1490,35",
+      "Size": "336,98"
+    },
+    "###/SmartDashboard/Field": {
+      "Collapsed": "0",
+      "Pos": "246,18",
+      "Size": "826,424"
+    },
+    "###/SmartDashboard/IntakeSubsystem": {
+      "Collapsed": "0",
+      "Pos": "1484,148",
+      "Size": "320,98"
+    },
+    "###/SmartDashboard/SendableChooser[0]": {
+      "Collapsed": "0",
+      "Pos": "712,651",
+      "Size": "403,66"
+    },
+    "###/SmartDashboard/SendableChooser[1]": {
+      "Collapsed": "0",
+      "Pos": "715,722",
+      "Size": "403,66"
+    },
+    "###/SmartDashboard/Swerve Drive": {
+      "Collapsed": "0",
+      "Pos": "1081,632",
+      "Size": "300,150"
+    },
+    "###/SmartDashboard/SwerveSubsystem": {
+      "Collapsed": "0",
+      "Pos": "1487,260",
+      "Size": "320,98"
+    },
+    "###/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
+      "Collapsed": "0",
+      "Pos": "1202,19",
+      "Size": "521,189"
+    },
+    "###Addressable LEDs": {
+      "Collapsed": "0",
+      "Pos": "1481,643",
+      "Size": "416,207"
+    },
+    "###FMS": {
+      "Collapsed": "0",
+      "Pos": "11,374",
+      "Size": "210,214"
+    },
+    "###Joysticks": {
+      "Collapsed": "0",
+      "Pos": "340,687",
+      "Size": "976,278"
+    },
+    "###Keyboard 0 Settings": {
+      "Collapsed": "0",
+      "Pos": "1398,42",
+      "Size": "300,560"
+    },
+    "###NetworkTables": {
+      "Collapsed": "0",
+      "Pos": "1092,272",
+      "Size": "351,358"
+    },
+    "###NetworkTables Info": {
+      "Collapsed": "0",
+      "Pos": "1452,496",
+      "Size": "452,128"
+    },
+    "###Other Devices": {
+      "Collapsed": "0",
+      "Pos": "1087,25",
+      "Size": "361,234"
+    },
+    "###System Joysticks": {
+      "Collapsed": "0",
+      "Pos": "8,601",
+      "Size": "232,254"
+    },
+    "###Timing": {
+      "Collapsed": "0",
+      "Pos": "5,150",
+      "Size": "162,246"
+    },
+    "Debug##Default": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "400,400"
+    },
+    "Robot State": {
+      "Collapsed": "0",
+      "Pos": "7,23",
+      "Size": "118,134"
+    }
+  }
+}
