@@ -1,0 +1,194 @@
+{
+  "HALProvider": {
+    "Addressable LEDs": {
+      "0": {
+        "columns": 30
+      },
+      "window": {
+        "visible": true
+      }
+    },
+    "Other Devices": {
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [7]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX (v6)[2]/Rotor Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX (v6)[51]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[50]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[51]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[52]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[8]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      }
+    },
+    "Timing": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/SwerveSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Arm Brake Mode": "Command",
+      "/SmartDashboard/Arm Coast Mode": "Command",
+      "/SmartDashboard/Arm Reset Position": "Command",
+      "/SmartDashboard/Arm Sim": "Mechanism2d",
+      "/SmartDashboard/ArmSubsystem": "Subsystem",
+      "/SmartDashboard/Elevator Brake Mode": "Command",
+      "/SmartDashboard/Elevator Coast Mode": "Command",
+      "/SmartDashboard/Elevator Sim": "Mechanism2d",
+      "/SmartDashboard/ElevatorSubsystem": "Subsystem",
+      "/SmartDashboard/Encoders": "Alerts",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/IntakeSubsystem": "Subsystem",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
+      "/SmartDashboard/Pigeon 2 [13]": "Gyro",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "/SmartDashboard/Swerve Drive": "Alerts",
+      "/SmartDashboard/SwerveSubsystem": "Subsystem",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
+      "/SmartDashboard/navX-Sensor[1]": "Gyro",
+      "/SmartDashboard/navX-Sensor[4]": "Gyro"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Arm Sim": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/ArmSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Elevator Sim": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/ElevatorSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
+        "OdometryPose": {
+          "arrowColor": [
+            0.6033755540847778,
+            0.6033755540847778,
+            0.03564243018627167,
+            255.0
+          ],
+          "color": [
+            0.8898153901100159,
+            0.37988924980163574,
+            0.9578059315681458,
+            255.0
+          ]
+        },
+        "XModules": {
+          "arrowColor": [
+            0.09611687064170837,
+            0.17414122819900513,
+            0.9803921580314636,
+            255.0
+          ],
+          "arrowSize": 33,
+          "arrowWeight": 3.0,
+          "style": "Hidden"
+        },
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/IntakeSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SwerveSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "FMSInfo": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
+        "open": true,
+        "swerve": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}
