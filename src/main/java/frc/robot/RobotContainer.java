@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -68,7 +69,7 @@ public class RobotContainer {
           .withControllerRotationAxis(() -> driverController.getRightX() * -1)
           .deadband(OIConstants.DEADBAND)
           .scaleTranslation(0.8)
-          .allianceRelativeControl(true);
+          .allianceRelativeControl(DriveConstants.USE_ALLIANCE);
 
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
