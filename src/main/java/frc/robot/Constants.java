@@ -86,6 +86,40 @@ public final class Constants {
     public static final double VELOCITY_TOLERANCE = Units.degreesToRadians(10.0);
   }
 
+  /** Constants used for the Elevator subsystem. */
+  public static final class ElevatorConstants {
+
+    private ElevatorConstants() {
+      throw new IllegalStateException("ElevatorConstants Utility Class");
+    }
+
+    // These are fake gains; in actuality these must be determined individually for each robot
+    public static final int MOTOR_PORT = 8;
+    public static final int CURRENT_LIMIT = 40;
+
+    // Constants tunable through TunableNumbers
+    public static final double ELEVATOR_KP = 15.0;
+    public static final double ELEVATOR_KS = 0.1;
+    public static final double ELEVATOR_KG = 0.65;
+    public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 24.55;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.5;
+    public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 2.0;
+
+    public static final double GEAR_RATIO = 32.0;
+    public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
+    public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
+    public static final double ELEVATOR_HIGH_POSITION = 0.8;
+    public static final double ELEVATOR_LOW_POSITION = 0.2;
+    public static final double ELEVATOR_OFFSET_RADS = 0.0;
+
+    // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
+    public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;
+    public static final double ELEVATOR_MAX_HEIGHT_METERS = 1.25;
+
+    public static final double POSITION_TOLERANCE_METERS = 0.03;
+    public static final double VELOCITY_TOLERANCE_METERS = 0.01;
+  }
+
   /** Constants used for the Launcher subsystem. */
   public static final class IntakeConstants {
 

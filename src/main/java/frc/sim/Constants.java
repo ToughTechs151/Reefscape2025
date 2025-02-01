@@ -2,6 +2,7 @@ package frc.sim;
 
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ElevatorConstants;
 
 /** Constants utility class for the arm simulation. */
 public final class Constants {
@@ -25,6 +26,17 @@ public final class Constants {
         4096; // Only used to simulate noise in position measurement
     public static final double ENCODER_DISTANCE_PER_PULSE =
         2.0 * Math.PI / ENCODER_PRR / ArmConstants.GEAR_RATIO;
+  }
+
+  /** Elevator simulation constants. */
+  public static final class ElevatorSimConstants {
+    private ElevatorSimConstants() {
+      throw new IllegalStateException("ElevatorSimConstants Utility Class");
+    }
+
+    public static final double ELEVATOR_REDUCTION = ElevatorConstants.GEAR_RATIO;
+    public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(0.5);
+    public static final double CARRIAGE_MASS = 28.4; // kg
   }
 
   /** Drivetrain simulation constants. */
