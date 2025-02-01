@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -95,7 +95,7 @@ public class RobotContainer {
   Command driveRobotOrientedAngularVelocity =
       drivebase.driveFieldOriented(driveRobotOriented).withName("Robot Oriented");
 
-  private final SendableChooser<String> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -107,6 +107,10 @@ public class RobotContainer {
     SmartDashboard.putData(robotIntake);
 
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+
+    // Setup the auto command chooser using the PathPlanner autos
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -200,7 +204,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return new PrintCommand("No Auto Selected");
+    return autoChooser.getSelected();
   }
 
   /**
