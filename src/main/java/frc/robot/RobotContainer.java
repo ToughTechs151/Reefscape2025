@@ -95,6 +95,44 @@ public class RobotContainer {
   Command driveRobotOrientedAngularVelocity =
       drivebase.driveFieldOriented(driveRobotOriented).withName("Robot Oriented");
 
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftForwardRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.1, () -> 0.0)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
+
+  Command shiftForward =
+      drivebase.driveFieldOriented(shiftForwardRobotOriented).withName("Shift Forward");
+
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftBackRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> -0.1, () -> 0.0)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
+
+  Command shiftBack = drivebase.driveFieldOriented(shiftBackRobotOriented).withName("Shift Back");
+
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftRightRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.0, () -> -0.1)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
+
+  Command shiftRight =
+      drivebase.driveFieldOriented(shiftRightRobotOriented).withName("Shift Right");
+
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftLeftRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.0, () -> 0.1)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
+
+  Command shiftLeft = drivebase.driveFieldOriented(shiftLeftRobotOriented).withName("Shift Left");
+
   private SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -126,13 +164,23 @@ public class RobotContainer {
 
     // ---------- Driver Controller ----------
 
+    // Change drive type from field oriented to robot oriented, which is similar to tank drive, when
+    // 'RB' is pressed on the driver's controller
     driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
 
+    // Drive to a set position near the reef when 'B' is pressed on the driver's controller
     driverController
         .b()
         .whileTrue(
             drivebase.driveToPose(
                 new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
+
+    // Drives the robot slowly to a set position based on which of the pov buttons is pressed on the
+    // driver's controller
+    driverController.povUp().whileTrue(shiftForward);
+    driverController.povDown().whileTrue(shiftBack);
+    driverController.povRight().whileTrue(shiftRight);
+    driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
     // Move the arm to the low position when the 'A' button is pressed on the operator's controller.
