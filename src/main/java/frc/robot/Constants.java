@@ -68,8 +68,8 @@ public final class Constants {
     public static final double ARM_KS = 0.2;
     public static final double ARM_KG = 0.3;
     public static final double ARM_KV_VOLTS_PER_RAD_PER_SEC = 1.8;
-    public static final double ARM_MAX_VELOCITY_RAD_PER_SEC = 240;
-    public static final double ARM_MAX_ACCELERATION_RAD_PER_SEC2 = 720;
+    public static final double ARM_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(240);
+    public static final double ARM_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(720);
 
     public static final double GEAR_RATIO = 100;
     public static final double ARM_RAD_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
