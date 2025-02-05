@@ -20,12 +20,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDSubsystem extends SubsystemBase {
   /** The port number to which the LED strip is connected. */
   private static final int PORT = 9;
+
   /** The number of LED columns in the strip. */
   private static final int COLUMNS = 30;
+
   /** The {@link AddressableLED} object used to control the LED strip. */
   private final AddressableLED led;
+
   /** The {@link AddressableLEDBuffer} object to manage LED color data. */
   private final AddressableLEDBuffer buffer;
+
   /**
    * Constructs the LEDSubsystem and initializes the LED strip and buffer. Sets the default command
    * to turn the strip off or display a default color.
@@ -38,11 +42,13 @@ public class LEDSubsystem extends SubsystemBase {
     // Set the default command to run a solid gray pattern.
     setDefaultCommand(runPattern(LEDPattern.solid(Color.kGray)).withName("Default"));
   }
+
   /** Periodically sends the latest LED color data to the LED strip for display. */
   @Override
   public void periodic() {
     led.setData(buffer);
   }
+
   /**
    * Creates a command to run a specific LED pattern on the strip.
    *
