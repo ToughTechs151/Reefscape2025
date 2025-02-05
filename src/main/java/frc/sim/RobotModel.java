@@ -13,12 +13,9 @@ public class RobotModel {
 
   PDPSim simpdp;
 
-  // Mechanical arm driven by motor with gear reduction for simulation purposes.
-  // Works in conjunction with ArmSubsystem
-  ArmModel simArm;
-
-  // Mechanical elevator driven by motor with gear reduction for simulation purposes.
-  // Works in conjunction with ElevatorSubsystem
+  // Mechanical elevator driven by motor with gear reduction with attached mechanical arm
+  // driven by motor with gear reduction for simulation purposes.
+  // Works in conjunction with ElevatorSubsystem and ArmSubsystem
   ElevatorModel simElevator;
 
   // Mechanical intake driven by motor with gear reduction for simulation purposes.
@@ -47,9 +44,10 @@ public class RobotModel {
       return;
     }
 
-    simArm = new ArmModel(robot.getRobotContainer().getArmSubsystem());
-
-    simElevator = new ElevatorModel(robot.getRobotContainer().getElevatorSubsystem());
+    simElevator =
+        new ElevatorModel(
+            robot.getRobotContainer().getElevatorSubsystem(),
+            robot.getRobotContainer().getArmSubsystem());
 
     simIntake = new IntakeModel(robot.getRobotContainer().getIntakeSubsystem());
 
@@ -64,13 +62,12 @@ public class RobotModel {
     }
 
     // Update subsystem simulations
-    simArm.updateSim();
     simElevator.updateSim();
     simIntake.updateSim();
 
     // Simulate battery voltage drop based on total simulated current
-    double armCurrent = Math.abs(simArm.getSimCurrent());
-    double elevatorCurrent = Math.abs(simElevator.getSimCurrent());
+    double armCurrent = Math.abs(simElevator.getSimArmCurrent());
+    double elevatorCurrent = Math.abs(simElevator.getSimElevatorCurrent());
     double intakeCurrent = Math.abs(simIntake.getSimCurrent());
 
     double[] simCurrents = {armCurrent, elevatorCurrent, intakeCurrent};
