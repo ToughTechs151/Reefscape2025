@@ -348,7 +348,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   public double getMeasurement() {
     // Add the offset from the starting point. The elevator must be at this position at startup for
     // the relative encoder to provide a correct position.
-    return encoder.getPosition() + ElevatorConstants.ELEVATOR_OFFSET_RADS;
+    return encoder.getPosition() + ElevatorConstants.ELEVATOR_OFFSET_METERS;
   }
 
   /** Returns the Motor Commanded Voltage. */
