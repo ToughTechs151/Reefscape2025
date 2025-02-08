@@ -1,31 +1,31 @@
 package frc.sim;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.ElevatorConstants;
 
-/** Constants utility class for the arm simulation. */
+/** Constants utility class for the claw simulation. */
 public final class Constants {
 
   private Constants() {
     throw new IllegalStateException("Utility class");
   }
 
-  /** Arm simulation constants. */
-  public static final class ArmSim {
-    private ArmSim() {
-      throw new IllegalStateException("ArmSim Utility Class");
+  /** Claw simulation constants. */
+  public static final class ClawSim {
+    private ClawSim() {
+      throw new IllegalStateException("ClawSim Utility Class");
     }
 
-    public static final double ARM_REDUCTION = ArmConstants.GEAR_RATIO;
-    public static final double ARM_MASS_KG = 6.0;
-    public static final double ARM_LENGTH_INCHES = 12;
-    public static final double ARM_LENGTH_METERS = Units.inchesToMeters(ARM_LENGTH_INCHES);
-    public static final double START_ANGLE_RADS = ArmConstants.MAX_ANGLE_RADS;
+    public static final double CLAW_REDUCTION = ClawConstants.GEAR_RATIO;
+    public static final double CLAW_MASS_KG = 6.0;
+    public static final double CLAW_LENGTH_INCHES = 12;
+    public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(CLAW_LENGTH_INCHES);
+    public static final double START_ANGLE_RADS = ClawConstants.MAX_ANGLE_RADS;
     public static final int ENCODER_PRR =
         4096; // Only used to simulate noise in position measurement
     public static final double ENCODER_DISTANCE_PER_PULSE =
-        2.0 * Math.PI / ENCODER_PRR / ArmConstants.GEAR_RATIO;
+        2.0 * Math.PI / ENCODER_PRR / ClawConstants.GEAR_RATIO;
   }
 
   /** Elevator simulation constants. */

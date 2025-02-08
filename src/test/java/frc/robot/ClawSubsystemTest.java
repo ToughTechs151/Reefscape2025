@@ -19,8 +19,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.Constants.ClawConstants;
+import frc.robot.subsystems.ClawSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,13 +30,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalMatchers;
 
-class ArmSubsystemTest {
+class ClawSubsystemTest {
   private static final double DELTA = 5e-3;
   private Map<String, Double> telemetryDoubleMap = new HashMap<>();
   private Map<String, Boolean> telemetryBooleanMap = new HashMap<>();
 
-  private ArmSubsystem.Hardware armHardware;
-  private ArmSubsystem arm;
+  private ClawSubsystem.Hardware clawHardware;
+  private ClawSubsystem claw;
   private SparkMax mockMotor;
   private RelativeEncoder mockEncoder;
 
@@ -47,13 +47,13 @@ class ArmSubsystemTest {
     mockEncoder = mock(RelativeEncoder.class);
 
     // Create subsystem object using mock hardware
-    armHardware = new ArmSubsystem.Hardware(mockMotor, mockEncoder);
-    arm = new ArmSubsystem(armHardware);
+    clawHardware = new ClawSubsystem.Hardware(mockMotor, mockEncoder);
+    claw = new ClawSubsystem(clawHardware);
   }
 
   @AfterEach
-  public void closeArm() {
-    arm.close(); // motor is closed from the arm close method
+  public void closeClaw() {
+    claw.close(); // motor is closed from the claw close method
   }
 
   @Test
@@ -61,43 +61,43 @@ class ArmSubsystemTest {
   void testConstructor() {
     // We haven't enabled it yet, so command to motor and saved value should be zero.
     verify(mockMotor).setVoltage(0.0);
-    assertThat(arm.getVoltageCommand()).isZero();
+    assertThat(claw.getVoltageCommand()).isZero();
 
     // Position should be set to starting position
-    assertThat(arm.getMeasurement()).isEqualTo(ArmConstants.ARM_OFFSET_RADS);
+    assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS);
   }
 
   @Test
   @DisplayName("Test move command and disable.")
   void testMoveCommand() {
 
-    // Create a command to move the arm then initialize
-    Command moveCommand = arm.moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS);
+    // Create a command to move the claw then initialize
+    Command moveCommand = claw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL1_RADS);
     moveCommand.initialize();
 
     // Run the periodic method to generate telemetry and verify it was published
-    arm.periodic();
+    claw.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
     assertEquals(
-        Units.radiansToDegrees(ArmConstants.ARM_FORWARD_POSITION_RADS),
-        telemetryDoubleMap.get("Arm Goal"),
+        Units.radiansToDegrees(ClawConstants.CLAW_LEVEL1_RADS),
+        telemetryDoubleMap.get("Claw Goal"),
         DELTA);
 
     // Execute the command to run the controller
     moveCommand.execute();
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Arm Voltage")).isNegative();
-    assertThat(telemetryBooleanMap.get("Arm Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Claw Voltage")).isNegative();
+    assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
-    arm.disable();
-    arm.periodic();
+    claw.disable();
+    claw.periodic();
     readTelemetry();
     verify(mockMotor, times(2)).setVoltage(0.0);
-    assertThat(telemetryDoubleMap.get("Arm Voltage")).isZero();
-    assertThat(telemetryBooleanMap.get("Arm Enabled")).isFalse();
+    assertThat(telemetryDoubleMap.get("Claw Voltage")).isZero();
+    assertThat(telemetryBooleanMap.get("Claw Enabled")).isFalse();
   }
 
   @Test
@@ -114,7 +114,7 @@ class ArmSubsystemTest {
 
     // The motor voltage should be set twice: once to 0 when configured and once  to a
     // negative value when controller is run.
-    Command moveCommand = arm.moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS);
+    Command moveCommand = claw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS);
     moveCommand.initialize();
     moveCommand.execute();
     verify(mockMotor, times(2)).setVoltage(anyDouble());
@@ -137,19 +137,19 @@ class ArmSubsystemTest {
     // assertEquals(expectedCommand, argument.getValue(), DELTA);
 
     // Test position measurements from the encoder
-    assertThat(arm.getMeasurement()).isEqualTo(ArmConstants.ARM_OFFSET_RADS + fakePosition);
+    assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS + fakePosition);
 
     // Check that telemetry was sent to dashboard
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
-    assertEquals(fakeCurrent, telemetryDoubleMap.get("Arm Current"), DELTA);
+    assertEquals(fakeCurrent, telemetryDoubleMap.get("Claw Current"), DELTA);
     assertEquals(
-        Units.radiansToDegrees(ArmConstants.ARM_OFFSET_RADS + fakePosition),
-        telemetryDoubleMap.get("Arm Angle"),
+        Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS + fakePosition),
+        telemetryDoubleMap.get("Claw Angle"),
         DELTA);
-    if (Constants.SD_SHOW_ARM_EXTENDED_LOGGING_DATA) {
+    if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
       assertEquals(
-          Units.radiansToDegrees(fakeVelocity), telemetryDoubleMap.get("Arm Velocity"), DELTA);
+          Units.radiansToDegrees(fakeVelocity), telemetryDoubleMap.get("Claw Velocity"), DELTA);
     }
   }
 
@@ -157,58 +157,58 @@ class ArmSubsystemTest {
   @DisplayName("Test range limit and hold.")
   void testLimitAndHoldCommand() {
 
-    // Try a command to move the arm above the limit
-    Command moveCommand = arm.moveToPosition(Constants.ArmConstants.MAX_ANGLE_RADS + 0.1);
+    // Try a command to move the claw above the limit
+    Command moveCommand = claw.moveToPosition(Constants.ClawConstants.MAX_ANGLE_RADS + 0.1);
     moveCommand.initialize();
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
     assertEquals(
-        Units.radiansToDegrees(ArmConstants.MAX_ANGLE_RADS),
-        telemetryDoubleMap.get("Arm Goal"),
+        Units.radiansToDegrees(ClawConstants.MAX_ANGLE_RADS),
+        telemetryDoubleMap.get("Claw Goal"),
         DELTA);
 
     // Verify that the hold command runs the controller
-    Command moveCommandHigh = arm.moveToPosition(Constants.ArmConstants.ARM_BACK_POSITION_RADS);
-    Command holdCommand = arm.holdPosition();
+    Command moveCommandHigh = claw.moveToPosition(Constants.ClawConstants.CLAW_ALGAE_RADS);
+    Command holdCommand = claw.holdPosition();
     // Initialize to set goal but don't execute so hold can be checked
     moveCommandHigh.initialize();
     holdCommand.execute();
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
 
-    // Motor command should be negative to hold arm up.
-    assertThat(telemetryDoubleMap.get("Arm Voltage")).isNegative();
-    assertThat(telemetryBooleanMap.get("Arm Enabled")).isTrue();
+    // Motor command should be negative to hold claw up.
+    assertThat(telemetryDoubleMap.get("Claw Voltage")).isNegative();
+    assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
   }
 
   @Test
   @DisplayName("Test shift down and up commands.")
   void testShiftDownCommand() {
-    Command moveCommand = arm.moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS);
-    Command upCommand = arm.shiftUp();
+    Command moveCommand = claw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL4_RADS);
+    Command upCommand = claw.shiftUp();
 
     // Command to a position and then shift up
     moveCommand.initialize();
     upCommand.initialize();
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
     assertEquals(
-        Units.radiansToDegrees(ArmConstants.ARM_FORWARD_POSITION_RADS + ArmConstants.POS_INCREMENT),
-        telemetryDoubleMap.get("Arm Goal"),
+        Units.radiansToDegrees(ClawConstants.CLAW_LEVEL4_RADS + ClawConstants.POS_INCREMENT),
+        telemetryDoubleMap.get("Claw Goal"),
         DELTA);
 
     // Shift down
-    Command downCommand = arm.shiftDown();
+    Command downCommand = claw.shiftDown();
     downCommand.initialize();
-    arm.periodic();
+    claw.periodic();
     readTelemetry();
     // Currently up and down increments are the same. Update if that changes.
     assertEquals(
         Units.radiansToDegrees(
-            ArmConstants.ARM_FORWARD_POSITION_RADS
-                + ArmConstants.POS_INCREMENT
-                - ArmConstants.POS_INCREMENT),
-        telemetryDoubleMap.get("Arm Goal"),
+            ClawConstants.CLAW_LEVEL4_RADS
+                + ClawConstants.POS_INCREMENT
+                - ClawConstants.POS_INCREMENT),
+        telemetryDoubleMap.get("Claw Goal"),
         DELTA);
   }
 
@@ -233,13 +233,13 @@ class ArmSubsystemTest {
 }
 
   // *** Available Telemetry Keys ***
-  // "Arm Enabled"
-  // "Arm Goal"
-  // "Arm Angle"
-  // "Arm Velocity"
-  // "Arm Voltage"
-  // "Arm Current"
-  // "Arm Feedforward"
-  // "Arm PID output"
-  // "Arm SetPt Pos"
-  // "Arm SetPt Vel"
+  // "Claw Enabled"
+  // "Claw Goal"
+  // "Claw Angle"
+  // "Claw Velocity"
+  // "Claw Voltage"
+  // "Claw Current"
+  // "Claw Feedforward"
+  // "Claw PID output"
+  // "Claw SetPt Pos"
+  // "Claw SetPt Vel"

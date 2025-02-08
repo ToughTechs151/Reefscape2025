@@ -41,7 +41,7 @@ public class IntakeModel implements AutoCloseable {
     // There is nothing to add to the dashboard for this sim since output is motor speed.
   }
 
-  /** Initialize the arm simulation. */
+  /** Initialize the claw simulation. */
   public void simulationInit() {
 
     // Setup a simulation of the SparkMax and methods to set values
