@@ -21,7 +21,7 @@ public final class Constants {
     public static final double CLAW_MASS_KG = 6.0;
     public static final double CLAW_LENGTH_INCHES = 12;
     public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(CLAW_LENGTH_INCHES);
-    public static final double START_ANGLE_RADS = ClawConstants.MAX_ANGLE_RADS;
+    public static final double START_ANGLE_RADS = ClawConstants.MIN_ANGLE_RADS;
     public static final int ENCODER_PRR =
         4096; // Only used to simulate noise in position measurement
     public static final double ENCODER_DISTANCE_PER_PULSE =

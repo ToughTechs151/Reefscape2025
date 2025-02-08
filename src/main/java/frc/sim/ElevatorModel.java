@@ -84,7 +84,7 @@ public class ElevatorModel implements AutoCloseable {
           new MechanismLigament2d(
               "Claw",
               ClawSim.CLAW_LENGTH_METERS,
-              Units.radiansToDegrees(clawSim.getAngleRads() - 90),
+              Units.radiansToDegrees(clawSim.getAngleRads()) - 90,
               6,
               new Color8Bit(Color.kYellow)));
 

@@ -79,9 +79,9 @@ public final class Constants {
     public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(55.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(180.0);
-    public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(196.0);
+    public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
     public static final double MIN_ANGLE_RADS = Units.degreesToRadians(18.0);
-    public static final double MAX_ANGLE_RADS = CLAW_OFFSET_RADS;
+    public static final double MAX_ANGLE_RADS = Units.degreesToRadians(196.0);
     public static final double POS_INCREMENT = Units.degreesToRadians(2.0); // For small adjustments
     public static final double POSITION_TOLERANCE = Units.degreesToRadians(4.0);
     public static final double VELOCITY_TOLERANCE = Units.degreesToRadians(10.0);
