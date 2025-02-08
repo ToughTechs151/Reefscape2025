@@ -37,7 +37,7 @@ public final class Constants {
   public static final boolean SD_SHOW_ARM_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_LAUNCHER_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_CLIMBER_EXTENDED_LOGGING_DATA = true;
-  public static final boolean SD_SHOW_INTAKE_EXTENDED_LOGGING_DATA = true;
+  public static final boolean SD_SHOW_ROLLER_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_DRIVE_EXTENDED_LOGGING_DATA = true;
 
   public static final boolean LOOP_TIMING_LOG = false;
@@ -121,28 +121,28 @@ public final class Constants {
   }
 
   /** Constants used for the Launcher subsystem. */
-  public static final class IntakeConstants {
+  public static final class RollerConstants {
 
-    private IntakeConstants() {
-      throw new IllegalStateException("IntakeConstants Utility Class");
+    private RollerConstants() {
+      throw new IllegalStateException("RollerConstants Utility Class");
     }
 
-    public static final int INTAKE_MOTOR_PORT = 17;
+    public static final int ROLLER_MOTOR_PORT = 17;
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double INTAKE_KP = 6.0;
-    public static final double INTAKE_KS_VOLTS = 0.2;
-    public static final double INTAKE_KV_VOLTS_PER_RPM = 1.8;
-    public static final double INTAKE_SET_POINT_FORWARD_RPM = 300.0;
-    public static final double INTAKE_SET_POINT_REVERSE_RPM = -400.0;
-    public static final double INTAKE_SPEED_THRESHOLD_RPM = 250.0;
-    public static final double INTAKE_CURRENT_THRESHOLD_AMPS = 8.0;
+    public static final double ROLLER_KP = 6.0;
+    public static final double ROLLER_KS_VOLTS = 0.2;
+    public static final double ROLLER_KV_VOLTS_PER_RPM = 1.8;
+    public static final double ROLLER_SET_POINT_FORWARD_RPM = 300.0;
+    public static final double ROLLER_SET_POINT_REVERSE_RPM = -400.0;
+    public static final double ROLLER_SPEED_THRESHOLD_RPM = 250.0;
+    public static final double ROLLER_CURRENT_THRESHOLD_AMPS = 8.0;
 
-    public static final double INTAKE_GEAR_RATIO =
+    public static final double ROLLER_GEAR_RATIO =
         12.0; // Ratio of motor rotations to output rotations
-    public static final double INTAKE_ROTATIONS_PER_ENCODER_ROTATION = 1.0 / INTAKE_GEAR_RATIO;
-    public static final double INTAKE_TOLERANCE_RPM = 20;
+    public static final double ROLLER_ROTATIONS_PER_ENCODER_ROTATION = 1.0 / ROLLER_GEAR_RATIO;
+    public static final double ROLLER_TOLERANCE_RPM = 20;
   }
 
   /** Constants used for assigning operator input. */

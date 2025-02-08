@@ -81,6 +81,7 @@
       "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
+      "/SmartDashboard/RollerSubsystem": "Subsystem",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
@@ -157,6 +158,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/RollerSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/SendableChooser[0]": {
         "window": {
           "visible": true
@@ -173,7 +179,10 @@
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
       }
     }
   },

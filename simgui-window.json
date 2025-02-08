@@ -49,6 +49,11 @@
     "###/SmartDashboard/IntakeSubsystem": {
       "Collapsed": "0",
       "Pos": "1470,340",
+      "Size": "320,78"
+    },
+    "###/SmartDashboard/RollerSubsystem": {
+      "Collapsed": "0",
+      "Pos": "633,280",
       "Size": "320,98"
     },
     "###/SmartDashboard/SendableChooser[0]": {

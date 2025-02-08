@@ -18,8 +18,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.Constants.RollerConstants;
+import frc.robot.subsystems.RollerSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -29,13 +29,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalMatchers;
 
-class IntakeSubsystemTest {
+class RollerSubsystemTest {
   private static final double DELTA = 5e-3;
   private Map<String, Double> telemetryDoubleMap = new HashMap<>();
   private Map<String, Boolean> telemetryBooleanMap = new HashMap<>();
 
-  private IntakeSubsystem.Hardware intakeHardware;
-  private IntakeSubsystem intake;
+  private RollerSubsystem.Hardware rollerHardware;
+  private RollerSubsystem roller;
   private SparkMax mockMotor;
   private RelativeEncoder mockEncoder;
 
@@ -46,13 +46,13 @@ class IntakeSubsystemTest {
     mockEncoder = mock(RelativeEncoder.class);
 
     // Create subsystem object using mock hardware
-    intakeHardware = new IntakeSubsystem.Hardware(mockMotor, mockEncoder);
-    intake = new IntakeSubsystem(intakeHardware);
+    rollerHardware = new RollerSubsystem.Hardware(mockMotor, mockEncoder);
+    roller = new RollerSubsystem(rollerHardware);
   }
 
   @AfterEach
-  public void closeIntake() {
-    intake.close(); // motor is closed from the intake close method
+  public void closeRoller() {
+    roller.close(); // motor is closed from the Roller close method
   }
 
   @Test
@@ -60,66 +60,66 @@ class IntakeSubsystemTest {
   void testConstructor() {
     // We haven't enabled it yet, so command to motor and saved value should be zero.
     verify(mockMotor).setVoltage(0.0);
-    assertThat(intake.getIntakeVoltageCommand()).isZero();
+    assertThat(roller.getRollerVoltageCommand()).isZero();
   }
 
   @Test
   @DisplayName("Test run forward command and disable.")
   void testForwardCommand() {
 
-    // Create a command to run the intake then initialize
-    Command runForwardCommand = intake.runForward();
+    // Create a command to run the Roller then initialize
+    Command runForwardCommand = roller.runForward();
     runForwardCommand.initialize();
 
     // Run the periodic method to generate telemetry and verify it was published
-    intake.periodic();
+    roller.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
-    System.out.println("set point: " + telemetryDoubleMap.get("Intake Setpoint"));
+    System.out.println("set point: " + telemetryDoubleMap.get("Roller Setpoint"));
     assertEquals(
-        IntakeConstants.INTAKE_SET_POINT_FORWARD_RPM,
-        telemetryDoubleMap.get("Intake Setpoint"),
+        RollerConstants.ROLLER_SET_POINT_FORWARD_RPM,
+        telemetryDoubleMap.get("Roller Setpoint"),
         DELTA);
 
     // Execute the command to run the controller
     runForwardCommand.execute();
-    intake.periodic();
+    roller.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Intake Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Intake Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Roller Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Roller Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
-    intake.disableIntake();
-    intake.periodic();
+    roller.disableRoller();
+    roller.periodic();
     readTelemetry();
     verify(mockMotor, times(2)).setVoltage(0.0);
-    assertThat(telemetryDoubleMap.get("Intake Voltage")).isZero();
-    assertThat(telemetryBooleanMap.get("Intake Enabled")).isFalse();
+    assertThat(telemetryDoubleMap.get("Roller Voltage")).isZero();
+    assertThat(telemetryBooleanMap.get("Roller Enabled")).isFalse();
   }
 
   @Test
   @DisplayName("Test run in reverse command.")
   void testReverseCommand() {
 
-    // Create a command to run the intake then initialize
-    Command runIntakeCommand = intake.runReverse();
-    runIntakeCommand.initialize();
+    // Create a command to run the Roller then initialize
+    Command runRollerCommand = roller.runReverse();
+    runRollerCommand.initialize();
 
     // Run the periodic method to generate telemetry and verify it was published
-    intake.periodic();
+    roller.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
     assertEquals(
-        IntakeConstants.INTAKE_SET_POINT_REVERSE_RPM,
-        telemetryDoubleMap.get("Intake Setpoint"),
+        RollerConstants.ROLLER_SET_POINT_REVERSE_RPM,
+        telemetryDoubleMap.get("Roller Setpoint"),
         DELTA);
 
     // Execute the command to run the controller
-    runIntakeCommand.execute();
-    intake.periodic();
+    runRollerCommand.execute();
+    roller.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Intake Voltage")).isNegative();
-    assertThat(telemetryBooleanMap.get("Intake Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Roller Voltage")).isNegative();
+    assertThat(telemetryBooleanMap.get("Roller Enabled")).isTrue();
   }
 
   @Test
@@ -134,18 +134,18 @@ class IntakeSubsystemTest {
 
     // The motor voltage should be set twice: once to 0 when configured and once to a
     // positive value when controller is run.
-    Command runIntakeCommand = intake.runForward();
-    runIntakeCommand.initialize();
-    runIntakeCommand.execute();
+    Command runRollerCommand = roller.runForward();
+    runRollerCommand.initialize();
+    runRollerCommand.execute();
     verify(mockMotor, times(2)).setVoltage(anyDouble());
     verify(mockMotor).setVoltage(0.0);
     verify(mockMotor, times(1)).setVoltage(AdditionalMatchers.gt(0.0));
 
     // Check that telemetry was sent to dashboard
-    intake.periodic();
+    roller.periodic();
     readTelemetry();
-    assertEquals(fakeCurrent, telemetryDoubleMap.get("Intake Current"), DELTA);
-    assertEquals(fakeVelocity, telemetryDoubleMap.get("Intake Speed"), DELTA);
+    assertEquals(fakeCurrent, telemetryDoubleMap.get("Roller Current"), DELTA);
+    assertEquals(fakeVelocity, telemetryDoubleMap.get("Roller Speed"), DELTA);
   }
 
   // ---------- Utility Functions --------------------------------------

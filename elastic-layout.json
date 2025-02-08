@@ -78,14 +78,14 @@
                 }
               },
               {
-                "title": "IntakeSubsystem",
+                "title": "RollerSubsystem",
                 "x": 1024.0,
                 "y": 512.0,
                 "width": 256.0,
                 "height": 128.0,
                 "type": "Subsystem",
                 "properties": {
-                  "topic": "/SmartDashboard/IntakeSubsystem",
+                  "topic": "/SmartDashboard/RollerSubsystem",
                   "period": 0.06
                 }
               },
