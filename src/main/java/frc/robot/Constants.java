@@ -105,16 +105,22 @@ public final class Constants {
     public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.5;
     public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 2.0;
 
-    public static final double GEAR_RATIO = 32.0;
-    public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
+    // Spool Diameter in Inches
+    public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
+
+    public static final double GEAR_RATIO = 16.0;
+    public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION =
+        SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
-    public static final double ELEVATOR_HIGH_POSITION = 0.8;
-    public static final double ELEVATOR_LOW_POSITION = 0.2;
+    public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
+    public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(12.5);
+    public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(28.5);
+    public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(54);
     public static final double ELEVATOR_OFFSET_RADS = 0.0;
 
     // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;
-    public static final double ELEVATOR_MAX_HEIGHT_METERS = 1.25;
+    public static final double ELEVATOR_MAX_HEIGHT_METERS = Units.inchesToMeters(63);
 
     public static final double POSITION_TOLERANCE_METERS = 0.03;
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;

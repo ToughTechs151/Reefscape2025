@@ -185,40 +185,58 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the arm to the low position when the 'A' button is pressed on the operator's controller.
+    // Move the arm to the forward position when the 'Right Trigger' button is pressed on the
+    // operator's controller.
     operatorController
-        .a()
+        .rightTrigger()
         .onTrue(
             robotArm
                 .moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS)
                 .andThen(robotArm::disable)
                 .withName("Arm: Move to Forward Position"));
 
-    // Move the arm to the high position when the 'B' button is pressed on the operator's
+    // Move the arm to the back position when the 'Left Trigger' button is pressed on the
+    // operator's
     // controller.
     operatorController
-        .b()
+        .leftTrigger()
         .onTrue(
             robotArm
                 .moveToPosition(Constants.ArmConstants.ARM_BACK_POSITION_RADS)
                 .andThen(robotArm::disable)
                 .withName("Arm: Move to Back Position"));
 
-    // Move the elevator to the low position when the 'A' button is pressed.
+    // Move the elevator to score in Reef Level 1 when the 'A' button is pressed.
+    operatorController
+        .a()
+        .onTrue(
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL1)
+                .withName("Elevator: Move to Score in Reef Level 1"));
+
+    // Move the elevator to score in Reef Level 2 when the 'B' button is pressed.
+    operatorController
+        .b()
+        .onTrue(
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL2)
+                .withName("Elevator: Move to Score in Reef Level 2"));
+
+    // Move the elevator to score in Reef Level 3 when the 'X' button is pressed.
     operatorController
         .x()
         .onTrue(
             robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LOW_POSITION)
-                .withName("Elevator: Move to Low Position"));
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL3)
+                .withName("Elevator: Move to Score in Reef Level 3"));
 
-    // Move the elevator to the high position when the 'B' button is pressed.
+    // Move the elevator to score in Reef Level 4 when the 'Y' button is pressed.
     operatorController
         .y()
         .onTrue(
             robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_HIGH_POSITION)
-                .withName("Elevator: Move to High Position"));
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4)
+                .withName("Elevator: Move to Score in Reef Level 4"));
 
     // Run the intake forward when the right bumper is pressed.
     operatorController
