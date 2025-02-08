@@ -109,14 +109,17 @@ public final class Constants {
     public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
 
     public static final double GEAR_RATIO = 16.0;
+
+    // Factor of 2 is due to using a cascade elevator
     public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION =
-        SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
+        2 * SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
+    
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
     public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(12.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(28.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(54);
-    public static final double ELEVATOR_OFFSET_RADS = 0.0;
+    public static final double ELEVATOR_OFFSET_METERS = 0.0;
 
     // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;

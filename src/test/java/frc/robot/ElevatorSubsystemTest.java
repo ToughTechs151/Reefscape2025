@@ -63,7 +63,7 @@ class ElevatorSubsystemTest {
     assertThat(elevator.getVoltageCommand()).isZero();
 
     // Position should be set to starting position
-    assertThat(elevator.getMeasurement()).isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_RADS);
+    assertThat(elevator.getMeasurement()).isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_METERS);
   }
 
   @Test
@@ -136,14 +136,14 @@ class ElevatorSubsystemTest {
 
     // Test position measurements from the encoder
     assertThat(elevator.getMeasurement())
-        .isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_RADS + fakePosition);
+        .isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_METERS + fakePosition);
 
     // Check that telemetry was sent to dashboard
     elevator.periodic();
     readTelemetry();
     assertEquals(fakeCurrent, telemetryDoubleMap.get("Elevator Current"), DELTA);
     assertEquals(
-        ElevatorConstants.ELEVATOR_OFFSET_RADS + fakePosition,
+        ElevatorConstants.ELEVATOR_OFFSET_METERS + fakePosition,
         telemetryDoubleMap.get("Elevator Position"),
         DELTA);
     assertEquals(fakeVelocity, telemetryDoubleMap.get("Elevator Velocity"), DELTA);
