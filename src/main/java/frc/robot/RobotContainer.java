@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -52,7 +52,7 @@ public class RobotContainer {
 
   private final LEDSubsystem led = new LEDSubsystem();
 
-  private final ArmSubsystem robotArm = new ArmSubsystem(ArmSubsystem.initializeHardware());
+  private final ClawSubsystem robotClaw = new ClawSubsystem(ClawSubsystem.initializeHardware());
 
   private final ElevatorSubsystem robotElevator =
       new ElevatorSubsystem(ElevatorSubsystem.initializeHardware());
@@ -142,7 +142,7 @@ public class RobotContainer {
 
     // Publish subsystem data including commands
     SmartDashboard.putData(drivebase);
-    SmartDashboard.putData(robotArm);
+    SmartDashboard.putData(robotClaw);
     SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotIntake);
 
@@ -185,26 +185,42 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the arm to the forward position when the 'Right Trigger' button is pressed on the
+    // Move the claw to the level 1 position when the 'POV Down' button is pressed on the
     // operator's controller.
     operatorController
-        .rightTrigger()
+        .povDown()
         .onTrue(
-            robotArm
-                .moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS)
-                .andThen(robotArm::disable)
-                .withName("Arm: Move to Forward Position"));
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL1_RADS)
+                .andThen(robotClaw::disable)
+                .withName("Claw: Move to Level 1 Position"));
 
-    // Move the arm to the back position when the 'Left Trigger' button is pressed on the
-    // operator's
-    // controller.
+    // Move the claw to the level 2/3 position when the 'POV Left' button is pressed on the
+    // operator's controller.
     operatorController
-        .leftTrigger()
+        .povLeft()
         .onTrue(
-            robotArm
-                .moveToPosition(Constants.ArmConstants.ARM_BACK_POSITION_RADS)
-                .andThen(robotArm::disable)
-                .withName("Arm: Move to Back Position"));
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+                .withName("Claw: Move to Level 2/3 Position"));
+
+    // Move the claw to the level 4 position when the 'POV Right' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povRight()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL4_RADS)
+                .withName("Claw: Move to Level 4 Position"));
+
+    // Move the claw to the algae position when the 'POV Up' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povUp()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Claw: Move to Algae Position"));
 
     // Move the elevator to score in Reef Level 1 when the 'A' button is pressed.
     operatorController
@@ -255,7 +271,7 @@ public class RobotContainer {
    * simulation matches RoboRio behavior. Commands are canceled at the Robot level.
    */
   public void disableSubsystems() {
-    robotArm.disable();
+    robotClaw.disable();
     robotIntake.disableIntake();
     DataLogManager.log("disableSubsystems");
   }
@@ -285,12 +301,12 @@ public class RobotContainer {
   }
 
   /**
-   * Use this to get the Arm Subsystem.
+   * Use this to get the Claw Subsystem.
    *
-   * @return a reference to the arm subsystem
+   * @return a reference to the claw subsystem
    */
-  public ArmSubsystem getArmSubsystem() {
-    return robotArm;
+  public ClawSubsystem getClawSubsystem() {
+    return robotClaw;
   }
 
   /**

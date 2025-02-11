@@ -34,7 +34,7 @@ public final class Constants {
   // Set a Global Constant to either Show or Hide extended logging data for each of the 5 subsystems
   // Set to true to show extended logging data.
   // Set to false to hide extended logging data.
-  public static final boolean SD_SHOW_ARM_EXTENDED_LOGGING_DATA = true;
+  public static final boolean SD_SHOW_CLAW_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_LAUNCHER_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_CLIMBER_EXTENDED_LOGGING_DATA = true;
   public static final boolean SD_SHOW_INTAKE_EXTENDED_LOGGING_DATA = true;
@@ -52,35 +52,36 @@ public final class Constants {
   public static final int CAMERA_0 = 0;
   public static final int CAMERA_1 = 1;
 
-  /** Constants used for the Arm subsystem. */
-  public static final class ArmConstants {
+  /** Constants used for the Claw subsystem. */
+  public static final class ClawConstants {
 
-    private ArmConstants() {
-      throw new IllegalStateException("ArmConstants Utility Class");
+    private ClawConstants() {
+      throw new IllegalStateException("ClawConstants Utility Class");
     }
 
     public static final int MOTOR_PORT = 16;
-    public static final int BEAM_BREAKER_PORT = 1;
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double ARM_KP = 6.0;
-    public static final double ARM_KS = 0.2;
-    public static final double ARM_KG = 0.3;
-    public static final double ARM_KV_VOLTS_PER_RAD_PER_SEC = 1.8;
-    public static final double ARM_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(240);
-    public static final double ARM_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(720);
+    public static final double CLAW_KP = 6.0;
+    public static final double CLAW_KS = 0.2;
+    public static final double CLAW_KG = 0.3;
+    public static final double CLAW_KV_VOLTS_PER_RAD_PER_SEC = 1.8;
+    public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(240);
+    public static final double CLAW_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(720);
 
     public static final double GEAR_RATIO = 100;
-    public static final double ARM_RAD_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
-    public static final double RPM_TO_RAD_PER_SEC = ARM_RAD_PER_ENCODER_ROTATION / 60;
+    public static final double CLAW_RAD_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
+    public static final double RPM_TO_RAD_PER_SEC = CLAW_RAD_PER_ENCODER_ROTATION / 60;
 
-    // Arm positions.  Horizontal = 0 radians. Assume arm starts at lowest (rest) position
-    public static final double ARM_FORWARD_POSITION_RADS = Units.degreesToRadians(-7.0);
-    public static final double ARM_BACK_POSITION_RADS = Units.degreesToRadians(170.0);
-    public static final double ARM_OFFSET_RADS = Units.degreesToRadians(180.0);
-    public static final double MIN_ANGLE_RADS = Units.degreesToRadians(-18.0);
-    public static final double MAX_ANGLE_RADS = ARM_OFFSET_RADS;
+    // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
+    public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
+    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(55.0);
+    public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
+    public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(180.0);
+    public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
+    public static final double MIN_ANGLE_RADS = Units.degreesToRadians(18.0);
+    public static final double MAX_ANGLE_RADS = Units.degreesToRadians(196.0);
     public static final double POS_INCREMENT = Units.degreesToRadians(2.0); // For small adjustments
     public static final double POSITION_TOLERANCE = Units.degreesToRadians(4.0);
     public static final double VELOCITY_TOLERANCE = Units.degreesToRadians(10.0);
@@ -113,7 +114,7 @@ public final class Constants {
     // Factor of 2 is due to using a cascade elevator
     public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION =
         2 * SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
-    
+
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
     public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(12.5);

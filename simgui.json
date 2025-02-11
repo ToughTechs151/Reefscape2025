@@ -69,6 +69,10 @@
       "/SmartDashboard/Arm Reset Position": "Command",
       "/SmartDashboard/Arm Sim": "Mechanism2d",
       "/SmartDashboard/ArmSubsystem": "Subsystem",
+      "/SmartDashboard/Claw Brake Mode": "Command",
+      "/SmartDashboard/Claw Coast Mode": "Command",
+      "/SmartDashboard/Claw Reset Position": "Command",
+      "/SmartDashboard/ClawSubsystem": "Subsystem",
       "/SmartDashboard/Elevator Brake Mode": "Command",
       "/SmartDashboard/Elevator Coast Mode": "Command",
       "/SmartDashboard/Elevator Sim": "Mechanism2d",
@@ -173,7 +177,10 @@
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
       }
     }
   },

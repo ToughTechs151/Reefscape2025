@@ -13,9 +13,9 @@ public class RobotModel {
 
   PDPSim simpdp;
 
-  // Mechanical elevator driven by motor with gear reduction with attached mechanical arm
+  // Mechanical elevator driven by motor with gear reduction with attached mechanical claw
   // driven by motor with gear reduction for simulation purposes.
-  // Works in conjunction with ElevatorSubsystem and ArmSubsystem
+  // Works in conjunction with ElevatorSubsystem and ClawSubsystem
   ElevatorModel simElevator;
 
   // Mechanical intake driven by motor with gear reduction for simulation purposes.
@@ -47,7 +47,7 @@ public class RobotModel {
     simElevator =
         new ElevatorModel(
             robot.getRobotContainer().getElevatorSubsystem(),
-            robot.getRobotContainer().getArmSubsystem());
+            robot.getRobotContainer().getClawSubsystem());
 
     simIntake = new IntakeModel(robot.getRobotContainer().getIntakeSubsystem());
 
@@ -66,11 +66,11 @@ public class RobotModel {
     simIntake.updateSim();
 
     // Simulate battery voltage drop based on total simulated current
-    double armCurrent = Math.abs(simElevator.getSimArmCurrent());
+    double clawCurrent = Math.abs(simElevator.getSimClawCurrent());
     double elevatorCurrent = Math.abs(simElevator.getSimElevatorCurrent());
     double intakeCurrent = Math.abs(simIntake.getSimCurrent());
 
-    double[] simCurrents = {armCurrent, elevatorCurrent, intakeCurrent};
+    double[] simCurrents = {clawCurrent, elevatorCurrent, intakeCurrent};
 
     double unloadedVoltage = batteryVoltageV * 0.98 + ((random.nextDouble() / 10) - 0.05);
     double loadedVoltage =
@@ -80,7 +80,7 @@ public class RobotModel {
 
     simpdp.setVoltage(loadedVoltage);
     simpdp.setCurrent(0, currentDrawA + random.nextDouble());
-    simpdp.setCurrent(1, armCurrent);
+    simpdp.setCurrent(1, clawCurrent);
     simpdp.setCurrent(5, elevatorCurrent);
     simpdp.setCurrent(8, intakeCurrent);
     simpdp.setTemperature(26.5);
