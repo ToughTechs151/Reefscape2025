@@ -120,12 +120,12 @@ public class ElevatorModel implements AutoCloseable {
     elevatorSim.update(0.020);
     clawSim.update(0.020);
 
-    // Finally, we run the spark simulations and save the
-    // current so it can be retrieved later.
+    // Finally, we run the spark simulations and save the current so it can be retrieved later.
     sparkSimElevator.iterate(elevatorSim.getVelocityMetersPerSecond(), 12.0, 0.02);
     sparkSimClaw.iterate(clawSim.getVelocityRadPerSec(), 12.0, 0.02);
-    simElevatorCurrent = Math.abs(elevatorSim.getCurrentDrawAmps());
-    simClawCurrent = Math.abs(clawSim.getCurrentDrawAmps());
+    sparkSimElevator.setPosition(
+        elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
+    sparkSimClaw.setPosition(clawSim.getAngleRads() - ClawConstants.CLAW_OFFSET_RADS);
 
     // Update elevator/claw visualization with position and angle
     elevatorMech2d.setLength(elevatorSim.getPositionMeters());

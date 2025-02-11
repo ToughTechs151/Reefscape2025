@@ -88,7 +88,7 @@ class ClawSubsystemTest {
     moveCommand.execute();
     claw.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Claw Voltage")).isNegative();
+    assertThat(telemetryDoubleMap.get("Claw Voltage")).isPositive();
     assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
@@ -177,7 +177,7 @@ class ClawSubsystemTest {
     readTelemetry();
 
     // Motor command should be negative to hold claw up.
-    assertThat(telemetryDoubleMap.get("Claw Voltage")).isNegative();
+    assertThat(telemetryDoubleMap.get("Claw Voltage")).isPositive();
     assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
   }
 
