@@ -286,27 +286,27 @@ public class Vision {
   enum Cameras {
     /** Left Camera */
     LEFT_CAM(
-        "left",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(25)),
+        "Arducam_OV9281_Left",
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(20)),
         new Translation3d(
-            Units.inchesToMeters(1.75), Units.inchesToMeters(10.25), Units.inchesToMeters(11.5)),
+            Units.inchesToMeters(10.6), Units.inchesToMeters(10.0), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
     /** Right Camera */
     RIGHT_CAM(
-        "right",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(-25)),
+        "Arducam_OV9281_Right",
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(-20)),
         new Translation3d(
-            Units.inchesToMeters(1.75), Units.inchesToMeters(-10.25), Units.inchesToMeters(11.5)),
+            Units.inchesToMeters(10.6), Units.inchesToMeters(-10.0), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
 
     /** Back Camera */
     BACK_CAM(
-        "back",
-        new Rotation3d(0, Units.degreesToRadians(-25), 180),
+        "Arducam_OV9281_Back",
+        new Rotation3d(0, Units.degreesToRadians(-20), Math.toRadians(180)),
         new Translation3d(
-            Units.inchesToMeters(-10.0), Units.inchesToMeters(0.0), Units.inchesToMeters(11.5)),
+            Units.inchesToMeters(-10.7), Units.inchesToMeters(-10.0), Units.inchesToMeters(9.7)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
 
@@ -474,7 +474,7 @@ public class Vision {
               return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
             });
         if (!resultsList.isEmpty()) {
-          // updateEstimatedGlobalPose();
+          updateEstimatedGlobalPose();
         }
       }
     }
