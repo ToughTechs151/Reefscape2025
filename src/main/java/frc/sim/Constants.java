@@ -2,7 +2,6 @@ package frc.sim;
 
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.ClawConstants;
-import frc.robot.Constants.ElevatorConstants;
 
 /** Constants utility class for the claw simulation. */
 public final class Constants {
@@ -17,7 +16,6 @@ public final class Constants {
       throw new IllegalStateException("ClawSim Utility Class");
     }
 
-    public static final double CLAW_REDUCTION = ClawConstants.GEAR_RATIO;
     public static final double CLAW_MASS_KG = 6.0;
     public static final double CLAW_LENGTH_INCHES = 12;
     public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(CLAW_LENGTH_INCHES);
@@ -34,9 +32,10 @@ public final class Constants {
       throw new IllegalStateException("ElevatorSimConstants Utility Class");
     }
 
-    public static final double ELEVATOR_REDUCTION = ElevatorConstants.GEAR_RATIO;
-    public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(0.5);
-    public static final double CARRIAGE_MASS = 28.4; // kg
+    // The effective load lifted by the elevator. For a continuous elevator this is the total
+    // moving mass. For a two stage cascade this is the mass of the first moving stage plus
+    // two times the mass of the carriage.
+    public static final double EFFECTIVE_MASS = 20.0; // kg
   }
 
   /** Drivetrain simulation constants. */
