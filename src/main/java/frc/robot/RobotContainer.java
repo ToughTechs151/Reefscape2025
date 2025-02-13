@@ -272,6 +272,7 @@ public class RobotContainer {
    */
   public void disableSubsystems() {
     robotClaw.disable();
+    robotElevator.disable();
     robotIntake.disableIntake();
     DataLogManager.log("disableSubsystems");
   }

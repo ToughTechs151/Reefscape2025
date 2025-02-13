@@ -37,7 +37,7 @@ public class ElevatorModel implements AutoCloseable {
   private final SingleJointedArmSim clawSim =
       new SingleJointedArmSim(
           clawGearbox,
-          ClawSim.CLAW_REDUCTION,
+          ClawConstants.GEAR_RATIO,
           SingleJointedArmSim.estimateMOI(ClawSim.CLAW_LENGTH_METERS, ClawSim.CLAW_MASS_KG),
           ClawSim.CLAW_LENGTH_METERS,
           ClawConstants.MIN_ANGLE_RADS,
@@ -56,15 +56,16 @@ public class ElevatorModel implements AutoCloseable {
   private final DCMotor elevatorGearbox = DCMotor.getNEO(1);
 
   // This elevator sim represents an elevator that can travel up and down when driven by the motor
-  // under the effect of gravity.
+  // under the effect of gravity. Simulation is for the first movable stage, so distances are
+  // halved for the cascade.
   private final ElevatorSim elevatorSim =
       new ElevatorSim(
           elevatorGearbox,
-          ElevatorSimConstants.ELEVATOR_REDUCTION,
-          ElevatorSimConstants.CARRIAGE_MASS,
-          ElevatorSimConstants.ELEVATOR_DRUM_RADIUS,
-          ElevatorConstants.ELEVATOR_MIN_HEIGHT_METERS,
-          ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS,
+          ElevatorConstants.GEAR_RATIO,
+          ElevatorSimConstants.EFFECTIVE_MASS,
+          ElevatorConstants.SPOOL_DIAMETER,
+          ElevatorConstants.ELEVATOR_MIN_HEIGHT_METERS / 2.0,
+          ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS / 2.0,
           true,
           0,
           0.002,
@@ -121,14 +122,15 @@ public class ElevatorModel implements AutoCloseable {
     clawSim.update(0.020);
 
     // Finally, we run the spark simulations and save the current so it can be retrieved later.
+    // Double the simulated distances to account for the cascade elevator.
     sparkSimElevator.iterate(elevatorSim.getVelocityMetersPerSecond(), 12.0, 0.02);
     sparkSimClaw.iterate(clawSim.getVelocityRadPerSec(), 12.0, 0.02);
     sparkSimElevator.setPosition(
-        elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
+        2.0 * elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
     sparkSimClaw.setPosition(clawSim.getAngleRads() - ClawConstants.CLAW_OFFSET_RADS);
 
-    // Update elevator/claw visualization with position and angle
-    elevatorMech2d.setLength(elevatorSim.getPositionMeters());
+    // Update elevator/claw visualization with position (doubled) and angle
+    elevatorMech2d.setLength(2.0 * elevatorSim.getPositionMeters());
     clawMech2d.setAngle(Units.radiansToDegrees(clawSim.getAngleRads()) - 90);
   }
 

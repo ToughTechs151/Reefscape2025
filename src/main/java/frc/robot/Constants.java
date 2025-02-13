@@ -101,10 +101,10 @@ public final class Constants {
     // Constants tunable through TunableNumbers
     public static final double ELEVATOR_KP = 15.0;
     public static final double ELEVATOR_KS = 0.1;
-    public static final double ELEVATOR_KG = 0.65;
-    public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 24.55;
-    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.5;
-    public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 2.0;
+    public static final double ELEVATOR_KG = 2.5;
+    public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 3.5;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 1.0;
+    public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 4.0;
 
     // Spool Diameter in Inches
     public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
