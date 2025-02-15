@@ -61,6 +61,7 @@ public final class Constants {
 
     public static final int MOTOR_PORT = 16;
     public static final int CURRENT_LIMIT = 40;
+    public static final boolean INVERTED = false;
 
     // Constants tunable through TunableNumbers
     public static final double CLAW_KP = 6.0;
@@ -97,7 +98,7 @@ public final class Constants {
     // These are fake gains; in actuality these must be determined individually for each robot
     public static final int MOTOR_PORT = 18;
     public static final int CURRENT_LIMIT = 40;
-
+    public static final boolean INVERTED = true;
     // Constants tunable through TunableNumbers
     public static final double ELEVATOR_KP = 15.0;
     public static final double ELEVATOR_KS = 0.1;
