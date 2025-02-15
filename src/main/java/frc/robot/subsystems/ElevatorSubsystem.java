@@ -179,7 +179,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
 
   private void initMotor() {
     motorConfig.smartCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
-
+    motorConfig.inverted(ElevatorConstants.INVERTED);
     // Setup the encoder scale factors. Since this is a relative encoder,
     // elevator position will only be correct if it is in the down position when
     // the subsystem is constructed.

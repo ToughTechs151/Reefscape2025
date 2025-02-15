@@ -188,6 +188,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   private void initMotor() {
     motorConfig.smartCurrentLimit(ClawConstants.CURRENT_LIMIT);
+    motorConfig.inverted(ClawConstants.INVERTED);
 
     // Setup the encoder scale factors. Since this is a relation encoder,
     // claw position will only be correct if the claw is in the starting rest position when
