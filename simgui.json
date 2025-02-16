@@ -9,6 +9,11 @@
       }
     },
     "Other Devices": {
+      "CANrange (v6)[19]": {
+        "header": {
+          "open": true
+        }
+      },
       "SPARK MAX [4]": {
         "header": {
           "open": true
@@ -188,17 +193,11 @@
   },
   "NetworkTables": {
     "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
       "SmartDashboard": {
-        "Field": {
+        "RollerSubsystem": {
           "open": true
         },
-        "open": true,
-        "swerve": {
-          "open": true
-        }
+        "open": true
       }
     }
   },

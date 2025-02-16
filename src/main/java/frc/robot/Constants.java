@@ -120,7 +120,7 @@ public final class Constants {
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
   }
 
-  /** Constants used for the Launcher subsystem. */
+  /** Constants used for the Roller subsystem. */
   public static final class RollerConstants {
 
     private RollerConstants() {
@@ -131,18 +131,20 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double ROLLER_KP = 6.0;
-    public static final double ROLLER_KS_VOLTS = 0.2;
-    public static final double ROLLER_KV_VOLTS_PER_RPM = 1.8;
+    public static final double ROLLER_KP = 0.006;
+    public static final double ROLLER_KS_VOLTS = 0.0;
+    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.025;
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 300.0;
     public static final double ROLLER_SET_POINT_REVERSE_RPM = -400.0;
     public static final double ROLLER_SPEED_THRESHOLD_RPM = 250.0;
     public static final double ROLLER_CURRENT_THRESHOLD_AMPS = 8.0;
 
     public static final double ROLLER_GEAR_RATIO =
-        12.0; // Ratio of motor rotations to output rotations
+        30.0 / 12.0; // Ratio of motor rotations to output rotations
     public static final double ROLLER_ROTATIONS_PER_ENCODER_ROTATION = 1.0 / ROLLER_GEAR_RATIO;
     public static final double ROLLER_TOLERANCE_RPM = 20;
+
+    public static final int CANRANGE_PORT = 19;
   }
 
   /** Constants used for assigning operator input. */

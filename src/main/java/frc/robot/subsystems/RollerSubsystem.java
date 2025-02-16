@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -14,6 +17,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -99,6 +103,9 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     }
   }
 
+  private final CANrange canRange = new CANrange(RollerConstants.CANRANGE_PORT);
+  private DigitalInput canRangeDigitalInput;
+
   private final SparkMax rollerMotor;
   private final RelativeEncoder rollerEncoder;
   private final SparkMaxConfig motorConfig = new SparkMaxConfig();
@@ -176,6 +183,28 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     return new Hardware(rollerMotor, rollerEncoder);
   }
 
+  public void initializeCan() {
+
+    // Initialize Beam Breaker
+    canRangeDigitalInput = new DigitalInput(RollerConstants.CANRANGE_PORT);
+    SmartDashboard.putBoolean("Force Coral Loaded", false);
+
+    /* Configure CANcoder */
+    var toApply = new CANrangeConfiguration();
+
+    /* User can change the configs if they want, or leave it empty for factory-default */
+    canRange.getConfigurator().apply(toApply);
+
+    /* Set the signal update rate */
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50, canRange.getDistance(), canRange.getSignalStrength(), canRange.getIsDetected());
+  }
+
+  public boolean isCoralInsideRoller() {
+    // For test purposes also allow a dashboard value to tri[p] the sensor
+    return !canRangeDigitalInput.get() || SmartDashboard.getBoolean("Force Coral Loaded", false);
+  }
+
   /** Publish telemetry with information about the Roller's state. */
   @Override
   public void periodic() {
@@ -191,6 +220,18 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
       SmartDashboard.putNumber("Roller Feedforward", newFeedforward);
       SmartDashboard.putNumber("Roller PID output", pidOutput);
     }
+
+    // Get distance, signal strength and detected. Get calls automatically call refresh()
+    // , no need to manually refresh.
+
+    var distance = canRange.getDistance();
+    SmartDashboard.putNumber("Distance", distance.getValueAsDouble());
+
+    var strength = canRange.getSignalStrength();
+    SmartDashboard.putNumber("Strength", strength.getValueAsDouble());
+
+    boolean detected = canRange.getIsDetected().getValue();
+    SmartDashboard.putBoolean("Detected", detected);
   }
 
   /** Generate the motor command using the PID controller output and feedforward. */
