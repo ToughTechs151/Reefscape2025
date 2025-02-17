@@ -40,16 +40,17 @@ import frc.robot.util.TunableNumber;
  *
  * <pre>{@code
  * // Create a new instance of RollerSubsystem using specified hardware
- * CANSparkMax motor = new CANSparkMax(1, MotorType.kBrushless);
- * RelativeEncoder encoder = motor.getEncoder();
- * RollerHardware = new RollerSubsystem.Hardware(motor, encoder);
+ * SparkMax rollerMotor = new SparkMax(1, MotorType.kBrushless);
+ * RelativeEncoder rollerEncoder = rollerMotor.getEncoder();
+ * CANrange canRange = new CANrange(2);
+ * RollerHardware = new RollerSubsystem.Hardware(motor, encoder, canRange;
  * RollerSubsystem RollerSubsystem = new RollerSubsystem(RollerHardware);
  *
  * // Create a new instance of RollerSubsystem using default hardware
  * RollerSubsystem RollerSubsystem = new RollerSubsystem(initializeHardware());
  *
- * // Run the Roller at a specific speed
- * Command runRollerCommand = RollerSubsystem.runRoller(500.0);
+ * // Run the Roller forward at the defined speed
+ * Command runRollerCommand = RollerSubsystem.runForward();
  * runRollerCommand.schedule();
  *
  * }
@@ -73,21 +74,8 @@ import frc.robot.util.TunableNumber;
  *   - {@code disableRoller()}: Disables the PID control of the Roller.
  *   - {@code getRollerSpeed()}: Returns the Roller position for PID control and logging.
  *   - {@code getRollerVoltageCommand()}: Returns the motor commanded voltage.
- *   - {@code loadPreferences()}: Loads the preferences for tuning the controller.
+ *   - {@code loadTunableNumbers()}: Loads the tunable numbers for tuning the controller.
  *   - {@code close()}: Closes any objects that support it.
- *   - Fields:
- *   - {@code private final CANSparkMax motor}: The motor used to control the Roller.
- *   - {@code private final RelativeEncoder encoder}: The encoder used to measure the Roller's
- *     position.
- *   - {@code private PIDController RollerController}: The PID controller used to
- *     control the Roller's speed.
- *   - {@code private Feedforward feedforward}: The feedforward controller used to
- *     calculate the motor output.
- *   - {@code private double pidOutput}: The output of the PID controller.
- *   - {@code private double newFeedforward}: The calculated feedforward value.
- *   - {@code private boolean RollerEnabled}: A flag indicating whether the Roller is enabled.
- *   - {@code private double RollerVoltageCommand}: The motor commanded voltage.
- *   - {@code private double setSpeed}: The setpoint speed for the controller.
  * </pre>
  */
 public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
@@ -96,10 +84,13 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   public static class Hardware {
     SparkMax motor;
     RelativeEncoder encoder;
+    CANrange canRange;
 
-    public Hardware(SparkMax motor, RelativeEncoder encoder) {
+    /** Create the Hardware object using the specified hardware objects. */
+    public Hardware(SparkMax motor, RelativeEncoder encoder, CANrange canRange) {
       this.motor = motor;
       this.encoder = encoder;
+      this.canRange = canRange;
     }
   }
 
@@ -175,8 +166,9 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   public static Hardware initializeHardware() {
     SparkMax rollerMotor = new SparkMax(RollerConstants.ROLLER_MOTOR_PORT, MotorType.kBrushless);
     RelativeEncoder rollerEncoder = rollerMotor.getEncoder();
+    CANrange canRange = new CANrange(RollerConstants.CANRANGE_PORT);
 
-    return new Hardware(rollerMotor, rollerEncoder);
+    return new Hardware(rollerMotor, rollerEncoder, canRange);
   }
 
   // Initialize CANRange sensor that detects coral in the Roller
@@ -259,8 +251,8 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
         this);
   }
 
-  /** Returns a Command that runs the motor forward until a note is loaded. */
-  public Command loadNote() {
+  /** Returns a Command that runs the motor forward until a coral is loaded. */
+  public Command loadCoral() {
     return new FunctionalCommand(
         this::setMotorSetPointForward,
         this::updateMotorController,

@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.networktables.NetworkTable;
@@ -38,15 +39,17 @@ class RollerSubsystemTest {
   private RollerSubsystem roller;
   private SparkMax mockMotor;
   private RelativeEncoder mockEncoder;
+  private CANrange mockCanRange;
 
   @BeforeEach
   public void initEach() {
     // Create mock hardware devices
     mockMotor = mock(SparkMax.class);
     mockEncoder = mock(RelativeEncoder.class);
+    mockCanRange = mock(CANrange.class);
 
     // Create subsystem object using mock hardware
-    rollerHardware = new RollerSubsystem.Hardware(mockMotor, mockEncoder);
+    rollerHardware = new RollerSubsystem.Hardware(mockMotor, mockEncoder, mockCanRange);
     roller = new RollerSubsystem(rollerHardware);
   }
 
@@ -75,26 +78,24 @@ class RollerSubsystemTest {
     roller.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
-    System.out.println("set point: " + telemetryDoubleMap.get("Roller Setpoint"));
+    System.out.println("set point: " + telemetryDoubleMap.get("Setpoint"));
     assertEquals(
-        RollerConstants.ROLLER_SET_POINT_FORWARD_RPM,
-        telemetryDoubleMap.get("Roller Setpoint"),
-        DELTA);
+        RollerConstants.ROLLER_SET_POINT_FORWARD_RPM, telemetryDoubleMap.get("Setpoint"), DELTA);
 
     // Execute the command to run the controller
     runForwardCommand.execute();
     roller.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Roller Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Roller Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
     roller.disableRoller();
     roller.periodic();
     readTelemetry();
     verify(mockMotor, times(2)).setVoltage(0.0);
-    assertThat(telemetryDoubleMap.get("Roller Voltage")).isZero();
-    assertThat(telemetryBooleanMap.get("Roller Enabled")).isFalse();
+    assertThat(telemetryDoubleMap.get("Voltage")).isZero();
+    assertThat(telemetryBooleanMap.get("Enabled")).isFalse();
   }
 
   @Test
@@ -110,16 +111,14 @@ class RollerSubsystemTest {
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
     assertEquals(
-        RollerConstants.ROLLER_SET_POINT_REVERSE_RPM,
-        telemetryDoubleMap.get("Roller Setpoint"),
-        DELTA);
+        RollerConstants.ROLLER_SET_POINT_REVERSE_RPM, telemetryDoubleMap.get("Setpoint"), DELTA);
 
     // Execute the command to run the controller
     runRollerCommand.execute();
     roller.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Roller Voltage")).isNegative();
-    assertThat(telemetryBooleanMap.get("Roller Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isNegative();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
   }
 
   @Test
@@ -144,15 +143,16 @@ class RollerSubsystemTest {
     // Check that telemetry was sent to dashboard
     roller.periodic();
     readTelemetry();
-    assertEquals(fakeCurrent, telemetryDoubleMap.get("Roller Current"), DELTA);
-    assertEquals(fakeVelocity, telemetryDoubleMap.get("Roller Speed"), DELTA);
+    assertEquals(fakeCurrent, telemetryDoubleMap.get("Current"), DELTA);
+    assertEquals(fakeVelocity, telemetryDoubleMap.get("Speed"), DELTA);
   }
 
   // ---------- Utility Functions --------------------------------------
 
   /* Read in telemetry values from the network table and store in maps */
   private int readTelemetry() {
-    NetworkTable telemetryTable = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    NetworkTable telemetryTable =
+        NetworkTableInstance.getDefault().getTable("SmartDashboard/Roller");
     Set<String> telemetryKeys = telemetryTable.getKeys();
 
     for (String keyName : telemetryKeys) {
