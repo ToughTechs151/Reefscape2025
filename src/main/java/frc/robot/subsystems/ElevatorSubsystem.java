@@ -223,6 +223,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
     SmartDashboard.putNumber("Elevator Voltage", voltageCommand);
     SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Elevator Temperature", motor.getMotorTemperature());
     SmartDashboard.putNumber("Elevator Feedforward", newFeedforward);
     SmartDashboard.putNumber("Elevator PID output", output);
     SmartDashboard.putNumber("Elevator SetPt Pos", setpoint.position);
