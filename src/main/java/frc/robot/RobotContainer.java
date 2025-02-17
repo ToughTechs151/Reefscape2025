@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
@@ -52,7 +52,7 @@ public class RobotContainer {
 
   private final LEDSubsystem led = new LEDSubsystem();
 
-  private final ArmSubsystem robotArm = new ArmSubsystem(ArmSubsystem.initializeHardware());
+  private final ClawSubsystem robotClaw = new ClawSubsystem(ClawSubsystem.initializeHardware());
 
   private final ElevatorSubsystem robotElevator =
       new ElevatorSubsystem(ElevatorSubsystem.initializeHardware());
@@ -142,7 +142,7 @@ public class RobotContainer {
 
     // Publish subsystem data including commands
     SmartDashboard.putData(drivebase);
-    SmartDashboard.putData(robotArm);
+    SmartDashboard.putData(robotClaw);
     SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotRoller);
 
@@ -185,40 +185,74 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the arm to the low position when the 'A' button is pressed on the operator's controller.
+    // Move the claw to the level 1 position when the 'POV Down' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povDown()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL1_RADS)
+                .andThen(robotClaw::disable)
+                .withName("Claw: Move to Level 1 Position"));
+
+    // Move the claw to the level 2/3 position when the 'POV Left' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povLeft()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+                .withName("Claw: Move to Level 2/3 Position"));
+
+    // Move the claw to the level 4 position when the 'POV Right' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povRight()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL4_RADS)
+                .withName("Claw: Move to Level 4 Position"));
+
+    // Move the claw to the algae position when the 'POV Up' button is pressed on the
+    // operator's controller.
+    operatorController
+        .povUp()
+        .onTrue(
+            robotClaw
+                .moveToPosition(Constants.ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Claw: Move to Algae Position"));
+
+    // Move the elevator to score in Reef Level 1 when the 'A' button is pressed.
     operatorController
         .a()
         .onTrue(
-            robotArm
-                .moveToPosition(Constants.ArmConstants.ARM_FORWARD_POSITION_RADS)
-                .andThen(robotArm::disable)
-                .withName("Arm: Move to Forward Position"));
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL1)
+                .withName("Elevator: Move to Score in Reef Level 1"));
 
-    // Move the arm to the high position when the 'B' button is pressed on the operator's
-    // controller.
+    // Move the elevator to score in Reef Level 2 when the 'B' button is pressed.
     operatorController
         .b()
         .onTrue(
-            robotArm
-                .moveToPosition(Constants.ArmConstants.ARM_BACK_POSITION_RADS)
-                .andThen(robotArm::disable)
-                .withName("Arm: Move to Back Position"));
+            robotElevator
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL2)
+                .withName("Elevator: Move to Score in Reef Level 2"));
 
-    // Move the elevator to the low position when the 'A' button is pressed.
+    // Move the elevator to score in Reef Level 3 when the 'X' button is pressed.
     operatorController
         .x()
         .onTrue(
             robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LOW_POSITION)
-                .withName("Elevator: Move to Low Position"));
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL3)
+                .withName("Elevator: Move to Score in Reef Level 3"));
 
-    // Move the elevator to the high position when the 'B' button is pressed.
+    // Move the elevator to score in Reef Level 4 when the 'Y' button is pressed.
     operatorController
         .y()
         .onTrue(
             robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_HIGH_POSITION)
-                .withName("Elevator: Move to High Position"));
+                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4)
+                .withName("Elevator: Move to Score in Reef Level 4"));
 
     // Run the Roller forward when the right bumper is pressed.
     operatorController
@@ -237,7 +271,8 @@ public class RobotContainer {
    * simulation matches RoboRio behavior. Commands are canceled at the Robot level.
    */
   public void disableSubsystems() {
-    robotArm.disable();
+    robotClaw.disable();
+    robotElevator.disable();
     robotRoller.disableRoller();
     DataLogManager.log("disableSubsystems");
   }
@@ -267,12 +302,12 @@ public class RobotContainer {
   }
 
   /**
-   * Use this to get the Arm Subsystem.
+   * Use this to get the Claw Subsystem.
    *
-   * @return a reference to the arm subsystem
+   * @return a reference to the claw subsystem
    */
-  public ArmSubsystem getArmSubsystem() {
-    return robotArm;
+  public ClawSubsystem getClawSubsystem() {
+    return robotClaw;
   }
 
   /**

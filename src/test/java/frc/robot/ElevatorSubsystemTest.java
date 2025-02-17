@@ -63,7 +63,7 @@ class ElevatorSubsystemTest {
     assertThat(elevator.getVoltageCommand()).isZero();
 
     // Position should be set to starting position
-    assertThat(elevator.getMeasurement()).isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_RADS);
+    assertThat(elevator.getMeasurement()).isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_METERS);
   }
 
   @Test
@@ -71,15 +71,14 @@ class ElevatorSubsystemTest {
   void testMoveCommand() {
 
     // Create a command to move the elevator then initialize
-    Command moveCommand = elevator.moveToPosition(ElevatorConstants.ELEVATOR_LOW_POSITION);
+    Command moveCommand = elevator.moveToPosition(ElevatorConstants.ELEVATOR_LEVEL2);
     moveCommand.initialize();
 
     // Run the periodic method to generate telemetry and verify it was published
     elevator.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
-    assertEquals(
-        ElevatorConstants.ELEVATOR_LOW_POSITION, telemetryDoubleMap.get("Elevator Goal"), DELTA);
+    assertEquals(ElevatorConstants.ELEVATOR_LEVEL2, telemetryDoubleMap.get("Elevator Goal"), DELTA);
 
     // Execute the command to run the controller
     moveCommand.execute();
@@ -111,8 +110,7 @@ class ElevatorSubsystemTest {
 
     // The motor voltage should be set twice: once to 0 when configured and once  to a
     // positive value when controller is run.
-    Command moveCommand =
-        elevator.moveToPosition(Constants.ElevatorConstants.ELEVATOR_LOW_POSITION);
+    Command moveCommand = elevator.moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL2);
     moveCommand.initialize();
     System.out.println(elevator.getVoltageCommand());
     moveCommand.execute();
@@ -138,14 +136,14 @@ class ElevatorSubsystemTest {
 
     // Test position measurements from the encoder
     assertThat(elevator.getMeasurement())
-        .isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_RADS + fakePosition);
+        .isEqualTo(ElevatorConstants.ELEVATOR_OFFSET_METERS + fakePosition);
 
     // Check that telemetry was sent to dashboard
     elevator.periodic();
     readTelemetry();
     assertEquals(fakeCurrent, telemetryDoubleMap.get("Elevator Current"), DELTA);
     assertEquals(
-        ElevatorConstants.ELEVATOR_OFFSET_RADS + fakePosition,
+        ElevatorConstants.ELEVATOR_OFFSET_METERS + fakePosition,
         telemetryDoubleMap.get("Elevator Position"),
         DELTA);
     assertEquals(fakeVelocity, telemetryDoubleMap.get("Elevator Velocity"), DELTA);
@@ -167,8 +165,7 @@ class ElevatorSubsystemTest {
         DELTA);
 
     // Verify that the hold command runs the controller
-    Command moveCommandHigh =
-        elevator.moveToPosition(Constants.ElevatorConstants.ELEVATOR_HIGH_POSITION);
+    Command moveCommandHigh = elevator.moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4);
     Command holdCommand = elevator.holdPosition();
     // Initialize to set goal but don't execute so hold can be checked
     moveCommandHigh.initialize();

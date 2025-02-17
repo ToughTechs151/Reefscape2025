@@ -1,31 +1,29 @@
 package frc.sim;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.ClawConstants;
 
-/** Constants utility class for the arm simulation. */
+/** Constants utility class for the claw simulation. */
 public final class Constants {
 
   private Constants() {
     throw new IllegalStateException("Utility class");
   }
 
-  /** Arm simulation constants. */
-  public static final class ArmSim {
-    private ArmSim() {
-      throw new IllegalStateException("ArmSim Utility Class");
+  /** Claw simulation constants. */
+  public static final class ClawSim {
+    private ClawSim() {
+      throw new IllegalStateException("ClawSim Utility Class");
     }
 
-    public static final double ARM_REDUCTION = ArmConstants.GEAR_RATIO;
-    public static final double ARM_MASS_KG = 6.0;
-    public static final double ARM_LENGTH_INCHES = 12;
-    public static final double ARM_LENGTH_METERS = Units.inchesToMeters(ARM_LENGTH_INCHES);
-    public static final double START_ANGLE_RADS = ArmConstants.MAX_ANGLE_RADS;
+    public static final double CLAW_MASS_KG = 3.5;
+    public static final double CLAW_LENGTH_INCHES = 12;
+    public static final double CLAW_LENGTH_METERS = Units.inchesToMeters(CLAW_LENGTH_INCHES);
+    public static final double START_ANGLE_RADS = ClawConstants.MIN_ANGLE_RADS;
     public static final int ENCODER_PRR =
         4096; // Only used to simulate noise in position measurement
     public static final double ENCODER_DISTANCE_PER_PULSE =
-        2.0 * Math.PI / ENCODER_PRR / ArmConstants.GEAR_RATIO;
+        2.0 * Math.PI / ENCODER_PRR / ClawConstants.GEAR_RATIO;
   }
 
   /** Elevator simulation constants. */
@@ -34,9 +32,10 @@ public final class Constants {
       throw new IllegalStateException("ElevatorSimConstants Utility Class");
     }
 
-    public static final double ELEVATOR_REDUCTION = ElevatorConstants.GEAR_RATIO;
-    public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(0.5);
-    public static final double CARRIAGE_MASS = 28.4; // kg
+    // The effective load lifted by the elevator. For a continuous elevator this is the total
+    // moving mass. For a two stage cascade this is the mass of the first moving stage plus
+    // two times the mass of the carriage.
+    public static final double EFFECTIVE_MASS = 10.0; // kg
   }
 
   /** Drivetrain simulation constants. */

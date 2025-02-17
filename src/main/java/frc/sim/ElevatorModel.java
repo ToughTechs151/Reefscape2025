@@ -15,36 +15,36 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.sim.Constants.ArmSim;
+import frc.sim.Constants.ClawSim;
 import frc.sim.Constants.ElevatorSimConstants;
 
-/** A robot arm simulation based on a linear system model with Mech2d display. */
+/** A robot claw simulation based on a linear system model with Mech2d display. */
 public class ElevatorModel implements AutoCloseable {
 
-  private final ArmSubsystem armSubsystem;
-  private double simArmCurrent = 0.0;
-  private SparkMaxSim sparkSimArm;
+  private final ClawSubsystem clawSubsystem;
+  private double simClawCurrent = 0.0;
+  private SparkMaxSim sparkSimClaw;
 
-  // The arm gearbox represents a gearbox containing one motor.
-  private final DCMotor armGearbox = DCMotor.getNEO(1);
+  // The claw gearbox represents a gearbox containing one motor.
+  private final DCMotor clawGearbox = DCMotor.getNEO(1);
 
-  // This arm sim represents an arm that can rotate over the given mechanical range when driven
+  // This claw sim represents an claw that can rotate over the given mechanical range when driven
   // by the motor under the effect of gravity.
-  private final SingleJointedArmSim armSim =
+  private final SingleJointedArmSim clawSim =
       new SingleJointedArmSim(
-          armGearbox,
-          ArmSim.ARM_REDUCTION,
-          SingleJointedArmSim.estimateMOI(ArmSim.ARM_LENGTH_METERS, ArmSim.ARM_MASS_KG),
-          ArmSim.ARM_LENGTH_METERS,
-          ArmConstants.MIN_ANGLE_RADS,
-          ArmConstants.MAX_ANGLE_RADS,
+          clawGearbox,
+          ClawConstants.GEAR_RATIO,
+          SingleJointedArmSim.estimateMOI(ClawSim.CLAW_LENGTH_METERS, ClawSim.CLAW_MASS_KG),
+          ClawSim.CLAW_LENGTH_METERS,
+          ClawConstants.MIN_ANGLE_RADS,
+          ClawConstants.MAX_ANGLE_RADS,
           true,
-          ArmSim.START_ANGLE_RADS,
-          ArmSim.ENCODER_DISTANCE_PER_PULSE,
+          ClawSim.START_ANGLE_RADS,
+          ClawSim.ENCODER_DISTANCE_PER_PULSE,
           0.0 // Add noise with a std-dev of 1 tick
           );
 
@@ -56,15 +56,16 @@ public class ElevatorModel implements AutoCloseable {
   private final DCMotor elevatorGearbox = DCMotor.getNEO(1);
 
   // This elevator sim represents an elevator that can travel up and down when driven by the motor
-  // under the effect of gravity.
+  // under the effect of gravity. Simulation is for the first movable stage, so distances are
+  // halved for the cascade.
   private final ElevatorSim elevatorSim =
       new ElevatorSim(
           elevatorGearbox,
-          ElevatorSimConstants.ELEVATOR_REDUCTION,
-          ElevatorSimConstants.CARRIAGE_MASS,
-          ElevatorSimConstants.ELEVATOR_DRUM_RADIUS,
-          ElevatorConstants.ELEVATOR_MIN_HEIGHT_METERS,
-          ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS,
+          ElevatorConstants.GEAR_RATIO,
+          ElevatorSimConstants.EFFECTIVE_MASS,
+          ElevatorConstants.SPOOL_DIAMETER,
+          ElevatorConstants.ELEVATOR_MIN_HEIGHT_METERS / 2.0,
+          ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS / 2.0,
           true,
           0,
           0.002,
@@ -78,21 +79,21 @@ public class ElevatorModel implements AutoCloseable {
   private final MechanismLigament2d elevatorMech2d =
       baseMech2d.append(new MechanismLigament2d("Elevator", elevatorSim.getPositionMeters(), 0));
 
-  // Attach moving Arm to the top of the elevator.
-  private final MechanismLigament2d armMech2d =
+  // Attach moving Claw to the top of the elevator.
+  private final MechanismLigament2d clawMech2d =
       elevatorMech2d.append(
           new MechanismLigament2d(
-              "Arm",
-              ArmSim.ARM_LENGTH_METERS,
-              Units.radiansToDegrees(armSim.getAngleRads() - 90),
+              "Claw",
+              ClawSim.CLAW_LENGTH_METERS,
+              Units.radiansToDegrees(clawSim.getAngleRads()) - 90,
               6,
               new Color8Bit(Color.kYellow)));
 
-  /** Create a new ElevatorModel including the movable arm. */
+  /** Create a new ElevatorModel including the movable claw. */
   public ElevatorModel(
-      ElevatorSubsystem elevatorSubsystemToSimulate, ArmSubsystem armSubsystemToSimulate) {
+      ElevatorSubsystem elevatorSubsystemToSimulate, ClawSubsystem clawSubsystemToSimulate) {
 
-    armSubsystem = armSubsystemToSimulate;
+    clawSubsystem = clawSubsystemToSimulate;
     elevatorSubsystem = elevatorSubsystemToSimulate;
     simulationInit();
 
@@ -101,40 +102,41 @@ public class ElevatorModel implements AutoCloseable {
     SmartDashboard.putData("Elevator Sim", mech2d);
   }
 
-  /** Initialize the elevator/arm simulation. */
+  /** Initialize the elevator/claw simulation. */
   public void simulationInit() {
 
     // Setup a simulation of the SparkMax motors and methods to set values
     sparkSimElevator = new SparkMaxSim(elevatorSubsystem.getMotor(), elevatorGearbox);
-    sparkSimArm = new SparkMaxSim(armSubsystem.getMotor(), armGearbox);
+    sparkSimClaw = new SparkMaxSim(clawSubsystem.getMotor(), clawGearbox);
   }
 
   /** Update the simulation model. */
   public void updateSim() {
-    // In this method, we update our simulation of what our elevator and arm are doing
+    // In this method, we update our simulation of what our elevator and claw are doing
     // First, we set our "inputs" (voltages)
     elevatorSim.setInput(elevatorSubsystem.getVoltageCommand());
-    armSim.setInput(armSubsystem.getVoltageCommand());
+    clawSim.setInput(clawSubsystem.getVoltageCommand());
 
     // Next, we update it. The standard loop time is 20ms.
     elevatorSim.update(0.020);
-    armSim.update(0.020);
+    clawSim.update(0.020);
 
-    // Finally, we run the spark simulations and save the
-    // current so it can be retrieved later.
+    // Finally, we run the spark simulations and save the current so it can be retrieved later.
+    // Double the simulated distances to account for the cascade elevator.
     sparkSimElevator.iterate(elevatorSim.getVelocityMetersPerSecond(), 12.0, 0.02);
-    sparkSimArm.iterate(armSim.getVelocityRadPerSec(), 12.0, 0.02);
-    simElevatorCurrent = Math.abs(elevatorSim.getCurrentDrawAmps());
-    simArmCurrent = Math.abs(armSim.getCurrentDrawAmps());
+    sparkSimClaw.iterate(clawSim.getVelocityRadPerSec(), 12.0, 0.02);
+    sparkSimElevator.setPosition(
+        2.0 * elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
+    sparkSimClaw.setPosition(clawSim.getAngleRads() - ClawConstants.CLAW_OFFSET_RADS);
 
-    // Update elevator/arm visualization with position and angle
-    elevatorMech2d.setLength(elevatorSim.getPositionMeters());
-    armMech2d.setAngle(Units.radiansToDegrees(armSim.getAngleRads()) - 90);
+    // Update elevator/claw visualization with position (doubled) and angle
+    elevatorMech2d.setLength(2.0 * elevatorSim.getPositionMeters());
+    clawMech2d.setAngle(Units.radiansToDegrees(clawSim.getAngleRads()) - 90);
   }
 
-  /** Return the simulated arm motor current. */
-  public double getSimArmCurrent() {
-    return simArmCurrent;
+  /** Return the simulated claw motor current. */
+  public double getSimClawCurrent() {
+    return simClawCurrent;
   }
 
   /** Return the simulated elevator motor current. */
@@ -146,7 +148,7 @@ public class ElevatorModel implements AutoCloseable {
   public void close() {
     mech2d.close();
     baseMech2d.close();
-    armMech2d.close();
+    clawMech2d.close();
     elevatorMech2d.close();
   }
 }

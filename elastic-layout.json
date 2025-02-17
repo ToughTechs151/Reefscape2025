@@ -66,14 +66,14 @@
             },
             "children": [
               {
-                "title": "ArmSubsystem",
+                "title": "ClawSubsystem",
                 "x": 1024.0,
                 "y": 512.0,
                 "width": 256.0,
                 "height": 128.0,
                 "type": "Subsystem",
                 "properties": {
-                  "topic": "/SmartDashboard/ArmSubsystem",
+                  "topic": "/SmartDashboard/ClawSubsystem",
                   "period": 0.06
                 }
               },
