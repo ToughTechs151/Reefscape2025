@@ -177,6 +177,11 @@ public class RobotContainer {
             drivebase.driveToPose(
                 new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
 
+    // lock the wheels in a X pattern while left bumper is held
+    driverController
+        .leftBumper()
+        .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
     // Drives the robot slowly to a set position based on which of the pov buttons is pressed on the
     // driver's controller
     driverController.povUp().whileTrue(shiftForward);
