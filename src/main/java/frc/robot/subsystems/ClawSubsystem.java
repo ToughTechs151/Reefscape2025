@@ -181,6 +181,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
             .ignoringDisable(true)
             .withName("Claw Reset Position"));
 
+    SmartDashboard.putData(shiftUp());
+    SmartDashboard.putData(shiftDown());
+
     setDefaultCommand(runOnce(this::disable).andThen(run(() -> {})).withName("Idle"));
   }
 

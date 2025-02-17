@@ -129,6 +129,8 @@ public final class Constants {
 
     public static final double POSITION_TOLERANCE_METERS = 0.03;
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
+
+    public static final double POS_INCREMENT = Units.inchesToMeters(1.0); // For small adjustments
   }
 
   /** Constants used for the Roller subsystem. */
