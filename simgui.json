@@ -85,6 +85,7 @@
       "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
+      "/SmartDashboard/RollerSubsystem": "Subsystem",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
@@ -99,12 +100,7 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Arm Sim": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/ArmSubsystem": {
+      "/SmartDashboard/ClawSubsystem": {
         "window": {
           "visible": true
         }
@@ -156,7 +152,7 @@
           "visible": true
         }
       },
-      "/SmartDashboard/IntakeSubsystem": {
+      "/SmartDashboard/RollerSubsystem": {
         "window": {
           "visible": true
         }
@@ -186,17 +182,17 @@
   },
   "NetworkTables": {
     "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
       "SmartDashboard": {
-        "Field": {
+        "CANRange": {
           "open": true
         },
-        "open": true,
-        "swerve": {
+        "Roller": {
           "open": true
-        }
+        },
+        "TunableNumbers": {
+          "open": true
+        },
+        "open": true
       }
     }
   },

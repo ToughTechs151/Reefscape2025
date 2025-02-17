@@ -154,8 +154,6 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   private void initializeClaw() {
 
-    SmartDashboard.putBoolean("Force Note Loaded", false);
-
     initMotor();
 
     // Set tolerances that will be used to determine when the claw is at the goal position.
@@ -223,7 +221,6 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public void periodic() {
 
     SmartDashboard.putBoolean("Claw Enabled", clawEnabled);
-    SmartDashboard.putBoolean("Note Loaded", isNoteInsideIntake());
     SmartDashboard.putNumber(
         "Claw Goal", Units.radiansToDegrees(clawController.getGoal().position));
     SmartDashboard.putNumber("Claw Angle", Units.radiansToDegrees(getMeasurement()));
@@ -444,12 +441,6 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
     // Read Preferences for Feedforward and create a new instance
     feedforward = new ArmFeedforward(ks.get(), kg.get(), kv.get(), 0);
-  }
-
-  /** Return true if the Note is inside the CLAW's intake. */
-  public boolean isNoteInsideIntake() {
-    // For test purposes also allow a dashboard value to tri[p] the sensor
-    return SmartDashboard.getBoolean("Force Note Loaded", false);
   }
 
   /** Close any objects that support it. */

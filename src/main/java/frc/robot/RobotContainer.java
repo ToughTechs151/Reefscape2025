@@ -22,8 +22,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -57,8 +57,8 @@ public class RobotContainer {
   private final ElevatorSubsystem robotElevator =
       new ElevatorSubsystem(ElevatorSubsystem.initializeHardware());
 
-  private final IntakeSubsystem robotIntake =
-      new IntakeSubsystem(IntakeSubsystem.initializeHardware());
+  private final RollerSubsystem robotRoller =
+      new RollerSubsystem(RollerSubsystem.initializeHardware());
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -144,7 +144,7 @@ public class RobotContainer {
     SmartDashboard.putData(drivebase);
     SmartDashboard.putData(robotClaw);
     SmartDashboard.putData(robotElevator);
-    SmartDashboard.putData(robotIntake);
+    SmartDashboard.putData(robotRoller);
 
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
@@ -254,15 +254,15 @@ public class RobotContainer {
                 .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4)
                 .withName("Elevator: Move to Score in Reef Level 4"));
 
-    // Run the intake forward when the right bumper is pressed.
+    // Run the Roller forward when the right bumper is pressed.
     operatorController
         .rightBumper()
-        .whileTrue(robotIntake.runForward().withName("Intake: Run Forward"));
+        .whileTrue(robotRoller.runForward().withName("Roller: Run Forward"));
 
-    // Run the intake in reverse when the left bumper is pressed.
+    // Run the Roller in reverse when the left bumper is pressed.
     operatorController
         .leftBumper()
-        .whileTrue(robotIntake.runReverse().withName("Intake: Run Reverse"));
+        .whileTrue(robotRoller.runReverse().withName("Roller: Run Reverse"));
   }
 
   /**
@@ -273,7 +273,7 @@ public class RobotContainer {
   public void disableSubsystems() {
     robotClaw.disable();
     robotElevator.disable();
-    robotIntake.disableIntake();
+    robotRoller.disableRoller();
     DataLogManager.log("disableSubsystems");
   }
 
@@ -320,11 +320,11 @@ public class RobotContainer {
   }
 
   /**
-   * Use this to get the Intake Subsystem.
+   * Use this to get the Roller Subsystem.
    *
-   * @return a reference to the Intake Subsystem
+   * @return a reference to the Roller Subsystem
    */
-  public IntakeSubsystem getIntakeSubsystem() {
-    return robotIntake;
+  public RollerSubsystem getRollerSubsystem() {
+    return robotRoller;
   }
 }

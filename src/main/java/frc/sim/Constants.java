@@ -54,12 +54,12 @@ public final class Constants {
   }
 
   /** Launcher simulation constants. */
-  public static final class IntakeSimConstants {
-    private IntakeSimConstants() {
-      throw new IllegalStateException("IntakeSimConstants Utility Class");
+  public static final class RollerSimConstants {
+    private RollerSimConstants() {
+      throw new IllegalStateException("RollerSimConstants Utility Class");
     }
 
-    public static final double INTAKE_MOI_KG_METERS2 = 0.05;
+    public static final double ROLLER_MOI_KG_METERS2 = 0.02;
   }
 
   /** Launcher simulation constants. */
