@@ -9,11 +9,6 @@
       }
     },
     "Other Devices": {
-      "CANrange (v6)[19]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [4]": {
         "header": {
           "open": true
@@ -74,6 +69,10 @@
       "/SmartDashboard/Arm Reset Position": "Command",
       "/SmartDashboard/Arm Sim": "Mechanism2d",
       "/SmartDashboard/ArmSubsystem": "Subsystem",
+      "/SmartDashboard/Claw Brake Mode": "Command",
+      "/SmartDashboard/Claw Coast Mode": "Command",
+      "/SmartDashboard/Claw Reset Position": "Command",
+      "/SmartDashboard/ClawSubsystem": "Subsystem",
       "/SmartDashboard/Elevator Brake Mode": "Command",
       "/SmartDashboard/Elevator Coast Mode": "Command",
       "/SmartDashboard/Elevator Sim": "Mechanism2d",
@@ -101,12 +100,7 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Arm Sim": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/ArmSubsystem": {
+      "/SmartDashboard/ClawSubsystem": {
         "window": {
           "visible": true
         }
@@ -158,11 +152,6 @@
           "visible": true
         }
       },
-      "/SmartDashboard/IntakeSubsystem": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/RollerSubsystem": {
         "window": {
           "visible": true
@@ -194,7 +183,13 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
-        "RollerSubsystem": {
+        "CANRange": {
+          "open": true
+        },
+        "Roller": {
+          "open": true
+        },
+        "TunableNumbers": {
           "open": true
         },
         "open": true

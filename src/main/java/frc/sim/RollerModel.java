@@ -11,7 +11,6 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.sim.Constants.RollerSimConstants;
@@ -59,7 +58,6 @@ public class RollerModel implements AutoCloseable {
     // Finally, we run the spark simulation and save the current so it can be
     // retrieved later.
     sparkSim.iterate(rollerMotorSim.getAngularVelocityRPM(), 12.0, 0.02);
-    SmartDashboard.putNumber("Sim Roller input", rollerMotorSim.getAngularVelocityRPM());
     simRollerCurrent =
         Math.abs(
             motors.getCurrent(

@@ -28,22 +28,22 @@
     },
     "###/SmartDashboard/Arm Sim": {
       "Collapsed": "0",
-      "Pos": "288,490",
-      "Size": "355,216"
+      "Pos": "400,400",
+      "Size": "241,200"
     },
-    "###/SmartDashboard/ArmSubsystem": {
+    "###/SmartDashboard/ClawSubsystem": {
       "Collapsed": "0",
-      "Pos": "1005,131",
-      "Size": "282,98"
+      "Pos": "1026,364",
+      "Size": "286,98"
     },
     "###/SmartDashboard/Elevator Sim": {
       "Collapsed": "0",
-      "Pos": "625,465",
-      "Size": "319,217"
+      "Pos": "1022,23",
+      "Size": "265,329"
     },
     "###/SmartDashboard/ElevatorSubsystem": {
       "Collapsed": "0",
-      "Pos": "1005,234",
+      "Pos": "1025,469",
       "Size": "306,98"
     },
     "###/SmartDashboard/Encoders": {
@@ -53,22 +53,22 @@
     },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
-      "Pos": "246,18",
+      "Pos": "186,23",
       "Size": "826,424"
     },
     "###/SmartDashboard/IntakeSubsystem": {
       "Collapsed": "0",
-      "Pos": "1005,340",
+      "Pos": "1487,322",
       "Size": "294,78"
     },
     "###/SmartDashboard/RollerSubsystem": {
       "Collapsed": "0",
-      "Pos": "903,527",
+      "Pos": "1025,575",
       "Size": "291,98"
     },
     "###/SmartDashboard/SendableChooser[0]": {
       "Collapsed": "0",
-      "Pos": "1005,720",
+      "Pos": "697,463",
       "Size": "314,60"
     },
     "###/SmartDashboard/SendableChooser[1]": {
@@ -83,28 +83,28 @@
     },
     "###/SmartDashboard/SwerveSubsystem": {
       "Collapsed": "0",
-      "Pos": "1005,26",
+      "Pos": "700,539",
       "Size": "301,98"
     },
     "###/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
       "Collapsed": "0",
-      "Pos": "1005,720",
-      "Size": "477,260"
+      "Pos": "1361,732",
+      "Size": "451,236"
     },
     "###Addressable LEDs": {
       "Collapsed": "0",
-      "Pos": "1005,446",
+      "Pos": "270,458",
       "Size": "416,207"
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "11,374",
-      "Size": "324,158"
+      "Pos": "4,438",
+      "Size": "166,214"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "219,695",
-      "Size": "976,82"
+      "Pos": "211,682",
+      "Size": "976,278"
     },
     "###Keyboard 0 Settings": {
       "Collapsed": "0",
@@ -113,18 +113,18 @@
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "1005,263",
-      "Size": "368,428"
+      "Pos": "1441,27",
+      "Size": "368,423"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
-      "Pos": "1005,660",
+      "Pos": "1384,453",
       "Size": "452,128"
     },
     "###Other Devices": {
       "Collapsed": "0",
-      "Pos": "1005,25",
-      "Size": "361,234"
+      "Pos": "1433,582",
+      "Size": "361,137"
     },
     "###PWM Outputs": {
       "Collapsed": "0",
@@ -133,7 +133,7 @@
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "8,601",
+      "Pos": "4,684",
       "Size": "189,254"
     },
     "###Timing": {

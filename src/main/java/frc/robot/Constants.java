@@ -144,11 +144,9 @@ public final class Constants {
     // Constants tunable through TunableNumbers
     public static final double ROLLER_KP = 0.006;
     public static final double ROLLER_KS_VOLTS = 0.0;
-    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.025;
-    public static final double ROLLER_SET_POINT_FORWARD_RPM = 300.0;
-    public static final double ROLLER_SET_POINT_REVERSE_RPM = -400.0;
-    public static final double ROLLER_SPEED_THRESHOLD_RPM = 250.0;
-    public static final double ROLLER_CURRENT_THRESHOLD_AMPS = 8.0;
+    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.005;
+    public static final double ROLLER_SET_POINT_FORWARD_RPM = 500.0;
+    public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
         30.0 / 12.0; // Ratio of motor rotations to output rotations

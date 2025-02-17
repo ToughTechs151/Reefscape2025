@@ -17,7 +17,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -104,7 +104,6 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   }
 
   private final CANrange canRange = new CANrange(RollerConstants.CANRANGE_PORT);
-  private DigitalInput canRangeDigitalInput;
 
   private final SparkMax rollerMotor;
   private final RelativeEncoder rollerEncoder;
@@ -129,10 +128,6 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
       new TunableNumber("RollerForwardRPM", RollerConstants.ROLLER_SET_POINT_FORWARD_RPM);
   private TunableNumber reverseSetSpeed =
       new TunableNumber("RollerReverseRPM", RollerConstants.ROLLER_SET_POINT_REVERSE_RPM);
-  private TunableNumber speedThreshold =
-      new TunableNumber("RollerThresholdRPM", RollerConstants.ROLLER_SPEED_THRESHOLD_RPM);
-  private TunableNumber currentThreshold =
-      new TunableNumber("RollerThresholdAmps", RollerConstants.ROLLER_CURRENT_THRESHOLD_AMPS);
 
   /** Create a new RollerSubsystem controlled by a Profiled PID COntroller . */
   public RollerSubsystem(Hardware rollerHardware) {
@@ -145,6 +140,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   private void initializeRoller() {
 
     initRollerMotor();
+    initializeCANRange();
 
     // Set tolerances that will be used to determine when the Roller is at the goal velocity.
     rollerController.setTolerance(RollerConstants.ROLLER_TOLERANCE_RPM);
@@ -183,16 +179,13 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     return new Hardware(rollerMotor, rollerEncoder);
   }
 
-  public void initializeCan() {
+  // Initialize CANRange sensor that detects coral in the Roller
+  private void initializeCANRange() {
 
-    // Initialize Beam Breaker
-    canRangeDigitalInput = new DigitalInput(RollerConstants.CANRANGE_PORT);
+    // Add a dashboard value for testing purposes to simulate a coral being loaded
     SmartDashboard.putBoolean("Force Coral Loaded", false);
 
-    /* Configure CANcoder */
     var toApply = new CANrangeConfiguration();
-
-    /* User can change the configs if they want, or leave it empty for factory-default */
     canRange.getConfigurator().apply(toApply);
 
     /* Set the signal update rate */
@@ -200,38 +193,40 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
         50, canRange.getDistance(), canRange.getSignalStrength(), canRange.getIsDetected());
   }
 
+  /**
+   * Check if coral is detected by the CANRange sensor.
+   *
+   * @return Coral is detected
+   */
   public boolean isCoralInsideRoller() {
-    // For test purposes also allow a dashboard value to tri[p] the sensor
-    return !canRangeDigitalInput.get() || SmartDashboard.getBoolean("Force Coral Loaded", false);
+    // For simulation purposes use a dashboard value to trip the sensor
+    return RobotBase.isReal()
+        ? canRange.getIsDetected().getValue()
+        : SmartDashboard.getBoolean("Force Coral Loaded", false);
   }
 
   /** Publish telemetry with information about the Roller's state. */
   @Override
   public void periodic() {
 
-    SmartDashboard.putBoolean("Roller Enabled", rollerEnabled);
-    SmartDashboard.putNumber("Roller Setpoint", rollerController.getSetpoint());
-    SmartDashboard.putNumber("Roller Speed", rollerEncoder.getVelocity());
-    SmartDashboard.putNumber("Roller Voltage", rollerVoltageCommand);
-    SmartDashboard.putNumber("Roller Temp", rollerMotor.getMotorTemperature());
-    SmartDashboard.putNumber("Roller Current", rollerMotor.getOutputCurrent());
+    SmartDashboard.putBoolean("Roller/Enabled", rollerEnabled);
+    SmartDashboard.putNumber("Roller/Setpoint", rollerController.getSetpoint());
+    SmartDashboard.putNumber("Roller/Speed", rollerEncoder.getVelocity());
+    SmartDashboard.putNumber("Roller/Voltage", rollerVoltageCommand);
+    SmartDashboard.putNumber("Roller/Temperature", rollerMotor.getMotorTemperature());
+    SmartDashboard.putNumber("Roller/Current", rollerMotor.getOutputCurrent());
 
     if (Constants.SD_SHOW_ROLLER_EXTENDED_LOGGING_DATA) {
-      SmartDashboard.putNumber("Roller Feedforward", newFeedforward);
-      SmartDashboard.putNumber("Roller PID output", pidOutput);
+      SmartDashboard.putNumber("Roller/Feedforward", newFeedforward);
+      SmartDashboard.putNumber("Roller/PID output", pidOutput);
     }
 
-    // Get distance, signal strength and detected. Get calls automatically call refresh()
-    // , no need to manually refresh.
+    // Get distance, signal strength and detected. Get calls automatically call refresh(),
+    // no need to manually refresh.
 
-    var distance = canRange.getDistance();
-    SmartDashboard.putNumber("Distance", distance.getValueAsDouble());
-
-    var strength = canRange.getSignalStrength();
-    SmartDashboard.putNumber("Strength", strength.getValueAsDouble());
-
-    boolean detected = canRange.getIsDetected().getValue();
-    SmartDashboard.putBoolean("Detected", detected);
+    SmartDashboard.putNumber("CANRange/Distance", canRange.getDistance().getValueAsDouble());
+    SmartDashboard.putNumber("CANRange/Strength", canRange.getSignalStrength().getValueAsDouble());
+    SmartDashboard.putBoolean("CANRange/Detected", isCoralInsideRoller());
   }
 
   /** Generate the motor command using the PID controller output and feedforward. */
@@ -270,7 +265,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
         this::setMotorSetPointForward,
         this::updateMotorController,
         interrupted -> disableRoller(),
-        this::noteFullyLoaded,
+        this::isCoralInsideRoller,
         this);
   }
 
@@ -311,15 +306,6 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns whether the Roller has reached the set point speed within limits. */
   public boolean rollerAtSetpoint() {
     return rollerController.atSetpoint();
-  }
-
-  /**
-   * Returns whether the Roller has fully pulled in a note which is detected by the motor being up
-   * to speed and the current hitting a threshold.
-   */
-  public boolean noteFullyLoaded() {
-    return ((Math.abs(rollerEncoder.getVelocity()) >= speedThreshold.get())
-        && (rollerMotor.getOutputCurrent() > currentThreshold.get()));
   }
 
   /**
