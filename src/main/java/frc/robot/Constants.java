@@ -144,10 +144,10 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double ROLLER_KP = 0.006;
+    public static final double ROLLER_KP = 0.00075;
     public static final double ROLLER_KS_VOLTS = 0.0;
-    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.005;
-    public static final double ROLLER_SET_POINT_FORWARD_RPM = 500.0;
+    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.0055;
+    public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
     public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
