@@ -4,6 +4,7 @@
 
 package frc.sim;
 
+import com.revrobotics.sim.SparkAbsoluteEncoderSim;
 import com.revrobotics.sim.SparkMaxSim;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -51,6 +52,7 @@ public class ElevatorModel implements AutoCloseable {
   private final ElevatorSubsystem elevatorSubsystem;
   private double simElevatorCurrent = 0.0;
   private SparkMaxSim sparkSimElevator;
+  private SparkAbsoluteEncoderSim absoluteEncoderSim;
 
   // The elevator gearbox represents a gearbox containing one motor.
   private final DCMotor elevatorGearbox = DCMotor.getNEO(1);
@@ -108,6 +110,7 @@ public class ElevatorModel implements AutoCloseable {
     // Setup a simulation of the SparkMax motors and methods to set values
     sparkSimElevator = new SparkMaxSim(elevatorSubsystem.getMotor(), elevatorGearbox);
     sparkSimClaw = new SparkMaxSim(clawSubsystem.getMotor(), clawGearbox);
+    absoluteEncoderSim = sparkSimClaw.getAbsoluteEncoderSim();
   }
 
   /** Update the simulation model. */
@@ -128,6 +131,7 @@ public class ElevatorModel implements AutoCloseable {
     sparkSimElevator.setPosition(
         2.0 * elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
     sparkSimClaw.setPosition(clawSim.getAngleRads() - ClawConstants.CLAW_OFFSET_RADS);
+    absoluteEncoderSim.setPosition(Units.radiansToRotations(clawSim.getAngleRads()));
 
     // Update elevator/claw visualization with position (doubled) and angle
     elevatorMech2d.setLength(2.0 * elevatorSim.getPositionMeters());
