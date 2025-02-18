@@ -35,7 +35,7 @@ public final class Constants {
     // The effective load lifted by the elevator. For a continuous elevator this is the total
     // moving mass. For a two stage cascade this is the mass of the first moving stage plus
     // two times the mass of the carriage.
-    public static final double EFFECTIVE_MASS = 10.0; // kg
+    public static final double EFFECTIVE_MASS = 5.0; // kg
   }
 
   /** Drivetrain simulation constants. */

@@ -129,6 +129,8 @@ public final class Constants {
 
     public static final double POSITION_TOLERANCE_METERS = 0.03;
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
+
+    public static final double POS_INCREMENT = Units.inchesToMeters(1.0); // For small adjustments
   }
 
   /** Constants used for the Roller subsystem. */
@@ -142,10 +144,10 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double ROLLER_KP = 0.006;
+    public static final double ROLLER_KP = 0.00075;
     public static final double ROLLER_KS_VOLTS = 0.0;
-    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.005;
-    public static final double ROLLER_SET_POINT_FORWARD_RPM = 500.0;
+    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.0055;
+    public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
     public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
