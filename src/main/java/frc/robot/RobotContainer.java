@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,11 +18,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import java.io.File;
+import swervelib.SwerveInputStream;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,8 +47,8 @@ public class RobotContainer {
       new CommandXboxController(OIConstants.OPERATOR_CONTROLLER_PORT);
 
   // Now all the subsystems.
-  //   private final SwerveSubsystem drivebase =
-  //       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final SwerveSubsystem drivebase =
+      new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
   private final LEDSubsystem led = new LEDSubsystem();
 
@@ -55,81 +64,76 @@ public class RobotContainer {
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
    * velocity.
    */
-  //   SwerveInputStream driveAngularVelocity =
-  //       SwerveInputStream.of(
-  //               drivebase.getSwerveDrive(),
-  //               () -> driverController.getLeftY() * -1,
-  //               () -> driverController.getLeftX() * -1)
-  //           .withControllerRotationAxis(() -> driverController.getRightX() * -1)
-  //           .deadband(OIConstants.DEADBAND)
-  //           .scaleTranslation(0.8)
-  //           .allianceRelativeControl(DriveConstants.USE_ALLIANCE);
+  SwerveInputStream driveAngularVelocity =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(),
+              () -> driverController.getLeftY() * -1,
+              () -> driverController.getLeftX() * -1)
+          .withControllerRotationAxis(() -> driverController.getRightX() * -1)
+          .deadband(OIConstants.DEADBAND)
+          .scaleTranslation(0.8)
+          .allianceRelativeControl(DriveConstants.USE_ALLIANCE);
 
-  //   // Applies deadbands and inverts controls because joysticks
-  //   // are back-right positive while robot
-  //   // controls are front-left positive
-  //   // left stick controls translation
-  //   // right stick controls the angular velocity of the robot
-  //   Command driveFieldOrientedAngularVelocity =
-  //       drivebase.driveFieldOriented(driveAngularVelocity).withName("Angular Velocity");
+  // Applies deadbands and inverts controls because joysticks
+  // are back-right positive while robot
+  // controls are front-left positive
+  // left stick controls translation
+  // right stick controls the angular velocity of the robot
+  Command driveFieldOrientedAngularVelocity =
+      drivebase.driveFieldOriented(driveAngularVelocity).withName("Angular Velocity");
 
-  //   /** Clone's the angular velocity input stream and converts it to a robotRelative input
-  // stream. */
-  //   // This doesn't do what we want in 2025.1.1
-  //   SwerveInputStream driveRobotOriented =
-  //       driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
+  /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
+  // This doesn't do what we want in 2025.1.1
+  SwerveInputStream driveRobotOriented =
+      driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
-  //   // Applies deadbands and inverts controls because joysticks
-  //   // are back-right positive while robot
-  //   // controls are front-left positive
-  //   // left stick controls translation
-  //   // right stick controls the angular velocity of the robot
-  //   Command driveRobotOrientedAngularVelocity =
-  //       drivebase.driveFieldOriented(driveRobotOriented).withName("Robot Oriented");
+  // Applies deadbands and inverts controls because joysticks
+  // are back-right positive while robot
+  // controls are front-left positive
+  // left stick controls translation
+  // right stick controls the angular velocity of the robot
+  Command driveRobotOrientedAngularVelocity =
+      drivebase.driveFieldOriented(driveRobotOriented).withName("Robot Oriented");
 
-  //   // Commands to shift robot position at low speed using POV
-  //   SwerveInputStream shiftForwardRobotOriented =
-  //       SwerveInputStream.of(drivebase.getSwerveDrive(), () -> DriveConstants.POV_SPEED, () ->
-  // 0.0)
-  //           .withControllerRotationAxis(() -> 0.0)
-  //           .robotRelative(true)
-  //           .allianceRelativeControl(false);
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftForwardRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> DriveConstants.POV_SPEED, () -> 0.0)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
 
-  //   Command shiftForward =
-  //       drivebase.driveFieldOriented(shiftForwardRobotOriented).withName("Shift Forward");
+  Command shiftForward =
+      drivebase.driveFieldOriented(shiftForwardRobotOriented).withName("Shift Forward");
 
-  //   // Commands to shift robot position at low speed using POV
-  //   SwerveInputStream shiftBackRobotOriented =
-  //       SwerveInputStream.of(
-  //               drivebase.getSwerveDrive(), () -> -1 * DriveConstants.POV_SPEED, () -> 0.0)
-  //           .withControllerRotationAxis(() -> 0.0)
-  //           .robotRelative(true)
-  //           .allianceRelativeControl(false);
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftBackRobotOriented =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(), () -> -1 * DriveConstants.POV_SPEED, () -> 0.0)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
 
-  //   Command shiftBack = drivebase.driveFieldOriented(shiftBackRobotOriented).withName("Shift
-  // Back");
+  Command shiftBack = drivebase.driveFieldOriented(shiftBackRobotOriented).withName("Shift Back");
 
-  //   // Commands to shift robot position at low speed using POV
-  //   SwerveInputStream shiftRightRobotOriented =
-  //       SwerveInputStream.of(
-  //               drivebase.getSwerveDrive(), () -> 0.0, () -> -1 * DriveConstants.POV_SPEED)
-  //           .withControllerRotationAxis(() -> 0.0)
-  //           .robotRelative(true)
-  //           .allianceRelativeControl(false);
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftRightRobotOriented =
+      SwerveInputStream.of(
+              drivebase.getSwerveDrive(), () -> 0.0, () -> -1 * DriveConstants.POV_SPEED)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
 
-  //   Command shiftRight =
-  //       drivebase.driveFieldOriented(shiftRightRobotOriented).withName("Shift Right");
+  Command shiftRight =
+      drivebase.driveFieldOriented(shiftRightRobotOriented).withName("Shift Right");
 
-  //   // Commands to shift robot position at low speed using POV
-  //   SwerveInputStream shiftLeftRobotOriented =
-  //       SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.0, () ->
-  // DriveConstants.POV_SPEED)
-  //           .withControllerRotationAxis(() -> 0.0)
-  //           .robotRelative(true)
-  //           .allianceRelativeControl(false);
+  // Commands to shift robot position at low speed using POV
+  SwerveInputStream shiftLeftRobotOriented =
+      SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.0, () -> DriveConstants.POV_SPEED)
+          .withControllerRotationAxis(() -> 0.0)
+          .robotRelative(true)
+          .allianceRelativeControl(false);
 
-  //   Command shiftLeft = drivebase.driveFieldOriented(shiftLeftRobotOriented).withName("Shift
-  // Left");
+  Command shiftLeft = drivebase.driveFieldOriented(shiftLeftRobotOriented).withName("Shift Left");
 
   private SendableChooser<Command> autoChooser;
 
@@ -137,16 +141,16 @@ public class RobotContainer {
   public RobotContainer() {
 
     // Publish subsystem data including commands
-    // SmartDashboard.putData(drivebase);
+    SmartDashboard.putData(drivebase);
     SmartDashboard.putData(robotClaw);
     SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotRoller);
 
-    // drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+    drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Setup the auto command chooser using the PathPlanner autos
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData(autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoChooser);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -164,22 +168,26 @@ public class RobotContainer {
 
     // Change drive type from field oriented to robot oriented, which is similar to tank drive, when
     // 'RB' is pressed on the driver's controller
-    // driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
+    driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
 
-    // // Drive to a set position near the reef when 'B' is pressed on the driver's controller
-    // driverController
-    //     .b()
-    //     .whileTrue(
-    //         drivebase.driveToPose(
-    //             new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
+    // Drive to a set position near the reef when 'B' is pressed on the driver's controller
+    driverController
+        .b()
+        .whileTrue(
+            drivebase.driveToPose(
+                new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
 
-    // // Drives the robot slowly to a set position based on which of the pov buttons is pressed on
-    // the
-    // // driver's controller
-    // driverController.povUp().whileTrue(shiftForward);
-    // driverController.povDown().whileTrue(shiftBack);
-    // driverController.povRight().whileTrue(shiftRight);
-    // driverController.povLeft().whileTrue(shiftLeft);
+    // lock the wheels in a X pattern while left bumper is held
+    driverController
+        .leftBumper()
+        .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+    // Drives the robot slowly to a set position based on which of the pov buttons is pressed on the
+    // driver's controller
+    driverController.povUp().whileTrue(shiftForward);
+    driverController.povDown().whileTrue(shiftBack);
+    driverController.povRight().whileTrue(shiftRight);
+    driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
     // Move the claw to the level 1 position when the 'POV Down' button is pressed on the
@@ -286,7 +294,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return Commands.none();
+    return autoChooser.getSelected();
   }
 
   /**
