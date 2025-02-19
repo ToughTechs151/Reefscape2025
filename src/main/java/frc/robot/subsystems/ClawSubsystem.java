@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -100,15 +101,18 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public static class Hardware {
     SparkMax motor;
     RelativeEncoder encoder;
+    AbsoluteEncoder absoluteEncoder;
 
-    public Hardware(SparkMax motor, RelativeEncoder encoder) {
+    public Hardware(SparkMax motor, RelativeEncoder encoder, AbsoluteEncoder absoluteEncoder) {
       this.motor = motor;
       this.encoder = encoder;
+      this.absoluteEncoder = absoluteEncoder;
     }
   }
 
   private final SparkMax motor;
   private final RelativeEncoder encoder;
+  private final AbsoluteEncoder absoluteEncoder;
   private final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
   private ProfiledPIDController clawController =
@@ -148,6 +152,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public ClawSubsystem(Hardware clawHardware) {
     this.motor = clawHardware.motor;
     this.encoder = clawHardware.encoder;
+    this.absoluteEncoder = clawHardware.absoluteEncoder;
 
     initializeClaw();
   }
@@ -191,7 +196,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     motorConfig.smartCurrentLimit(ClawConstants.CURRENT_LIMIT);
     motorConfig.inverted(ClawConstants.INVERTED);
 
-    // Setup the encoder scale factors. Since this is a relation encoder,
+    // Setup the encoder scale factors. Since this is a relative encoder,
     // claw position will only be correct if the claw is in the starting rest position when
     // the subsystem is constructed.
     motorConfig
@@ -216,8 +221,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public static Hardware initializeHardware() {
     SparkMax motor = new SparkMax(ClawConstants.MOTOR_PORT, MotorType.kBrushless);
     RelativeEncoder encoder = motor.getEncoder();
+    AbsoluteEncoder absoluteEncoder = motor.getAbsoluteEncoder();
 
-    return new Hardware(motor, encoder);
+    return new Hardware(motor, encoder, absoluteEncoder);
   }
 
   @Override
@@ -227,6 +233,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber(
         "Claw Goal", Units.radiansToDegrees(clawController.getGoal().position));
     SmartDashboard.putNumber("Claw Angle", Units.radiansToDegrees(getMeasurement()));
+    SmartDashboard.putNumber("Claw Absolute Angle", absoluteEncoder.getPosition() * 360);
     SmartDashboard.putNumber("Claw Voltage", voltageCommand);
     SmartDashboard.putNumber("Claw Current", motor.getOutputCurrent());
     SmartDashboard.putNumber("Claw Temp", motor.getMotorTemperature());
