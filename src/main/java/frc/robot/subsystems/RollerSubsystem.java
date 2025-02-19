@@ -177,7 +177,10 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     // Add a dashboard value for testing purposes to simulate a coral being loaded
     SmartDashboard.putBoolean("Force Coral Loaded", false);
 
+    // Set the CANRange sensor configuration to avoid false detects from nearby objects
     var toApply = new CANrangeConfiguration();
+    toApply.ProximityParams.MinSignalStrengthForValidMeasurement = 10000;
+    toApply.ProximityParams.ProximityThreshold = 0.1;
     canRange.getConfigurator().apply(toApply);
 
     /* Set the signal update rate */
