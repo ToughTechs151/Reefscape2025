@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.util.Units;
@@ -39,15 +40,17 @@ class ClawSubsystemTest {
   private ClawSubsystem claw;
   private SparkMax mockMotor;
   private RelativeEncoder mockEncoder;
+  private AbsoluteEncoder mockAbsoluteEncoder;
 
   @BeforeEach
   public void initEach() {
     // Create mock hardware devices
     mockMotor = mock(SparkMax.class);
     mockEncoder = mock(RelativeEncoder.class);
+    mockAbsoluteEncoder = mock(AbsoluteEncoder.class);
 
     // Create subsystem object using mock hardware
-    clawHardware = new ClawSubsystem.Hardware(mockMotor, mockEncoder);
+    clawHardware = new ClawSubsystem.Hardware(mockMotor, mockEncoder, mockAbsoluteEncoder);
     claw = new ClawSubsystem(clawHardware);
   }
 
@@ -109,6 +112,8 @@ class ClawSubsystemTest {
     when(mockMotor.getOutputCurrent()).thenReturn(fakeCurrent);
     final double fakePosition = 1.5;
     when(mockEncoder.getPosition()).thenReturn(fakePosition);
+    final double fakeAbsolutePosition = 0.9;
+    when(mockAbsoluteEncoder.getPosition()).thenReturn(fakeAbsolutePosition);
     final double fakeVelocity = 0.123;
     when(mockEncoder.getVelocity()).thenReturn(fakeVelocity);
 
@@ -136,7 +141,7 @@ class ClawSubsystemTest {
     // verify(mockMotor, times(2)).setVoltage(argument.capture());
     // assertEquals(expectedCommand, argument.getValue(), DELTA);
 
-    // Test position measurements from the encoder
+    // Test position measurements from the encoders
     assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS + fakePosition);
 
     // Check that telemetry was sent to dashboard
@@ -147,6 +152,11 @@ class ClawSubsystemTest {
         Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS + fakePosition),
         telemetryDoubleMap.get("Claw Angle"),
         DELTA);
+    assertEquals(
+        fakeAbsolutePosition * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES,
+        telemetryDoubleMap.get("Claw Absolute Angle"),
+        DELTA);
+
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
       assertEquals(
           Units.radiansToDegrees(fakeVelocity), telemetryDoubleMap.get("Claw Velocity"), DELTA);
@@ -236,6 +246,7 @@ class ClawSubsystemTest {
   // "Claw Enabled"
   // "Claw Goal"
   // "Claw Angle"
+  // "Claw Absolute Angle"
   // "Claw Velocity"
   // "Claw Voltage"
   // "Claw Current"
