@@ -402,7 +402,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     // the relative encoder to provide a correct position.
     double angle = absoluteEncoder.getPosition() * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES;
     if (angle < 0) {
-      angle -= 360;
+      angle += 360;
     }
     return angle;
   }
