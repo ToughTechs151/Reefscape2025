@@ -131,7 +131,9 @@ public class ElevatorModel implements AutoCloseable {
     sparkSimElevator.setPosition(
         2.0 * elevatorSim.getPositionMeters() - ElevatorConstants.ELEVATOR_OFFSET_METERS);
     sparkSimClaw.setPosition(clawSim.getAngleRads() - ClawConstants.CLAW_OFFSET_RADS);
-    absoluteEncoderSim.setPosition(Units.radiansToRotations(clawSim.getAngleRads()));
+    absoluteEncoderSim.setPosition(
+        Units.radiansToRotations(clawSim.getAngleRads())
+            + Units.degreesToRotations(ClawConstants.ABSOLUTE_OFFSET_DEGREES));
 
     // Update elevator/claw visualization with position (doubled) and angle
     elevatorMech2d.setLength(2.0 * elevatorSim.getPositionMeters());
