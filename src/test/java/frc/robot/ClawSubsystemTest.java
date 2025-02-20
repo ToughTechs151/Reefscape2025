@@ -112,7 +112,7 @@ class ClawSubsystemTest {
     when(mockMotor.getOutputCurrent()).thenReturn(fakeCurrent);
     final double fakePosition = 1.5;
     when(mockEncoder.getPosition()).thenReturn(fakePosition);
-    final double fakeAbsolutePosition = 0.3;
+    final double fakeAbsolutePosition = 0.9;
     when(mockAbsoluteEncoder.getPosition()).thenReturn(fakeAbsolutePosition);
     final double fakeVelocity = 0.123;
     when(mockEncoder.getVelocity()).thenReturn(fakeVelocity);
@@ -152,7 +152,10 @@ class ClawSubsystemTest {
         Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS + fakePosition),
         telemetryDoubleMap.get("Claw Angle"),
         DELTA);
-    assertEquals(fakeAbsolutePosition * 360, telemetryDoubleMap.get("Claw Absolute Angle"), DELTA);
+    assertEquals(
+        fakeAbsolutePosition * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES,
+        telemetryDoubleMap.get("Claw Absolute Angle"),
+        DELTA);
 
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
       assertEquals(
