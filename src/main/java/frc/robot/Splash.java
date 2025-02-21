@@ -70,7 +70,7 @@ class Splash {
           String tfn = filename.replace(".txt", "");
           String fn = tfn.substring(0, 1).toUpperCase(Locale.ENGLISH) + tfn.substring(1);
           System.out.write(buffer, 0, length);
-          SmartDashboard.putString(fn, buf);
+          SmartDashboard.putString("Build/" + fn, buf);
           tab.add(fn, buf)
               .withWidget(BuiltInWidgets.kTextView)
               .withPosition(colIndex, rowIndex)

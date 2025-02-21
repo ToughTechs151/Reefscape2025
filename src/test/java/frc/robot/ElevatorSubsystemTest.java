@@ -78,22 +78,22 @@ class ElevatorSubsystemTest {
     elevator.periodic();
     int numEntries = readTelemetry();
     assertThat(numEntries).isPositive();
-    assertEquals(ElevatorConstants.ELEVATOR_LEVEL2, telemetryDoubleMap.get("Elevator Goal"), DELTA);
+    assertEquals(ElevatorConstants.ELEVATOR_LEVEL2, telemetryDoubleMap.get("Goal"), DELTA);
 
     // Execute the command to run the controller
     moveCommand.execute();
     elevator.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Elevator Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Elevator Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
     elevator.disable();
     elevator.periodic();
     readTelemetry();
     verify(mockMotor, times(2)).setVoltage(0.0);
-    assertThat(telemetryDoubleMap.get("Elevator Voltage")).isZero();
-    assertThat(telemetryBooleanMap.get("Elevator Enabled")).isFalse();
+    assertThat(telemetryDoubleMap.get("Voltage")).isZero();
+    assertThat(telemetryBooleanMap.get("Enabled")).isFalse();
   }
 
   @Test
@@ -141,12 +141,12 @@ class ElevatorSubsystemTest {
     // Check that telemetry was sent to dashboard
     elevator.periodic();
     readTelemetry();
-    assertEquals(fakeCurrent, telemetryDoubleMap.get("Elevator Current"), DELTA);
+    assertEquals(fakeCurrent, telemetryDoubleMap.get("Current"), DELTA);
     assertEquals(
         ElevatorConstants.ELEVATOR_OFFSET_METERS + fakePosition,
-        telemetryDoubleMap.get("Elevator Position"),
+        telemetryDoubleMap.get("Position"),
         DELTA);
-    assertEquals(fakeVelocity, telemetryDoubleMap.get("Elevator Velocity"), DELTA);
+    assertEquals(fakeVelocity, telemetryDoubleMap.get("Velocity"), DELTA);
   }
 
   @Test
@@ -160,9 +160,7 @@ class ElevatorSubsystemTest {
     elevator.periodic();
     readTelemetry();
     assertEquals(
-        ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS,
-        telemetryDoubleMap.get("Elevator Goal"),
-        DELTA);
+        ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS, telemetryDoubleMap.get("Goal"), DELTA);
 
     // Verify that the hold command runs the controller
     Command moveCommandHigh = elevator.moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4);
@@ -174,15 +172,16 @@ class ElevatorSubsystemTest {
     readTelemetry();
 
     // Motor command should be positive to move elevator up.
-    assertThat(telemetryDoubleMap.get("Elevator Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Elevator Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
   }
 
   // ---------- Utility Functions --------------------------------------
 
   /* Read in telemetry values from the network table and store in maps */
   private int readTelemetry() {
-    NetworkTable telemetryTable = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    NetworkTable telemetryTable =
+        NetworkTableInstance.getDefault().getTable("SmartDashboard/Elevator");
     Set<String> telemetryKeys = telemetryTable.getKeys();
 
     for (String keyName : telemetryKeys) {
