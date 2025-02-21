@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.util.Units;
@@ -39,15 +40,17 @@ class ClawSubsystemTest {
   private ClawSubsystem claw;
   private SparkMax mockMotor;
   private RelativeEncoder mockEncoder;
+  private AbsoluteEncoder mockAbsoluteEncoder;
 
   @BeforeEach
   public void initEach() {
     // Create mock hardware devices
     mockMotor = mock(SparkMax.class);
     mockEncoder = mock(RelativeEncoder.class);
+    mockAbsoluteEncoder = mock(AbsoluteEncoder.class);
 
     // Create subsystem object using mock hardware
-    clawHardware = new ClawSubsystem.Hardware(mockMotor, mockEncoder);
+    clawHardware = new ClawSubsystem.Hardware(mockMotor, mockEncoder, mockAbsoluteEncoder);
     claw = new ClawSubsystem(clawHardware);
   }
 
@@ -81,23 +84,23 @@ class ClawSubsystemTest {
     assertThat(numEntries).isPositive();
     assertEquals(
         Units.radiansToDegrees(ClawConstants.CLAW_LEVEL1_RADS),
-        telemetryDoubleMap.get("Claw Goal"),
+        telemetryDoubleMap.get("Goal"),
         DELTA);
 
     // Execute the command to run the controller
     moveCommand.execute();
     claw.periodic();
     readTelemetry();
-    assertThat(telemetryDoubleMap.get("Claw Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
 
     // When disabled mMotor should be commanded to zero
     claw.disable();
     claw.periodic();
     readTelemetry();
     verify(mockMotor, times(2)).setVoltage(0.0);
-    assertThat(telemetryDoubleMap.get("Claw Voltage")).isZero();
-    assertThat(telemetryBooleanMap.get("Claw Enabled")).isFalse();
+    assertThat(telemetryDoubleMap.get("Voltage")).isZero();
+    assertThat(telemetryBooleanMap.get("Enabled")).isFalse();
   }
 
   @Test
@@ -109,6 +112,8 @@ class ClawSubsystemTest {
     when(mockMotor.getOutputCurrent()).thenReturn(fakeCurrent);
     final double fakePosition = 1.5;
     when(mockEncoder.getPosition()).thenReturn(fakePosition);
+    final double fakeAbsolutePosition = 0.9;
+    when(mockAbsoluteEncoder.getPosition()).thenReturn(fakeAbsolutePosition);
     final double fakeVelocity = 0.123;
     when(mockEncoder.getVelocity()).thenReturn(fakeVelocity);
 
@@ -136,20 +141,24 @@ class ClawSubsystemTest {
     // verify(mockMotor, times(2)).setVoltage(argument.capture());
     // assertEquals(expectedCommand, argument.getValue(), DELTA);
 
-    // Test position measurements from the encoder
+    // Test position measurements from the encoders
     assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS + fakePosition);
 
     // Check that telemetry was sent to dashboard
     claw.periodic();
     readTelemetry();
-    assertEquals(fakeCurrent, telemetryDoubleMap.get("Claw Current"), DELTA);
+    assertEquals(fakeCurrent, telemetryDoubleMap.get("Current"), DELTA);
     assertEquals(
         Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS + fakePosition),
-        telemetryDoubleMap.get("Claw Angle"),
+        telemetryDoubleMap.get("Angle"),
         DELTA);
+    assertEquals(
+        fakeAbsolutePosition * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES,
+        telemetryDoubleMap.get("Absolute Angle"),
+        DELTA);
+
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
-      assertEquals(
-          Units.radiansToDegrees(fakeVelocity), telemetryDoubleMap.get("Claw Velocity"), DELTA);
+      assertEquals(Units.radiansToDegrees(fakeVelocity), telemetryDoubleMap.get("Velocity"), DELTA);
     }
   }
 
@@ -164,7 +173,7 @@ class ClawSubsystemTest {
     readTelemetry();
     assertEquals(
         Units.radiansToDegrees(ClawConstants.MAX_ANGLE_RADS),
-        telemetryDoubleMap.get("Claw Goal"),
+        telemetryDoubleMap.get("Goal"),
         DELTA);
 
     // Verify that the hold command runs the controller
@@ -177,8 +186,8 @@ class ClawSubsystemTest {
     readTelemetry();
 
     // Motor command should be negative to hold claw up.
-    assertThat(telemetryDoubleMap.get("Claw Voltage")).isPositive();
-    assertThat(telemetryBooleanMap.get("Claw Enabled")).isTrue();
+    assertThat(telemetryDoubleMap.get("Voltage")).isPositive();
+    assertThat(telemetryBooleanMap.get("Enabled")).isTrue();
   }
 
   @Test
@@ -194,7 +203,7 @@ class ClawSubsystemTest {
     readTelemetry();
     assertEquals(
         Units.radiansToDegrees(ClawConstants.CLAW_LEVEL4_RADS + ClawConstants.POS_INCREMENT),
-        telemetryDoubleMap.get("Claw Goal"),
+        telemetryDoubleMap.get("Goal"),
         DELTA);
 
     // Shift down
@@ -208,7 +217,7 @@ class ClawSubsystemTest {
             ClawConstants.CLAW_LEVEL4_RADS
                 + ClawConstants.POS_INCREMENT
                 - ClawConstants.POS_INCREMENT),
-        telemetryDoubleMap.get("Claw Goal"),
+        telemetryDoubleMap.get("Goal"),
         DELTA);
   }
 
@@ -216,7 +225,7 @@ class ClawSubsystemTest {
 
   /* Read in telemetry values from the network table and store in maps */
   private int readTelemetry() {
-    NetworkTable telemetryTable = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    NetworkTable telemetryTable = NetworkTableInstance.getDefault().getTable("SmartDashboard/Claw");
     Set<String> telemetryKeys = telemetryTable.getKeys();
 
     for (String keyName : telemetryKeys) {
@@ -236,6 +245,7 @@ class ClawSubsystemTest {
   // "Claw Enabled"
   // "Claw Goal"
   // "Claw Angle"
+  // "Claw Absolute Angle"
   // "Claw Velocity"
   // "Claw Voltage"
   // "Claw Current"

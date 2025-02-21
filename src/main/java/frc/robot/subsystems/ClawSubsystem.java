@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -100,15 +102,18 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public static class Hardware {
     SparkMax motor;
     RelativeEncoder encoder;
+    AbsoluteEncoder absoluteEncoder;
 
-    public Hardware(SparkMax motor, RelativeEncoder encoder) {
+    public Hardware(SparkMax motor, RelativeEncoder encoder, AbsoluteEncoder absoluteEncoder) {
       this.motor = motor;
       this.encoder = encoder;
+      this.absoluteEncoder = absoluteEncoder;
     }
   }
 
   private final SparkMax motor;
   private final RelativeEncoder encoder;
+  private final AbsoluteEncoder absoluteEncoder;
   private final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
   private ProfiledPIDController clawController =
@@ -132,6 +137,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   private double newFeedforward = 0;
   private boolean clawEnabled;
   private double voltageCommand = 0.0;
+  private double clawOffset;
 
   // Setup tunable numbers for the claw.
   private TunableNumber kp = new TunableNumber("ClawKP", ClawConstants.CLAW_KP);
@@ -148,6 +154,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public ClawSubsystem(Hardware clawHardware) {
     this.motor = clawHardware.motor;
     this.encoder = clawHardware.encoder;
+    this.absoluteEncoder = clawHardware.absoluteEncoder;
 
     initializeClaw();
   }
@@ -156,6 +163,10 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
     initMotor();
 
+    clawOffset =
+        RobotBase.isReal()
+            ? getAbsoluteAngle()
+            : Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS);
     // Set tolerances that will be used to determine when the claw is at the goal position.
     clawController.setTolerance(
         Constants.ClawConstants.POSITION_TOLERANCE, Constants.ClawConstants.VELOCITY_TOLERANCE);
@@ -191,7 +202,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     motorConfig.smartCurrentLimit(ClawConstants.CURRENT_LIMIT);
     motorConfig.inverted(ClawConstants.INVERTED);
 
-    // Setup the encoder scale factors. Since this is a relation encoder,
+    // Setup the encoder scale factors. Since this is a relative encoder,
     // claw position will only be correct if the claw is in the starting rest position when
     // the subsystem is constructed.
     motorConfig
@@ -216,27 +227,29 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public static Hardware initializeHardware() {
     SparkMax motor = new SparkMax(ClawConstants.MOTOR_PORT, MotorType.kBrushless);
     RelativeEncoder encoder = motor.getEncoder();
+    AbsoluteEncoder absoluteEncoder = motor.getAbsoluteEncoder();
 
-    return new Hardware(motor, encoder);
+    return new Hardware(motor, encoder, absoluteEncoder);
   }
 
   @Override
   public void periodic() {
 
-    SmartDashboard.putBoolean("Claw Enabled", clawEnabled);
+    SmartDashboard.putBoolean("Claw/Enabled", clawEnabled);
     SmartDashboard.putNumber(
-        "Claw Goal", Units.radiansToDegrees(clawController.getGoal().position));
-    SmartDashboard.putNumber("Claw Angle", Units.radiansToDegrees(getMeasurement()));
-    SmartDashboard.putNumber("Claw Voltage", voltageCommand);
-    SmartDashboard.putNumber("Claw Current", motor.getOutputCurrent());
-    SmartDashboard.putNumber("Claw Temp", motor.getMotorTemperature());
-    SmartDashboard.putNumber("Claw SetPt Pos", Units.radiansToDegrees(setpoint.position));
+        "Claw/Goal", Units.radiansToDegrees(clawController.getGoal().position));
+    SmartDashboard.putNumber("Claw/Angle", Units.radiansToDegrees(getMeasurement()));
+    SmartDashboard.putNumber("Claw/Absolute Angle", getAbsoluteAngle());
+    SmartDashboard.putNumber("Claw/Voltage", voltageCommand);
+    SmartDashboard.putNumber("Claw/Current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Claw/Temp", motor.getMotorTemperature());
+    SmartDashboard.putNumber("Claw/SetPt Pos", Units.radiansToDegrees(setpoint.position));
 
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
-      SmartDashboard.putNumber("Claw Feedforward", newFeedforward);
-      SmartDashboard.putNumber("Claw PID output", output);
-      SmartDashboard.putNumber("Claw SetPt Vel", Units.radiansToDegrees(setpoint.velocity));
-      SmartDashboard.putNumber("Claw Velocity", Units.radiansToDegrees(encoder.getVelocity()));
+      SmartDashboard.putNumber("Claw/Feedforward", newFeedforward);
+      SmartDashboard.putNumber("Claw/PID output", output);
+      SmartDashboard.putNumber("Claw/SetPt Vel", Units.radiansToDegrees(setpoint.velocity));
+      SmartDashboard.putNumber("Claw/Velocity", Units.radiansToDegrees(encoder.getVelocity()));
     }
   }
 
@@ -378,9 +391,18 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
   public double getMeasurement() {
-    // Add the offset from the starting point. The claw must be at this position at startup for
-    // the relative encoder to provide a correct position.
-    return encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS;
+    // Add the offset from the starting point.
+    return encoder.getPosition() + Units.degreesToRadians(clawOffset);
+  }
+
+  /** Returns the absolute claw angle. the units are in degrees */
+  public double getAbsoluteAngle() {
+    // Add the offset from the 0 point of the encoder.
+    double angle = absoluteEncoder.getPosition() * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES;
+    if (angle < 0) {
+      angle += 360;
+    }
+    return angle;
   }
 
   /** Returns the Motor Commanded Voltage. */
