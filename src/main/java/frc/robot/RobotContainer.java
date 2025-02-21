@@ -268,6 +268,8 @@ public class RobotContainer {
     operatorController
         .leftBumper()
         .whileTrue(robotRoller.runReverse().withName("Roller: Run Reverse"));
+    operatorController.leftTrigger().onTrue(robotElevator.abortCommand());
+    operatorController.rightTrigger().onTrue(robotClaw.abortCommand());
   }
 
   /**

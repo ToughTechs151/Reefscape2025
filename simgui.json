@@ -72,6 +72,8 @@
       "/SmartDashboard/Claw Brake Mode": "Command",
       "/SmartDashboard/Claw Coast Mode": "Command",
       "/SmartDashboard/Claw Reset Position": "Command",
+      "/SmartDashboard/Claw: Shift Position Down": "Command",
+      "/SmartDashboard/Claw: Shift Position Up": "Command",
       "/SmartDashboard/ClawSubsystem": "Subsystem",
       "/SmartDashboard/Elevator Brake Mode": "Command",
       "/SmartDashboard/Elevator Coast Mode": "Command",

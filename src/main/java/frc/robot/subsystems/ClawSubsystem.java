@@ -298,6 +298,15 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     return run(this::useOutput).withName("Claw: Hold Position");
   }
 
+  /** Abort Command will set the claw position to the goal position in any restricted areas */
+  public Command abortCommand() {
+    return new InstantCommand(
+        () -> {
+          setGoalPosition(getMeasurement());
+          clawController.reset(getMeasurement());
+        });
+  }
+
   /** Returns a Command that shifts claw position up by a fixed increment. */
   public Command shiftUp() {
     return runOnce(

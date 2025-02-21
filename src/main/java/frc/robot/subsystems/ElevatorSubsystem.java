@@ -175,14 +175,11 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
         new InstantCommand(() -> setBrakeMode(false))
             .ignoringDisable(true)
             .withName("Elevator Coast"));
-
-    SmartDashboard.putData(shiftUp());
-    SmartDashboard.putData(shiftDown());
   }
 
   private void initMotor() {
     motorConfig.smartCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
-    motorConfig.inverted(ElevatorConstants.INVERTED);
+
     // Setup the encoder scale factors. Since this is a relative encoder,
     // elevator position will only be correct if it is in the down position when
     // the subsystem is constructed.
@@ -223,7 +220,6 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
     SmartDashboard.putNumber("Elevator Voltage", voltageCommand);
     SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
-    SmartDashboard.putNumber("Elevator Temperature", motor.getMotorTemperature());
     SmartDashboard.putNumber("Elevator Feedforward", newFeedforward);
     SmartDashboard.putNumber("Elevator PID output", output);
     SmartDashboard.putNumber("Elevator SetPt Pos", setpoint.position);
@@ -274,28 +270,13 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     return run(this::useOutput).withName("Elevator: Hold Position");
   }
 
-  /** Returns a Command that shifts elevator position up by a fixed increment. */
-  public Command shiftUp() {
-    return runOnce(
-            () ->
-                setGoalPosition(
-                    elevatorController.getGoal().position
-                        + Constants.ElevatorConstants.POS_INCREMENT))
-        .andThen(run(this::useOutput))
-        .until(this::atGoalPosition)
-        .withName("Elevator: Shift Position Up");
-  }
-
-  /** Returns a Command that shifts elevator position down by a fixed increment. */
-  public Command shiftDown() {
-    return runOnce(
-            () ->
-                setGoalPosition(
-                    elevatorController.getGoal().position
-                        - Constants.ElevatorConstants.POS_INCREMENT))
-        .andThen(run(this::useOutput))
-        .until(this::atGoalPosition)
-        .withName("Elevator: Shift Position Down");
+  /** Abort Command will set the elevator position to the goal position in any restricted areas */
+  public Command abortCommand() {
+    return new InstantCommand(
+        () -> {
+          setGoalPosition(getMeasurement());
+          elevatorController.reset(getMeasurement());
+        });
   }
 
   /**
