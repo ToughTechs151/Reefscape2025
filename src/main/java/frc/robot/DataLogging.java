@@ -73,6 +73,7 @@ public class DataLogging {
 
     // Add hardware sendables here
     pdp = robotContainer.getPdp();
+    SmartDashboard.putData("PDP", pdp);
 
     // Log configuration info here
     DataLogManager.log(String.format("PDP Can ID: %d", pdp.getModule()));
@@ -97,10 +98,10 @@ public class DataLogging {
       loopTime.append(Timer.getFPGATimestamp() - startTime);
     }
 
-    SmartDashboard.putNumber("Batt Volt", RobotController.getBatteryVoltage());
-    SmartDashboard.putBoolean("Brown Out", RobotController.isBrownedOut());
-    SmartDashboard.putBoolean("Ever Browned Out", this.getEverBrownOut());
-    SmartDashboard.putNumber("PDP Temp", pdp.getTemperature());
+    SmartDashboard.putNumber("Robot/Batt Voltage", RobotController.getBatteryVoltage());
+    SmartDashboard.putBoolean("Robot/Brown Out", RobotController.isBrownedOut());
+    SmartDashboard.putBoolean("Robot/Ever Browned Out", this.getEverBrownOut());
+    SmartDashboard.putNumber("Robot/PDP Temperature", pdp.getTemperature());
   }
 
   public void startLoopTime() {
