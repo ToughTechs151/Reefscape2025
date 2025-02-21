@@ -217,17 +217,17 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   @Override
   public void periodic() {
 
-    SmartDashboard.putBoolean("Elevator Enabled", elevatorEnabled);
-    SmartDashboard.putNumber("Elevator Goal", elevatorController.getGoal().position);
-    SmartDashboard.putNumber("Elevator Position", getMeasurement());
-    SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
-    SmartDashboard.putNumber("Elevator Voltage", voltageCommand);
-    SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
-    SmartDashboard.putNumber("Elevator Temperature", motor.getMotorTemperature());
-    SmartDashboard.putNumber("Elevator Feedforward", newFeedforward);
-    SmartDashboard.putNumber("Elevator PID output", output);
-    SmartDashboard.putNumber("Elevator SetPt Pos", setpoint.position);
-    SmartDashboard.putNumber("Elevator SetPt Vel", setpoint.velocity);
+    SmartDashboard.putBoolean("Elevator/Enabled", elevatorEnabled);
+    SmartDashboard.putNumber("Elevator/Goal", elevatorController.getGoal().position);
+    SmartDashboard.putNumber("Elevator/Position", getMeasurement());
+    SmartDashboard.putNumber("Elevator/Velocity", encoder.getVelocity());
+    SmartDashboard.putNumber("Elevator/Voltage", voltageCommand);
+    SmartDashboard.putNumber("Elevator/Current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Elevator/Temperature", motor.getMotorTemperature());
+    SmartDashboard.putNumber("Elevator/Feedforward", newFeedforward);
+    SmartDashboard.putNumber("Elevator/PID output", output);
+    SmartDashboard.putNumber("Elevator/SetPt Pos", setpoint.position);
+    SmartDashboard.putNumber("Elevator/SetPt Vel", setpoint.velocity);
   }
 
   /** Generate the motor command using the PID controller output and feedforward. */
