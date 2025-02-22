@@ -63,6 +63,7 @@ public class RobotContainer {
       new RollerSubsystem(RollerSubsystem.initializeHardware());
 
   private final Trigger unsafeTrigger = new Trigger(() -> !isSafePosition());
+  private final Trigger safeTrigger = new Trigger(() -> isSafePosition());
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -334,11 +335,12 @@ public class RobotContainer {
    */
   public Command MoveClawAndElevator(double elevatorPos, double clawPos) {
     return Commands.sequence(
-        Commands.race(
-            robotClaw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS),
-            robotElevator.holdPosition()),
-        Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
-        Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()));
+            Commands.race(
+                robotClaw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS),
+                robotElevator.holdPosition()),
+            Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
+            Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()))
+        .onlyIf(safeTrigger);
   }
 
   /**
