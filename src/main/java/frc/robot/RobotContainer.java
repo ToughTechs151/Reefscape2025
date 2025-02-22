@@ -190,74 +190,81 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the claw to the level 1 position when the 'POV Down' button is pressed on the
-    // operator's controller.
-    operatorController
-        .povDown()
-        .onTrue(
-            robotClaw
-                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL1_RADS)
-                .andThen(robotClaw::disable)
-                .withName("Claw: Move to Level 1 Position"));
-
-    // Move the claw to the level 2/3 position when the 'POV Left' button is pressed on the
-    // operator's controller.
-    operatorController
-        .povLeft()
-        .onTrue(
-            robotClaw
-                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
-                .withName("Claw: Move to Level 2/3 Position"));
-
-    // Move the claw to the level 4 position when the 'POV Right' button is pressed on the
-    // operator's controller.
-    operatorController
-        .povRight()
-        .onTrue(
-            robotClaw
-                .moveToPosition(Constants.ClawConstants.CLAW_LEVEL4_RADS)
-                .withName("Claw: Move to Level 4 Position"));
-
-    // Move the claw to the algae position when the 'POV Up' button is pressed on the
-    // operator's controller.
+    // Move the elevator and claw to the algae position when the 'POV Up' button is pressed
+    // on the operator's controller.
     operatorController
         .povUp()
         .onTrue(
-            robotClaw
-                .moveToPosition(Constants.ClawConstants.CLAW_ALGAE_RADS)
-                .withName("Claw: Move to Algae Position"));
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_ALGAE,
+                    Constants.ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Elevator + Claw: Load Algae"));
 
-    // Move the elevator to score in Reef Level 1 when the 'A' button is pressed.
+    // Move the elevator and claw to the algae position when the 'POV Left' button is pressed
+    // on the operator's controller.
+    operatorController
+        .povLeft()
+        .onTrue(
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_ALGAE,
+                    Constants.ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Elevator + Claw: Load Algae"));
+
+    // Move the elevator and claw to the processor position when the 'POV Right' button is pressed
+    // on the operator's controller.
+    operatorController
+        .povRight()
+        .onTrue(
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
+                    Constants.ClawConstants.CLAW_PROCESSOR_RADS)
+                .withName("Elevator + Claw: Load Processor"));
+
+    // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
+    // on the operator's controller.
+    operatorController
+        .povDown()
+        .onTrue(
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
+                    Constants.ClawConstants.CLAW_PROCESSOR_RADS)
+                .withName("Elevator + Claw: Load Processor"));
+
+    // Move the elevator and claw to score in Reef Level 1 when the 'A' button is pressed.
     operatorController
         .a()
         .onTrue(
-            robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL1)
-                .withName("Elevator: Move to Score in Reef Level 1"));
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_LEVEL1,
+                    Constants.ClawConstants.CLAW_LEVEL1_RADS)
+                .withName("Elevator + Claw: Move to Coral Level 1"));
 
-    // Move the elevator to score in Reef Level 2 when the 'B' button is pressed.
+    // Move the elevator and claw to score in Reef Level 2 when the 'B' button is pressed.
     operatorController
         .b()
         .onTrue(
-            robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL2)
-                .withName("Elevator: Move to Score in Reef Level 2"));
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_LEVEL2,
+                    Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+                .withName("Elevator + Claw: Move to Coral Level 2"));
 
-    // Move the elevator to score in Reef Level 3 when the 'X' button is pressed.
+    // Move the elevator and claw to score in Reef Level 3 when the 'X' button is pressed.
     operatorController
         .x()
         .onTrue(
-            robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL3)
-                .withName("Elevator: Move to Score in Reef Level 3"));
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_LEVEL3,
+                    Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+                .withName("Elevator + Claw: Move to Coral Level 3"));
 
-    // Move the elevator to score in Reef Level 4 when the 'Y' button is pressed.
+    // Move the elevator and claw to score in Reef Level 4 when the 'Y' button is pressed.
     operatorController
         .y()
         .onTrue(
-            robotElevator
-                .moveToPosition(Constants.ElevatorConstants.ELEVATOR_LEVEL4)
-                .withName("Elevator: Move to Score in Reef Level 4"));
+            getTeleopCommmand(
+                    Constants.ElevatorConstants.ELEVATOR_LEVEL4,
+                    Constants.ClawConstants.CLAW_LEVEL4_RADS)
+                .withName("Elevator + Claw: Move to Coral Level 4"));
 
     // Run the Roller forward when the right bumper is pressed.
     operatorController
@@ -295,6 +302,21 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     return autoChooser.getSelected();
+  }
+
+  /*
+   * Return a Teleop command with the intention of moving the claw to a safe position,
+   * then moving the elevator and the claw to your desired position
+   *
+   * @return the command sequence for teleop elevator + claw movements
+   */
+  public Command getTeleopCommmand(double elevatorPos, double clawPos) {
+    return Commands.sequence(
+        Commands.race(
+            robotClaw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS),
+            robotElevator.holdPosition()),
+        Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
+        Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()));
   }
 
   /**
