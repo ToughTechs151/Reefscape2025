@@ -298,7 +298,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
         .withName("Elevator: Shift Position Down");
   }
 
-  /** Abort Command will set the elevator position to the goal position in any restricted areas */
+  /** Abort Command will set the elevator position to the goal position in any restricted areas. */
   public Command abortCommand() {
     return new InstantCommand(
         () -> {
