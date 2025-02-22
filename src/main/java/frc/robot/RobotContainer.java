@@ -195,7 +195,7 @@ public class RobotContainer {
     operatorController
         .povUp()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_ALGAE,
                     Constants.ClawConstants.CLAW_ALGAE_RADS)
                 .withName("Elevator + Claw: Load Algae"));
@@ -205,7 +205,7 @@ public class RobotContainer {
     operatorController
         .povLeft()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_ALGAE,
                     Constants.ClawConstants.CLAW_ALGAE_RADS)
                 .withName("Elevator + Claw: Load Algae"));
@@ -215,7 +215,7 @@ public class RobotContainer {
     operatorController
         .povRight()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
                     Constants.ClawConstants.CLAW_PROCESSOR_RADS)
                 .withName("Elevator + Claw: Load Processor"));
@@ -225,7 +225,7 @@ public class RobotContainer {
     operatorController
         .povDown()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
                     Constants.ClawConstants.CLAW_PROCESSOR_RADS)
                 .withName("Elevator + Claw: Load Processor"));
@@ -234,7 +234,7 @@ public class RobotContainer {
     operatorController
         .a()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_LEVEL1,
                     Constants.ClawConstants.CLAW_LEVEL1_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 1"));
@@ -243,7 +243,7 @@ public class RobotContainer {
     operatorController
         .b()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_LEVEL2,
                     Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 2"));
@@ -252,7 +252,7 @@ public class RobotContainer {
     operatorController
         .x()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_LEVEL3,
                     Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 3"));
@@ -261,7 +261,7 @@ public class RobotContainer {
     operatorController
         .y()
         .onTrue(
-            getTeleopCommmand(
+            MoveClawAndElevator(
                     Constants.ElevatorConstants.ELEVATOR_LEVEL4,
                     Constants.ClawConstants.CLAW_LEVEL4_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 4"));
@@ -310,7 +310,7 @@ public class RobotContainer {
    *
    * @return the command sequence for teleop elevator + claw movements
    */
-  public Command getTeleopCommmand(double elevatorPos, double clawPos) {
+  public Command MoveClawAndElevator(double elevatorPos, double clawPos) {
     return Commands.sequence(
         Commands.race(
             robotClaw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS),
