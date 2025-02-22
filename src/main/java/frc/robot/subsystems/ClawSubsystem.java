@@ -167,6 +167,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
         RobotBase.isReal()
             ? getAbsoluteAngle()
             : Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS);
+    DataLogManager.log("Claw Offset Data: " + clawOffset);
     // Set tolerances that will be used to determine when the claw is at the goal position.
     clawController.setTolerance(
         Constants.ClawConstants.POSITION_TOLERANCE, Constants.ClawConstants.VELOCITY_TOLERANCE);
