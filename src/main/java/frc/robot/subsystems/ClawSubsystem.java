@@ -235,21 +235,21 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   @Override
   public void periodic() {
 
-    SmartDashboard.putBoolean("Claw Enabled", clawEnabled);
+    SmartDashboard.putBoolean("Claw/Enabled", clawEnabled);
     SmartDashboard.putNumber(
-        "Claw Goal", Units.radiansToDegrees(clawController.getGoal().position));
-    SmartDashboard.putNumber("Claw Angle", Units.radiansToDegrees(getMeasurement()));
-    SmartDashboard.putNumber("Claw Absolute Angle", getAbsoluteAngle());
-    SmartDashboard.putNumber("Claw Voltage", voltageCommand);
-    SmartDashboard.putNumber("Claw Current", motor.getOutputCurrent());
-    SmartDashboard.putNumber("Claw Temp", motor.getMotorTemperature());
-    SmartDashboard.putNumber("Claw SetPt Pos", Units.radiansToDegrees(setpoint.position));
+        "Claw/Goal", Units.radiansToDegrees(clawController.getGoal().position));
+    SmartDashboard.putNumber("Claw/Angle", Units.radiansToDegrees(getMeasurement()));
+    SmartDashboard.putNumber("Claw/Absolute Angle", getAbsoluteAngle());
+    SmartDashboard.putNumber("Claw/Voltage", voltageCommand);
+    SmartDashboard.putNumber("Claw/Current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Claw/Temp", motor.getMotorTemperature());
+    SmartDashboard.putNumber("Claw/SetPt Pos", Units.radiansToDegrees(setpoint.position));
 
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
-      SmartDashboard.putNumber("Claw Feedforward", newFeedforward);
-      SmartDashboard.putNumber("Claw PID output", output);
-      SmartDashboard.putNumber("Claw SetPt Vel", Units.radiansToDegrees(setpoint.velocity));
-      SmartDashboard.putNumber("Claw Velocity", Units.radiansToDegrees(encoder.getVelocity()));
+      SmartDashboard.putNumber("Claw/Feedforward", newFeedforward);
+      SmartDashboard.putNumber("Claw/PID output", output);
+      SmartDashboard.putNumber("Claw/SetPt Vel", Units.radiansToDegrees(setpoint.velocity));
+      SmartDashboard.putNumber("Claw/Velocity", Units.radiansToDegrees(encoder.getVelocity()));
     }
   }
 

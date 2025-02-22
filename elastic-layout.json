@@ -6,7 +6,59 @@
       "name": "Teleoperated",
       "grid_layout": {
         "layouts": [],
-        "containers": []
+        "containers": [
+          {
+            "title": "Coral Loaded",
+            "x": 640.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/CANRange/Detected",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4282400318,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Brown Out",
+            "x": 640.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Brown Out",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294198070,
+              "false_color": 4283215696,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Ever Browned Out",
+            "x": 640.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Robot/Ever Browned Out",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294198070,
+              "false_color": 4283215696,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          }
+        ]
       }
     },
     {
@@ -51,12 +103,12 @@
       }
     },
     {
-      "name": "Robot",
+      "name": "Commands",
       "grid_layout": {
         "layouts": [
           {
             "title": "List Layout",
-            "x": 640.0,
+            "x": 0.0,
             "y": 0.0,
             "width": 384.0,
             "height": 512.0,
@@ -116,37 +168,141 @@
             ]
           }
         ],
-        "containers": []
+        "containers": [
+          {
+            "title": "Claw Brake Mode",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Claw Brake Mode",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Claw Coast Mode",
+            "x": 512.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Claw Coast Mode",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Claw Reset Position",
+            "x": 512.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Claw Reset Position",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Claw: Shift Position Down",
+            "x": 1024.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Claw: Shift Position Down",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Claw: Shift Position Up",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Claw: Shift Position Up",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Elevator Brake Mode",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator Brake Mode",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Elevator Coast Mode",
+            "x": 768.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator Coast Mode",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Elevator: Shift Position Down",
+            "x": 1280.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator: Shift Position Down",
+              "period": 0.06,
+              "show_type": false
+            }
+          },
+          {
+            "title": "Elevator: Shift Position Up",
+            "x": 1280.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Command",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator: Shift Position Up",
+              "period": 0.06,
+              "show_type": false
+            }
+          }
+        ]
       }
     },
     {
-      "name": "Status",
+      "name": "Build",
       "grid_layout": {
         "layouts": [],
         "containers": [
           {
-            "title": "Deployhost",
-            "x": 256.0,
+            "title": "Branch",
+            "x": 0.0,
             "y": 0.0,
-            "width": 128.0,
+            "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/Status/Deployhost",
-              "period": 0.06,
-              "data_type": "string",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Deploytime",
-            "x": 384.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Shuffleboard/Status/Deploytime",
+              "topic": "/SmartDashboard/Build/Branch",
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
@@ -155,40 +311,12 @@
           {
             "title": "Buildtime",
             "x": 0.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Shuffleboard/Status/Buildtime",
-              "period": 0.06,
-              "data_type": "string",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Branch",
-            "x": 640.0,
-            "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Shuffleboard/Status/Branch",
-              "period": 0.06,
-              "data_type": "string",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Commit",
-            "x": 0.0,
             "y": 128.0,
-            "width": 1280.0,
+            "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/Status/Commit",
+              "topic": "/SmartDashboard/Build/Buildtime",
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
@@ -198,25 +326,53 @@
             "title": "Changes",
             "x": 0.0,
             "y": 256.0,
-            "width": 1280.0,
+            "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/Status/Changes",
+              "topic": "/SmartDashboard/Build/Changes",
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
             }
           },
           {
-            "title": "Remote",
+            "title": "Commit",
             "x": 0.0,
             "y": 384.0,
-            "width": 1280.0,
+            "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/Status/Remote",
+              "topic": "/SmartDashboard/Build/Commit",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Deployhost",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Build/Deployhost",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Deploytime",
+            "x": 1024.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Build/Deploytime",
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
@@ -224,15 +380,16 @@
           },
           {
             "title": "User",
-            "x": 0.0,
-            "y": 512.0,
-            "width": 1280.0,
+            "x": 1024.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
-            "type": "",
+            "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/Status/User",
+              "topic": "/SmartDashboard/Build/User",
               "period": 0.06,
-              "data_type": "string"
+              "data_type": "string",
+              "show_submit_button": false
             }
           }
         ]
