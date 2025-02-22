@@ -80,6 +80,7 @@ public final class Constants {
     public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(50.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(173.0);
+    public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(196.0);
     public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
     public static final double MIN_ANGLE_RADS = Units.degreesToRadians(18.0);
     public static final double MAX_ANGLE_RADS = Units.degreesToRadians(196.0);
@@ -122,6 +123,8 @@ public final class Constants {
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(22.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52);
+    public static final double ELEVATOR_ALGAE = Units.inchesToMeters(18);
+    public static final double ELEVATOR_PROCESSOR = Units.inchesToMeters(2.5);
     public static final double ELEVATOR_OFFSET_METERS = 0.0;
 
     // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
