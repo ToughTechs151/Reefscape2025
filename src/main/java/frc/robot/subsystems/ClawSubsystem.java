@@ -393,7 +393,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
   public double getMeasurement() {
     // Add the offset from the starting point.
-    return encoder.getPosition() + Units.degreesToRadians(clawOffset);
+    // return encoder.getPosition() + Units.degreesToRadians(clawOffset);
+    return encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS;
   }
 
   /** Returns the absolute claw angle. the units are in degrees */
