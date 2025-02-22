@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClawSubsystem;
@@ -59,6 +61,8 @@ public class RobotContainer {
 
   private final RollerSubsystem robotRoller =
       new RollerSubsystem(RollerSubsystem.initializeHardware());
+
+  private final Trigger unsafeTrigger = new Trigger(() -> !isSafePosition());
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -270,6 +274,9 @@ public class RobotContainer {
         .whileTrue(robotRoller.runReverse().withName("Roller: Run Reverse"));
     operatorController.leftTrigger().onTrue(robotElevator.abortCommand());
     operatorController.rightTrigger().onTrue(robotClaw.abortCommand());
+
+    // The trigger if we are not in a safe position becomes aborted.
+    unsafeTrigger.onTrue(Commands.parallel(robotClaw.abortCommand(), robotElevator.abortCommand()));
   }
 
   /**
@@ -287,6 +294,19 @@ public class RobotContainer {
   /** Get the drive command from the drive subsystem. */
   public Command getTeleopDriveCommand() {
     return Commands.none();
+  }
+
+  /** Check if position is safe or unsafe and creates a limit for the robot */
+  public boolean isSafePosition() {
+    double clawAngle = robotClaw.getAbsoluteAngle();
+    double elevatorHeight = robotElevator.getMeasurement();
+    if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
+        || (clawAngle > 60
+            && elevatorHeight < Units.inchesToMeters(50)
+            && elevatorHeight > Units.inchesToMeters(40))) {
+      return false;
+    }
+    return true;
   }
 
   /**

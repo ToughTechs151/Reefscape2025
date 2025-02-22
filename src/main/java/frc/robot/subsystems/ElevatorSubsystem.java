@@ -297,7 +297,8 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
         .until(this::atGoalPosition)
         .withName("Elevator: Shift Position Down");
   }
-   /** Abort Command will set the elevator position to the goal position in any restricted areas */
+
+  /** Abort Command will set the elevator position to the goal position in any restricted areas */
   public Command abortCommand() {
     return new InstantCommand(
         () -> {
@@ -305,6 +306,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
           elevatorController.reset(getMeasurement());
         });
   }
+
   /**
    * Set the goal state for the subsystem, limited to allowable range. Goal velocity is set to zero.
    * The ProfiledPIDController drives the elevator to this position and holds it there.
