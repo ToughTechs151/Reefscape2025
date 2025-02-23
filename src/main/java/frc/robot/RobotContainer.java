@@ -205,26 +205,6 @@ public class RobotContainer {
                     Constants.ClawConstants.CLAW_ALGAE_RADS)
                 .withName("Elevator + Claw: Load Algae"));
 
-    // Move the elevator and claw to the algae position when the 'POV Left' button is pressed
-    // on the operator's controller.
-    operatorController
-        .povLeft()
-        .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_ALGAE,
-                    Constants.ClawConstants.CLAW_ALGAE_RADS)
-                .withName("Elevator + Claw: Load Algae"));
-
-    // Move the elevator and claw to the processor position when the 'POV Right' button is pressed
-    // on the operator's controller.
-    operatorController
-        .povRight()
-        .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
-                    Constants.ClawConstants.CLAW_PROCESSOR_RADS)
-                .withName("Elevator + Claw: Load Processor"));
-
     // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
     // on the operator's controller.
     operatorController
@@ -280,8 +260,6 @@ public class RobotContainer {
     operatorController
         .leftBumper()
         .whileTrue(robotRoller.runReverse().withName("Roller: Run Reverse"));
-    operatorController.leftTrigger().onTrue(robotElevator.abortCommand());
-    operatorController.rightTrigger().onTrue(robotClaw.abortCommand());
 
     // The trigger if we are not in a safe position becomes aborted.
     unsafeTrigger.onTrue(Commands.parallel(robotClaw.abortCommand(), robotElevator.abortCommand()));
