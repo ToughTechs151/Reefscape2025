@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.RollerConstants;
@@ -256,9 +255,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Loads Coral until CANRange detects Coral and then runs for a short time after */
   public Command loadCoral() {
     return Commands.sequence(
-        runReverse().until(this::isCoralInsideRoller),
-        runReverse().withTimeout(0.25),
-        new InstantCommand(this::disableRoller));
+        runReverse().until(this::isCoralInsideRoller), runReverse().withTimeout(0.25));
   }
 
   /** Returns a Command that runs the motor in reverse at the current set speed. */
