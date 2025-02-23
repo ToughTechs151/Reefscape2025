@@ -282,6 +282,10 @@ public class RobotContainer {
     DataLogManager.log("disableSubsystems");
   }
 
+  public void setMotorBrake(boolean brake) {
+    drivebase.setMotorBrake(brake);
+  }
+
   /** Get the drive command from the drive subsystem. */
   public Command getTeleopDriveCommand() {
     return Commands.none();

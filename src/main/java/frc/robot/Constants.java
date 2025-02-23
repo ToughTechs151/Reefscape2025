@@ -184,6 +184,9 @@ public final class Constants {
     // Speed for Neo Vortex at 6700 RPM, 6.75:1 gears and 4" wheels
     public static final double MAX_SPEED = Units.feetToMeters(6700 / 6.75 / 60 * 4 * Math.PI / 12);
 
+    // Hold time on motor brakes when disabled
+    public static final double WHEEL_LOCK_TIME = 10; // seconds
+
     public static final double POV_SPEED = 0.1;
 
     public static final Boolean ENABLE_VISION = true;
