@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -200,9 +202,10 @@ public class RobotContainer {
     operatorController
         .povUp()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_ALGAE,
-                    Constants.ClawConstants.CLAW_ALGAE_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_ALGAE,
+                    ClawConstants.CLAW_ALGAE_RADS)
                 .withName("Elevator + Claw: Load Algae"));
 
     // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
@@ -210,45 +213,50 @@ public class RobotContainer {
     operatorController
         .povDown()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_PROCESSOR,
-                    Constants.ClawConstants.CLAW_PROCESSOR_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_PROCESSOR_RADS,
+                    ElevatorConstants.ELEVATOR_PROCESSOR,
+                    ClawConstants.CLAW_PROCESSOR_RADS)
                 .withName("Elevator + Claw: Load Processor"));
 
     // Move the elevator and claw to score in Reef Level 1 when the 'A' button is pressed.
     operatorController
         .a()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_LEVEL1,
-                    Constants.ClawConstants.CLAW_LEVEL1_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL1,
+                    ClawConstants.CLAW_LEVEL1_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 1"));
 
     // Move the elevator and claw to score in Reef Level 2 when the 'B' button is pressed.
     operatorController
         .b()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_LEVEL2,
-                    Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL2,
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 2"));
 
     // Move the elevator and claw to score in Reef Level 3 when the 'X' button is pressed.
     operatorController
         .x()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_LEVEL3,
-                    Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL3,
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 3"));
 
     // Move the elevator and claw to score in Reef Level 4 when the 'Y' button is pressed.
     operatorController
         .y()
         .onTrue(
-            MoveClawAndElevator(
-                    Constants.ElevatorConstants.ELEVATOR_LEVEL4,
-                    Constants.ClawConstants.CLAW_LEVEL4_RADS)
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL4,
+                    ClawConstants.CLAW_LEVEL4_RADS)
                 .withName("Elevator + Claw: Move to Coral Level 4"));
 
     // Run the Roller forward when the right bumper is pressed.
@@ -282,7 +290,7 @@ public class RobotContainer {
     return Commands.none();
   }
 
-  /** Check if position is safe or unsafe and creates a limit for the robot */
+  /** Check if position is safe or unsafe and creates a limit for the robot. */
   public boolean isSafePosition() {
     double clawAngle = robotClaw.getAbsoluteAngle();
     double elevatorHeight = robotElevator.getMeasurement();
@@ -305,17 +313,15 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  /*
-   * Return a Teleop command with the intention of moving the claw to a safe position,
-   * then moving the elevator and the claw to your desired position
+  /**
+   * Return a Teleop command with the intention of moving the claw to a safe position, then moving
+   * the elevator and the claw to your desired position.
    *
    * @return the command sequence for teleop elevator + claw movements
    */
-  public Command MoveClawAndElevator(double elevatorPos, double clawPos) {
+  public Command moveClawAndElevator(double firstClawPos, double elevatorPos, double clawPos) {
     return Commands.sequence(
-            Commands.race(
-                robotClaw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS),
-                robotElevator.holdPosition()),
+            Commands.race(robotClaw.moveToPosition(firstClawPos), robotElevator.holdPosition()),
             Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
             Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()))
         .onlyIf(safeTrigger);
