@@ -264,9 +264,12 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(robotRoller.runForward().withName("Roller: Run Forward"));
 
-    // Run the Roller in reverse when the left bumper is pressed.
+    // Runs the Load Coral Function when Left Trigger is held.
+    operatorController.leftTrigger().whileTrue(robotRoller.loadCoral().withName("Loads Coral"));
+
+    // Run the Roller reverse when the right Trigger is pressed.
     operatorController
-        .leftBumper()
+        .rightTrigger()
         .whileTrue(robotRoller.runReverse().withName("Roller: Run Reverse"));
   }
 
