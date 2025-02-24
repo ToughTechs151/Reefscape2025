@@ -77,7 +77,7 @@ public final class Constants {
 
     // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
-    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(50.0);
+    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(45.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(173.0);
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(173.0);
@@ -121,7 +121,7 @@ public final class Constants {
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
     public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
-    public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(22.5);
+    public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(24.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52);
     public static final double ELEVATOR_ALGAE = Units.inchesToMeters(18);
     public static final double ELEVATOR_PROCESSOR = Units.inchesToMeters(0.0);
@@ -190,7 +190,7 @@ public final class Constants {
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
 
-    public static final double POV_SPEED = 0.1;
+    public static final double POV_SPEED = 0.05;
 
     public static final Boolean ENABLE_VISION = false;
     public static final Boolean USE_ALLIANCE = false;
