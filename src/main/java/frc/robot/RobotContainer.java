@@ -290,6 +290,7 @@ public class RobotContainer {
 
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
+    DataLogManager.log("Drive Brake: " + brake);
   }
 
   /** Get the drive command from the drive subsystem. */
