@@ -192,7 +192,7 @@ public final class Constants {
 
     public static final double POV_SPEED = 0.1;
 
-    public static final Boolean ENABLE_VISION = true;
+    public static final Boolean ENABLE_VISION = false;
     public static final Boolean USE_ALLIANCE = false;
   }
 }
