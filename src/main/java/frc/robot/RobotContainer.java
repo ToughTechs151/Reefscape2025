@@ -210,14 +210,14 @@ public class RobotContainer {
 
     // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
     // on the operator's controller.
-    /*operatorController
+    operatorController
         .povDown()
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_PROCESSOR_RADS,
                     ElevatorConstants.ELEVATOR_PROCESSOR,
                     ClawConstants.CLAW_PROCESSOR_RADS)
-                .withName("Elevator + Claw: Load Processor")); */
+                .withName("Elevator + Claw: Load Processor"));
 
     // Move the elevator and claw to score in Reef Level 1 when the 'A' button is pressed.
     operatorController
