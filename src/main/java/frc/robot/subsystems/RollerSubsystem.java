@@ -258,7 +258,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Loads Coral until CANRange detects Coral and then runs for a short time after */
   public Command loadCoral() {
     return Commands.sequence(
-        runReverse().until(this::isCoralInsideRoller), runReverse().withTimeout(0.25));
+        runReverse().until(this::isCoralInsideRoller), runReverse().withTimeout(0.05));
   }
 
   /** Returns a Command that runs the motor in reverse at the current set speed. */
