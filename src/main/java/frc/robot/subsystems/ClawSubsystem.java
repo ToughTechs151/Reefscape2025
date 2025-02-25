@@ -167,6 +167,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
         RobotBase.isReal()
             ? getAbsoluteAngle()
             : Units.radiansToDegrees(ClawConstants.CLAW_OFFSET_RADS);
+    DataLogManager.log("Claw Offset Data: " + clawOffset);
     // Set tolerances that will be used to determine when the claw is at the goal position.
     clawController.setTolerance(
         Constants.ClawConstants.POSITION_TOLERANCE, Constants.ClawConstants.VELOCITY_TOLERANCE);
@@ -298,6 +299,15 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     return run(this::useOutput).withName("Claw: Hold Position");
   }
 
+  /** Abort Command will set the claw position to the goal position in any restricted areas. */
+  public Command abortCommand() {
+    return new InstantCommand(
+        () -> {
+          setGoalPosition(getMeasurement());
+          clawController.reset(getMeasurement());
+        });
+  }
+
   /** Returns a Command that shifts claw position up by a fixed increment. */
   public Command shiftUp() {
     return runOnce(
@@ -392,7 +402,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
   public double getMeasurement() {
     // Add the offset from the starting point.
-    return encoder.getPosition() + Units.degreesToRadians(clawOffset);
+    // return encoder.getPosition() + Units.degreesToRadians(clawOffset);
+    return encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS;
   }
 
   /** Returns the absolute claw angle. the units are in degrees */

@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.sim.RobotModel;
@@ -20,6 +22,7 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
   private DataLogging datalog;
+  private Timer disabledTimer;
 
   /**
    * {@code robotInit} runs when the robot first starts up. It is used to create the robot
@@ -39,6 +42,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     this.robotContainer = new RobotContainer();
 
+    // Create a timer to disable motor brake a few seconds after disable.  This will let the robot
+    // stop immediately when disabled, but then also let it be pushed more easily
+    disabledTimer = new Timer();
+
     datalog.dataLogRobotContainerInit(this.robotContainer);
   }
 
@@ -56,6 +63,8 @@ public class Robot extends TimedRobot {
     // subsystem periodic() methods. This must be called from the robot's periodic block in order
     // for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    // Tells us if the elevator or claw is at a safe position in the Smart Dashboard.
+    SmartDashboard.putBoolean("ElevatorClawSafe", robotContainer.isSafePosition());
 
     // Must be at the end of robotPeriodic
     datalog.periodic();
@@ -69,6 +78,10 @@ public class Robot extends TimedRobot {
       simModel.reset();
     }
 
+    robotContainer.setMotorBrake(true);
+    disabledTimer.reset();
+    disabledTimer.start();
+
     CommandScheduler.getInstance().cancelAll();
     this.robotContainer.disableSubsystems();
   }
@@ -76,6 +89,11 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     // Add code to run repeatedly while disabled.
+    if (disabledTimer.hasElapsed(Constants.DriveConstants.WHEEL_LOCK_TIME)) {
+      robotContainer.setMotorBrake(false);
+      disabledTimer.stop();
+      disabledTimer.reset();
+    }
     datalog.startLoopTime();
   }
 
@@ -94,6 +112,8 @@ public class Robot extends TimedRobot {
       CommandScheduler.getInstance().cancelAll();
 
       this.autonomousCommand = this.robotContainer.getAutonomousCommand();
+
+      robotContainer.setMotorBrake(true);
 
       // schedule the autonomous command (example)
       if (this.autonomousCommand != null) {
