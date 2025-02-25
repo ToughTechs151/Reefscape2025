@@ -106,7 +106,7 @@ public final class Constants {
     public static final double ELEVATOR_KS = 0.54;
     public static final double ELEVATOR_KG = 0.7;
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
-    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.15;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.3;
     public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 1.2;
 
     // Spool Diameter in Inches

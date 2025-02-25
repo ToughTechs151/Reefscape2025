@@ -175,7 +175,7 @@ public class RobotContainer {
 
     // Change drive type from field oriented to robot oriented, which is similar to tank drive, when
     // 'RB' is pressed on the driver's controller
-    driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
+    driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
     // Drive to a set position near the reef when 'B' is pressed on the driver's controller
     driverController
