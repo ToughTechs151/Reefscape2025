@@ -175,7 +175,7 @@ public class RobotContainer {
 
     // Change drive type from field oriented to robot oriented, which is similar to tank drive, when
     // 'RB' is pressed on the driver's controller
-    driverController.rightBumper().toggleOnTrue(driveRobotOrientedAngularVelocity);
+    driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
     // Drive to a set position near the reef when 'B' is pressed on the driver's controller
     driverController
@@ -207,6 +207,17 @@ public class RobotContainer {
                     ElevatorConstants.ELEVATOR_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS)
                 .withName("Elevator + Claw: Load Algae"));
+
+    // Move the elevator and claw to the load coral position when the 'POV Left' button is pressed
+    // on the operator's controller.
+    operatorController
+        .povLeft()
+        .onTrue(
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_PROCESSOR,
+                    ClawConstants.CLAW_LEVEL1_RADS)
+                .withName("Elevator + Claw: Load Coral"));
 
     // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
     // on the operator's controller.

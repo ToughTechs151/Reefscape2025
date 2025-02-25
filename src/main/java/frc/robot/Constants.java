@@ -106,7 +106,7 @@ public final class Constants {
     public static final double ELEVATOR_KS = 0.54;
     public static final double ELEVATOR_KG = 0.7;
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
-    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.15;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.3;
     public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 1.2;
 
     // Spool Diameter in Inches
@@ -119,7 +119,7 @@ public final class Constants {
         2 * SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
 
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
-    public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
+    public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(1);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(24.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52);
