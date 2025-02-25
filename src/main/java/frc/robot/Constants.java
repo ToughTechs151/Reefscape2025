@@ -119,7 +119,7 @@ public final class Constants {
         2 * SPOOL_DIAMETER * Math.PI / GEAR_RATIO;
 
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
-    public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(0);
+    public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(1);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(24.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52);

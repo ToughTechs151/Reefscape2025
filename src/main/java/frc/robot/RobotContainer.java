@@ -206,7 +206,18 @@ public class RobotContainer {
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     ElevatorConstants.ELEVATOR_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS)
-                .withName("Elevator + Claw: Load Algae")); 
+                .withName("Elevator + Claw: Load Algae"));
+
+    // Move the elevator and claw to the load coral position when the 'POV Left' button is pressed
+    // on the operator's controller.
+    operatorController
+        .povLeft()
+        .onTrue(
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_PROCESSOR,
+                    ClawConstants.CLAW_LEVEL1_RADS)
+                .withName("Elevator + Claw: Load Coral"));
 
     // Move the elevator and claw to the processor position when the 'POV Down' button is pressed
     // on the operator's controller.
