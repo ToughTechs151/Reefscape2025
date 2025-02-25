@@ -153,7 +153,7 @@ public class RobotContainer {
     SmartDashboard.putData(robotElevator);
     SmartDashboard.putData(robotRoller);
 
-    drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+    drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
