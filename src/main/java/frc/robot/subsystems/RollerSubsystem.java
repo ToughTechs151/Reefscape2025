@@ -120,6 +120,8 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
       new TunableNumber("RollerForwardRPM", RollerConstants.ROLLER_SET_POINT_FORWARD_RPM);
   private TunableNumber reverseSetSpeed =
       new TunableNumber("RollerReverseRPM", RollerConstants.ROLLER_SET_POINT_REVERSE_RPM);
+  private TunableNumber loadSetSpeed =
+      new TunableNumber("RollerLoadRPM", RollerConstants.ROLLER_LOAD_CORAL_RPM);
 
   /** Create a new RollerSubsystem controlled by a Profiled PID COntroller . */
   public RollerSubsystem(Hardware rollerHardware) {
@@ -248,14 +250,14 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns a Command that runs the motor forward at the current set speed. */
   public Command runForward() {
     return new FunctionalCommand(
-        this::setMotorSetPointForward,
+        () -> startMotor(forwardSetSpeed),
         this::updateMotorController,
         interrupted -> disableRoller(),
         () -> false,
         this);
   }
 
-  /** Loads Coral until CANRange detects Coral and then runs for a short time after */
+  /** Loads Coral until CANRange detects Coral and then runs for a short time after. */
   public Command loadCoral() {
     return Commands.sequence(
         runLoadCoral().until(this::isCoralInsideRoller), runLoadCoral().withTimeout(0.05));
@@ -264,7 +266,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns a Command that runs the motor in reverse to load coral. */
   public Command runLoadCoral() {
     return new FunctionalCommand(
-        () -> rollerController.setSetpoint(RollerConstants.ROLLER_LOAD_CORAL_RPM),
+        () -> startMotor(loadSetSpeed),
         this::updateMotorController,
         interrupted -> disableRoller(),
         () -> false,
@@ -274,7 +276,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns a Command that runs the motor in reverse at the current set speed. */
   public Command runReverse() {
     return new FunctionalCommand(
-        this::setMotorSetPointReverse,
+        () -> startMotor(reverseSetSpeed),
         this::updateMotorController,
         interrupted -> disableRoller(),
         () -> false,
@@ -282,24 +284,12 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   }
 
   /**
-   * Set the setpoint for the motor as a scale factor applied to the setpoint value going forwards.
-   * The PIDController drives the motor to this speed and holds it there.
+   * Set the setpoint for the motor and start the motor. The PIDController drives the motor to this
+   * speed and holds it there.
    */
-  private void setMotorSetPointForward() {
+  private void startMotor(TunableNumber speed) {
     loadTunableNumbers();
-    rollerController.setSetpoint(forwardSetSpeed.get());
-
-    // Call enable() to configure and start the controller in case it is not already enabled.
-    enableRoller();
-  }
-
-  /**
-   * Set the setpoint for the motor as a scale factor applied to the setpoint value reversed. The
-   * PIDController drives the motor to this speed and holds it there.
-   */
-  private void setMotorSetPointReverse() {
-    loadTunableNumbers();
-    rollerController.setSetpoint(reverseSetSpeed.get());
+    rollerController.setSetpoint(speed.get());
 
     // Call enable() to configure and start the controller in case it is not already enabled.
     enableRoller();
