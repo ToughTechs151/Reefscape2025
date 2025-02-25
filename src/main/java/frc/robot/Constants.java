@@ -152,7 +152,8 @@ public final class Constants {
     public static final double ROLLER_KS_VOLTS = 0.0;
     public static final double ROLLER_KV_VOLTS_PER_RPM = 0.0055;
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
-    public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
+    public static final double ROLLER_SET_POINT_REVERSE_RPM = -1000.0;
+    public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
         30.0 / 12.0; // Ratio of motor rotations to output rotations
