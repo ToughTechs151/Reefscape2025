@@ -197,16 +197,29 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the elevator and claw to the algae position when the 'POV Up' button is pressed
+    // Move the elevator and claw to the level 3 (upper) algae position when the 'POV Up' button is
+    // pressed
     // on the operator's controller.
     operatorController
         .povUp()
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-                    ElevatorConstants.ELEVATOR_ALGAE,
+                    ElevatorConstants.ELEVATOR_LEVEL3_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS)
-                .withName("Elevator + Claw: Load Algae"));
+                .withName("Elevator + Claw: Load Level 3 Algae"));
+
+    // Move the elevator and claw to the level 2 (lower) algae position when the 'POV Right' button
+    // is pressed
+    // on the operator's controller.
+    operatorController
+        .povRight()
+        .onTrue(
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL2_ALGAE,
+                    ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Elevator + Claw: Load Level 2 Algae"));
 
     // Move the elevator and claw to the load coral position when the 'POV Left' button is pressed
     // on the operator's controller.
