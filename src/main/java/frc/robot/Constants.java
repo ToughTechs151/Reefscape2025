@@ -123,7 +123,8 @@ public final class Constants {
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(24.5);
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52);
-    public static final double ELEVATOR_ALGAE = Units.inchesToMeters(18);
+    public static final double ELEVATOR_LEVEL2_ALGAE = Units.inchesToMeters(18);
+    public static final double ELEVATOR_LEVEL3_ALGAE = Units.inchesToMeters(33.9);
     public static final double ELEVATOR_PROCESSOR = Units.inchesToMeters(0.0);
     public static final double ELEVATOR_OFFSET_METERS = 0.0;
 
