@@ -144,6 +144,9 @@ public class SwerveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber(
           "swerve/Angle Temp/" + module.moduleNumber, angleMotor.getMotorTemperature());
     }
+
+    // Data for the Robot Location
+    SmartDashboard.putBoolean("Robot Near Reef", isNearReef());
   }
 
   @Override
@@ -643,6 +646,20 @@ public class SwerveSubsystem extends SubsystemBase {
         angle.getRadians(),
         getHeading().getRadians(),
         DriveConstants.MAX_SPEED);
+  }
+
+  /**
+   * Check if the robot if within a 2m radius from the reef center
+   *
+   * @return bool true or false denoting if the robot is near the reef
+   */
+  public boolean isNearReef() {
+    Translation2d currentTrans = getPose().getTranslation();
+    if (DriveConstants.REEF_CENTER.getDistance(currentTrans) < 2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
