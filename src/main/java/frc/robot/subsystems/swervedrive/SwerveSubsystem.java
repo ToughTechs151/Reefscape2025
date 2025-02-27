@@ -27,6 +27,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -132,6 +133,9 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }
+
+    // Data for the Robot Location
+    SmartDashboard.putBoolean("Robot Near Reef", isNearReef());
   }
 
   @Override
@@ -631,6 +635,20 @@ public class SwerveSubsystem extends SubsystemBase {
         angle.getRadians(),
         getHeading().getRadians(),
         DriveConstants.MAX_SPEED);
+  }
+
+  /**
+   * Check if the robot if within a 2m radius from the reef center
+   *
+   * @return bool true or false denoting if the robot is near the reef
+   */
+  public boolean isNearReef() {
+    Translation2d currentTrans = getPose().getTranslation();
+    if (DriveConstants.REEF_CENTER.getDistance(currentTrans) < 2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**

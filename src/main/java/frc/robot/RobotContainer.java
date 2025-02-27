@@ -201,6 +201,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povUp()
+        .and(() -> !drivebase.isNearReef())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
@@ -223,6 +224,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povDown()
+        .and(() -> !drivebase.isNearReef())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_PROCESSOR_RADS,
@@ -344,12 +346,6 @@ public class RobotContainer {
             Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
             Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()))
         .onlyIf(safeTrigger);
-  }
-
-  public boolean isNearReef()
-  {
-    Pose2d reefCenter = new Pose2d(4.45, 4, new Rotation2d(0));
-    if (reefCenter.getDistance(SwerveSubsystem.getPose()))
   }
 
   /**
