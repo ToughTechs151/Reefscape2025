@@ -311,15 +311,19 @@ public class RobotContainer {
 
   /** Check if position is safe or unsafe and creates a limit for the robot. */
   public boolean isSafePosition() {
-    double clawAngle = robotClaw.getAbsoluteAngle();
-    double elevatorHeight = robotElevator.getMeasurement();
-    if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
-        || (clawAngle > 60
-            && elevatorHeight < Units.inchesToMeters(50)
-            && elevatorHeight > Units.inchesToMeters(40))) {
-      return false;
+    if (operatorController.getHID().getLeftBumperButton()) {
+      return true;
+    } else {
+      double clawAngle = robotClaw.getAbsoluteAngle();
+      double elevatorHeight = robotElevator.getMeasurement();
+      if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
+          || (clawAngle > 60
+              && elevatorHeight < Units.inchesToMeters(50)
+              && elevatorHeight > Units.inchesToMeters(40))) {
+        return false;
+      }
+      return true;
     }
-    return true;
   }
 
   /**
