@@ -39,8 +39,7 @@ public class LEDSubsystem extends SubsystemBase {
     buffer = new AddressableLEDBuffer(COLUMNS);
     led.setLength(COLUMNS);
     led.start();
-    // Set the default command to run a solid gray pattern.
-    setDefaultCommand(runPattern(LEDPattern.solid(Color.kGray)).withName("Default"));
+    setPattern(LEDPattern.solid(Color.kBlack));
   }
 
   /** Periodically sends the latest LED color data to the LED strip for display. */
@@ -57,5 +56,14 @@ public class LEDSubsystem extends SubsystemBase {
    */
   public Command runPattern(LEDPattern pattern) {
     return run(() -> pattern.applyTo(buffer));
+  }
+
+  /**
+   * Set a specific LED pattern on the strip.
+   *
+   * @param pattern the {@link LEDPattern} to apply to the LED strip
+   */
+  public void setPattern(LEDPattern pattern) {
+    pattern.applyTo(buffer);
   }
 }

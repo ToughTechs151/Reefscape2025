@@ -12,10 +12,12 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -364,6 +366,22 @@ public class RobotContainer {
             Commands.race(robotElevator.moveToPosition(elevatorPos), robotClaw.holdPosition()),
             Commands.race(robotClaw.moveToPosition(clawPos), robotElevator.holdPosition()))
         .onlyIf(safeTrigger);
+  }
+
+  /** Set the LEDs to a specified color. */
+  public void setLeds(LEDPattern pattern) {
+    led.setPattern(pattern);
+  }
+
+  /** Set the LEDs to show robot status. */
+  public void setLedStatus() {
+    if (!isSafePosition()) {
+      led.setPattern(LEDPattern.solid(Color.kRed));
+    } else if (robotRoller.isCoralInsideRoller()) {
+      led.setPattern(LEDPattern.solid(Color.kGreen));
+    } else {
+      led.setPattern(LEDPattern.solid(Color.kBlue));
+    }
   }
 
   /**

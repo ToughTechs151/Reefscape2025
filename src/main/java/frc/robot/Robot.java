@@ -5,9 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.sim.RobotModel;
@@ -77,7 +79,7 @@ public class Robot extends TimedRobot {
     if (isSimulation() && simModel != null) {
       simModel.reset();
     }
-
+    robotContainer.setLeds(LEDPattern.solid(Color.kGray));
     robotContainer.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
@@ -103,6 +105,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    robotContainer.setLeds(LEDPattern.solid(Color.kOrange));
 
     if (this.robotContainer == null) {
       DriverStation.reportError("autonomousInit called with null robotContainer", false);
@@ -154,6 +158,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     datalog.startLoopTime();
     // Add code to run repeatedly during Teleop mode.
+    robotContainer.setLedStatus();
   }
 
   /** This function is called once at the start of test mode. */
