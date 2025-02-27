@@ -17,6 +17,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -132,6 +134,15 @@ public class SwerveSubsystem extends SubsystemBase {
     if (DriveConstants.ENABLE_VISION) {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
+    }
+
+    for (var module : swerveDrive.getModules()) {
+      SparkFlex driveMotor = (SparkFlex) module.getDriveMotor().getMotor();
+      SmartDashboard.putNumber(
+          "swerve/Drive Temp/" + module.moduleNumber, driveMotor.getMotorTemperature());
+      SparkMax angleMotor = (SparkMax) module.getAngleMotor().getMotor();
+      SmartDashboard.putNumber(
+          "swerve/Angle Temp/" + module.moduleNumber, angleMotor.getMotorTemperature());
     }
 
     // Data for the Robot Location

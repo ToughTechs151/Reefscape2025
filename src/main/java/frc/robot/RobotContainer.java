@@ -197,7 +197,8 @@ public class RobotContainer {
     driverController.povLeft().whileTrue(shiftLeft);
 
     // ---------- Operator Controller ----------
-    // Move the elevator and claw to the algae position when the 'POV Up' button is pressed
+    // Move the elevator and claw to the level 3 (upper) algae position when the 'POV Up' button is
+    // pressed
     // on the operator's controller.
     operatorController
         .povUp()
@@ -205,9 +206,21 @@ public class RobotContainer {
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-                    ElevatorConstants.ELEVATOR_ALGAE,
+                    ElevatorConstants.ELEVATOR_LEVEL3_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS)
-                .withName("Elevator + Claw: Load Algae"));
+                .withName("Elevator + Claw: Load Level 3 Algae"));
+
+    // Move the elevator and claw to the level 2 (lower) algae position when the 'POV Right' button
+    // is pressed
+    // on the operator's controller.
+    operatorController
+        .povRight()
+        .onTrue(
+            moveClawAndElevator(
+                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ElevatorConstants.ELEVATOR_LEVEL2_ALGAE,
+                    ClawConstants.CLAW_ALGAE_RADS)
+                .withName("Elevator + Claw: Load Level 2 Algae"));
 
     // Move the elevator and claw to the load coral position when the 'POV Left' button is pressed
     // on the operator's controller.
@@ -313,15 +326,19 @@ public class RobotContainer {
 
   /** Check if position is safe or unsafe and creates a limit for the robot. */
   public boolean isSafePosition() {
-    double clawAngle = robotClaw.getAbsoluteAngle();
-    double elevatorHeight = robotElevator.getMeasurement();
-    if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
-        || (clawAngle > 60
-            && elevatorHeight < Units.inchesToMeters(50)
-            && elevatorHeight > Units.inchesToMeters(40))) {
-      return false;
+    if (operatorController.getHID().getLeftBumperButton()) {
+      return true;
+    } else {
+      double clawAngle = robotClaw.getAbsoluteAngle();
+      double elevatorHeight = robotElevator.getMeasurement();
+      if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
+          || (clawAngle > 60
+              && elevatorHeight < Units.inchesToMeters(50)
+              && elevatorHeight > Units.inchesToMeters(40))) {
+        return false;
+      }
+      return true;
     }
-    return true;
   }
 
   /**
