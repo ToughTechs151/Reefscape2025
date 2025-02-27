@@ -215,6 +215,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povRight()
+        .and(() -> !drivebase.isNearReef())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
