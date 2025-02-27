@@ -196,6 +196,9 @@ public class RobotContainer {
     driverController.povRight().whileTrue(shiftRight);
     driverController.povLeft().whileTrue(shiftLeft);
 
+    // Zero the gyro when 'start' is pressed on the driver's controller
+    driverController.start().onTrue(Commands.runOnce(drivebase::zeroGyro).ignoringDisable(true));
+
     // ---------- Operator Controller ----------
     // Move the elevator and claw to the level 3 (upper) algae position when the 'POV Up' button is
     // pressed
