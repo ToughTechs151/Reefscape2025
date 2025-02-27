@@ -346,6 +346,12 @@ public class RobotContainer {
         .onlyIf(safeTrigger);
   }
 
+  public boolean isNearReef()
+  {
+    Pose2d reefCenter = new Pose2d(4.45, 4, new Rotation2d(0));
+    if (reefCenter.getDistance(SwerveSubsystem.getPose()))
+  }
+
   /**
    * Use this to get the PDP for data logging.
    *
