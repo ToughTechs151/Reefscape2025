@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -156,6 +158,16 @@ public class RobotContainer {
     SmartDashboard.putData(robotRoller);
 
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+
+    // Named Commands for Autos
+    NamedCommands.registerCommand("Level1Coral", moveClawAndElevator(
+        ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+        ElevatorConstants.ELEVATOR_LEVEL1,
+        ClawConstants.CLAW_LEVEL1_RADS));
+    NamedCommands.registerCommand("LoadCoral", moveClawAndElevator(
+        ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+        ElevatorConstants.ELEVATOR_PROCESSOR,
+        ClawConstants.CLAW_LEVEL1_RADS));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
