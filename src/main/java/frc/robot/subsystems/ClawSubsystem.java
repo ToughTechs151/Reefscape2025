@@ -239,7 +239,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putBoolean("Claw/Enabled", clawEnabled);
     SmartDashboard.putNumber(
         "Claw/Goal", Units.radiansToDegrees(clawController.getGoal().position));
-    SmartDashboard.putNumber("Claw/Angle", Units.radiansToDegrees(getMeasurement()));
+    SmartDashboard.putNumber("Claw/Angle", getRelativeAngle());
     SmartDashboard.putNumber("Claw/Absolute Angle", getAbsoluteAngle());
     SmartDashboard.putNumber("Claw/Voltage", voltageCommand);
     SmartDashboard.putNumber("Claw/Current", motor.getOutputCurrent());
@@ -399,14 +399,19 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
             + Units.radiansToDegrees(encoder.getVelocity()));
   }
 
-  /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
-  public double getMeasurement() {
+  /** Returns the relative claw angle using the built in encoder. The units are in degrees */
+  public double getRelativeAngle() {
     // Add the offset from the starting point.
     // return encoder.getPosition() + Units.degreesToRadians(clawOffset);
-    return encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS;
+    return Math.toDegrees(encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS);
   }
 
-  /** Returns the absolute claw angle. the units are in degrees */
+  /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
+  public double getMeasurement() {
+    return Math.toRadians(getAbsoluteAngle());
+  }
+
+  /** Returns the absolute claw angle. The units are in degrees */
   public double getAbsoluteAngle() {
     // Add the offset from the 0 point of the encoder.
     double angle = absoluteEncoder.getPosition() * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES;
