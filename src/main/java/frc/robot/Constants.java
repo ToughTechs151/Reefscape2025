@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meter;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -199,5 +203,8 @@ public final class Constants {
 
     public static final Boolean ENABLE_VISION = false;
     public static final Boolean USE_ALLIANCE = false;
+
+    public static final Pose2d START_POSE =
+        new Pose2d(new Translation2d(Meter.of(7.95), Meter.of(1.51)), Rotation2d.fromDegrees(180));
   }
 }

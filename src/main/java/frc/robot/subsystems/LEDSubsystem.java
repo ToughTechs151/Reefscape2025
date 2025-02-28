@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class LEDSubsystem extends SubsystemBase {
   /** The port number to which the LED strip is connected. */
-  private static final int PORT = 9;
+  private static final int PORT = 0;
 
   /** The number of LED columns in the strip. */
   private static final int COLUMNS = 30;
