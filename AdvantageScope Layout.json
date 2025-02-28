@@ -7,23 +7,24 @@
       "height": 832,
       "state": {
         "sidebar": {
-          "width": 300,
+          "width": 369,
           "expanded": [
             "/SmartDashboard",
             "/SmartDashboard/IntakeSubsystem",
             "/NT",
             "/NT/SmartDashboard",
             "/command",
-            "/NT/SmartDashboard/swerve",
             "/NT/SmartDashboard/swerve/advantagescope",
-            "/SmartDashboard/Field",
             "/SmartDashboard/swerve",
             "/SmartDashboard/Field/Robot",
-            "/SmartDashboard/Field/OdometryPose"
+            "/SmartDashboard/Field/OdometryPose",
+            "/SmartDashboard/swerve/modules",
+            "/SmartDashboard/swerve/modules/frontright",
+            "/DS"
           ]
         },
         "tabs": {
-          "selected": 9,
+          "selected": 2,
           "tabs": [
             {
               "type": 0,
@@ -41,6 +42,19 @@
               "renderer": {
                 "highlight": false
               },
+              "controlsHeight": 0
+            },
+            {
+              "type": 4,
+              "title": "Modes",
+              "controller": [
+                "/command/event",
+                "NT:/SmartDashboard/SendableChooser[0]/selected",
+                "DS:enabled",
+                "DS:autonomous"
+              ],
+              "controllerUUID": "g29vrn50l0y21tisj47k145b4nnqmg3p",
+              "renderer": null,
               "controlsHeight": 0
             },
             {
@@ -148,6 +162,15 @@
                     "visible": true,
                     "options": {
                       "color": "#af2437"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "NT:/SmartDashboard/ElevatorClawSafe",
+                    "logType": "Boolean",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2"
                     }
                   }
                 ],
@@ -264,6 +287,15 @@
                     "options": {
                       "color": "#d993aa"
                     }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "NT:/SmartDashboard/ElevatorClawSafe",
+                    "logType": "Boolean",
+                    "visible": true,
+                    "options": {
+                      "color": "#5f4528"
+                    }
                   }
                 ],
                 "leftLockedRange": null,
@@ -281,7 +313,7 @@
               },
               "controllerUUID": "rbk62j6km055ss1ii718mjm69f7anq7g",
               "renderer": null,
-              "controlsHeight": 200
+              "controlsHeight": 263
             },
             {
               "type": 1,
@@ -476,31 +508,11 @@
                   },
                   {
                     "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/backleft/Raw Drive Velocity",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#e5b31b",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
                     "logKey": "NT:/SmartDashboard/swerve/modules/backright/Speed Setpoint",
                     "logType": "Number",
                     "visible": true,
                     "options": {
                       "color": "#af2437",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/backright/Raw Drive Velocity",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#80588e",
                       "size": "normal"
                     }
                   },
@@ -516,21 +528,43 @@
                   },
                   {
                     "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/frontleft/Raw Drive Velocity",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#c0b487",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
                     "logKey": "NT:/SmartDashboard/swerve/modules/frontright/Speed Setpoint",
                     "logType": "Number",
                     "visible": true,
                     "options": {
                       "color": "#858584",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/backleft/Raw Drive Velocity",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e5b31b",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/backright/Raw Drive Velocity",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/frontleft/Raw Drive Velocity",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#c0b487",
                       "size": "normal"
                     }
                   },
@@ -545,8 +579,26 @@
                     }
                   }
                 ],
-                "rightSources": [],
-                "discreteSources": [],
+                "discreteSources": [
+                  {
+                    "type": "stripes",
+                    "logKey": "DS:enabled",
+                    "logType": "Boolean",
+                    "visible": true,
+                    "options": {
+                      "color": "#d993aa"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "DS:autonomous",
+                    "logType": "Boolean",
+                    "visible": true,
+                    "options": {
+                      "color": "#5f4528"
+                    }
+                  }
+                ],
                 "leftLockedRange": null,
                 "rightLockedRange": null,
                 "leftUnitConversion": {
@@ -562,7 +614,7 @@
               },
               "controllerUUID": "moepgmg15tddz5odx3kasxa0pub8r60x",
               "renderer": null,
-              "controlsHeight": 200
+              "controlsHeight": 243
             },
             {
               "type": 1,
@@ -581,31 +633,11 @@
                   },
                   {
                     "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/backleft/Adjusted Absolute Encoder",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#e5b31b",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
                     "logKey": "NT:/SmartDashboard/swerve/modules/backright/Angle Setpoint",
                     "logType": "Number",
                     "visible": true,
                     "options": {
                       "color": "#af2437",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/backright/Adjusted Absolute Encoder",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#80588e",
                       "size": "normal"
                     }
                   },
@@ -621,21 +653,43 @@
                   },
                   {
                     "type": "stepped",
-                    "logKey": "NT:/SmartDashboard/swerve/modules/frontleft/Adjusted Absolute Encoder",
-                    "logType": "Number",
-                    "visible": true,
-                    "options": {
-                      "color": "#c0b487",
-                      "size": "normal"
-                    }
-                  },
-                  {
-                    "type": "stepped",
                     "logKey": "NT:/SmartDashboard/swerve/modules/frontright/Angle Setpoint",
                     "logType": "Number",
                     "visible": true,
                     "options": {
                       "color": "#858584",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/backleft/Adjusted Absolute Encoder",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e5b31b",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/backright/Adjusted Absolute Encoder",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/swerve/modules/frontleft/Adjusted Absolute Encoder",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#c0b487",
                       "size": "normal"
                     }
                   },
@@ -650,7 +704,6 @@
                     }
                   }
                 ],
-                "rightSources": [],
                 "discreteSources": [],
                 "leftLockedRange": null,
                 "rightLockedRange": null,
@@ -667,7 +720,7 @@
               },
               "controllerUUID": "5t8x3j6xavs5sudpbvxgjiihqra68jyx",
               "renderer": null,
-              "controlsHeight": 200
+              "controlsHeight": 286
             },
             {
               "type": 2,
@@ -675,11 +728,12 @@
               "controller": {
                 "sources": [
                   {
-                    "type": "robotLegacy",
-                    "logKey": "NT:/SmartDashboard/Field/OdometryPose",
+                    "type": "ghostLegacy",
+                    "logKey": "NT:/SmartDashboard/Field/Robot",
                     "logType": "NumberArray",
                     "visible": true,
                     "options": {
+                      "color": "#00ff00",
                       "format": "Pose2d",
                       "units": "degrees"
                     }
@@ -731,7 +785,28 @@
                     }
                   }
                 ],
-                "rightSources": [],
+                "rightSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/PDP/TotalCurrent",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "NT:/SmartDashboard/PDP/Voltage",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e48b32",
+                      "size": "normal"
+                    }
+                  }
+                ],
                 "discreteSources": [],
                 "leftLockedRange": null,
                 "rightLockedRange": null,
