@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -32,6 +33,8 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.regex.Pattern;
+
 import swervelib.SwerveInputStream;
 
 /**
@@ -379,11 +382,13 @@ public class RobotContainer {
   /** Set the LEDs to show robot status. */
   public void setLedStatus() {
     if (!isSafePosition()) {
-      led.setPattern(LEDPattern.solid(Color.kRed));
+      led.setPattern(LEDPattern.solid(Color.kWhite));
     } else if (robotRoller.isCoralInsideRoller()) {
-      led.setPattern(LEDPattern.solid(Color.kGreen));
-    } else {
+      led.setPattern(LEDPattern.rainbow(5,5));
+    } else if (robotElevator.atGoalPosition()){
       led.setPattern(LEDPattern.solid(Color.kBlue));
+    } else {
+      led.setPattern(LEDPattern.solid(Color.kOrange));
     }
   }
 
