@@ -19,7 +19,7 @@
               "period": 0.06,
               "data_type": "boolean",
               "true_color": 4283215696,
-              "false_color": 4282400318,
+              "false_color": 4281348144,
               "true_icon": "None",
               "false_icon": "None"
             }
@@ -57,6 +57,61 @@
               "true_icon": "None",
               "false_icon": "None"
             }
+          },
+          {
+            "title": "Encoder Delta",
+            "x": 896.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Radial Gauge",
+            "properties": {
+              "topic": "/SmartDashboard/Claw/Encoder Delta",
+              "period": 0.06,
+              "data_type": "double",
+              "start_angle": -140.0,
+              "end_angle": 140.0,
+              "min_value": -10.0,
+              "max_value": 10.0,
+              "number_of_labels": 8,
+              "wrap_value": false,
+              "show_pointer": true,
+              "show_ticks": true
+            }
+          },
+          {
+            "title": "Robot Near Reef",
+            "x": 384.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Robot Near Reef",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294967040,
+              "false_color": 4281348144,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "ElevatorClawSafe",
+            "x": 896.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/ElevatorClawSafe",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
           }
         ]
       }
@@ -88,15 +143,32 @@
           },
           {
             "title": "SendableChooser[0]",
-            "x": 256.0,
+            "x": 128.0,
             "y": 0.0,
-            "width": 256.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/SendableChooser[0]",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "Robot Near Reef",
+            "x": 640.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Robot Near Reef",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294967040,
+              "false_color": 4280624421,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]
@@ -296,9 +368,9 @@
         "containers": [
           {
             "title": "Branch",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 1024.0,
+            "x": 1024.0,
+            "y": 384.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -311,7 +383,7 @@
           {
             "title": "Buildtime",
             "x": 0.0,
-            "y": 128.0,
+            "y": 0.0,
             "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
@@ -325,7 +397,7 @@
           {
             "title": "Changes",
             "x": 0.0,
-            "y": 256.0,
+            "y": 128.0,
             "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",
@@ -339,7 +411,7 @@
           {
             "title": "Commit",
             "x": 0.0,
-            "y": 384.0,
+            "y": 256.0,
             "width": 1024.0,
             "height": 128.0,
             "type": "Text Display",

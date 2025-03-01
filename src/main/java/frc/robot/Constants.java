@@ -88,7 +88,7 @@ public final class Constants {
     public static final double POS_INCREMENT = Units.degreesToRadians(1.0); // For small adjustments
     public static final double POSITION_TOLERANCE = Units.degreesToRadians(4.0);
     public static final double VELOCITY_TOLERANCE = Units.degreesToRadians(10.0);
-    public static final double ABSOLUTE_OFFSET_DEGREES = 222.2;
+    public static final double ABSOLUTE_OFFSET_DEGREES = 222.6;
   }
 
   /** Constants used for the Elevator subsystem. */
