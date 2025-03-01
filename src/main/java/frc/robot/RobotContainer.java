@@ -237,7 +237,7 @@ public class RobotContainer {
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-                    ElevatorConstants.ELEVATOR_PROCESSOR,
+                    ElevatorConstants.ELEVATOR_LOAD_CORAL,
                     ClawConstants.CLAW_LEVEL1_RADS,
                     true)
                 .withName("Elevator + Claw: Load Coral"));
@@ -252,7 +252,7 @@ public class RobotContainer {
                     ClawConstants.CLAW_PROCESSOR_RADS,
                     ElevatorConstants.ELEVATOR_PROCESSOR,
                     ClawConstants.CLAW_PROCESSOR_RADS,
-                    true)
+                    false)
                 .withName("Elevator + Claw: Load Processor"));
 
     // Move the elevator and claw to score in Reef Level 1 when the 'A' button is pressed.
