@@ -655,14 +655,23 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Check if the robot if within a 2m radius from the reef center
    *
-   * @return bool true or false denoting if the robot is near the reef
+   * @return bool true or false denoting if the robot is near the reef depending on the Alliance
+   *     color
    */
   public boolean isNearReef() {
     Translation2d currentTrans = getPose().getTranslation();
-    if (DriveConstants.REEF_CENTER.getDistance(currentTrans) < 2) {
-      return true;
+    if (isRedAlliance()) {
+      if (DriveConstants.RED_REEF_CENTER.getDistance(currentTrans) < 2) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      if (DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans) < 2) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
