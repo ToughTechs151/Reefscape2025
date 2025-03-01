@@ -53,10 +53,6 @@ public final class Constants {
   // Set to true to log each frame of command execution. To false to disable.
   public static final boolean COMMAND_EXECUTE_LOG = false;
 
-  // Camera ID
-  public static final int CAMERA_0 = 0;
-  public static final int CAMERA_1 = 1;
-
   /** Constants used for the Claw subsystem. */
   public static final class ClawConstants {
 
@@ -201,7 +197,7 @@ public final class Constants {
 
     public static final double POV_SPEED = 0.05;
 
-    public static final Boolean ENABLE_VISION = false;
+    public static final Boolean ENABLE_VISION = true;
     public static final Boolean USE_ALLIANCE = false;
 
     public static final Pose2d START_POSE =
