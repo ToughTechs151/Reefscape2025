@@ -69,8 +69,8 @@ public final class Constants {
     public static final double CLAW_KS = 0.0;
     public static final double CLAW_KG = 0.1;
     public static final double CLAW_KV_VOLTS_PER_RAD_PER_SEC = 3.5;
-    public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(90);
-    public static final double CLAW_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(360);
+    public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(135.0);
+    public static final double CLAW_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(540.0);
 
     public static final double GEAR_RATIO = 75 * 30 / 12.0;
     public static final double CLAW_RAD_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
@@ -107,8 +107,8 @@ public final class Constants {
     public static final double ELEVATOR_KS = 0.54;
     public static final double ELEVATOR_KG = 0.7;
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
-    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.3;
-    public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 1.2;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.9;
+    public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 3.6;
 
     // Spool Diameter in Inches
     public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
@@ -155,7 +155,7 @@ public final class Constants {
     public static final double ROLLER_KS_VOLTS = 0.0;
     public static final double ROLLER_KV_VOLTS_PER_RPM = 0.0055;
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
-    public static final double ROLLER_SET_POINT_REVERSE_RPM = -1000.0;
+    public static final double ROLLER_SET_POINT_REVERSE_RPM = -750.0;
     public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =

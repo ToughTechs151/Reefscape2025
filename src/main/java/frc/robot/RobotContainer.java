@@ -164,13 +164,15 @@ public class RobotContainer {
         moveClawAndElevator(
             ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
             ElevatorConstants.ELEVATOR_LEVEL1,
-            ClawConstants.CLAW_LEVEL1_RADS));
+            ClawConstants.CLAW_LEVEL1_RADS,
+            false));
     NamedCommands.registerCommand(
         "LoadCoral",
         moveClawAndElevator(
             ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
             ElevatorConstants.ELEVATOR_PROCESSOR,
-            ClawConstants.CLAW_LEVEL1_RADS));
+            ClawConstants.CLAW_LEVEL1_RADS,
+            true));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
