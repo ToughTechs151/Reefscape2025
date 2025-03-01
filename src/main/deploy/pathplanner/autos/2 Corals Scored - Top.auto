@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral Score - Top"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level1Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "To Coral Loading - Top"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LoadCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back To Score - Top"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level1Coral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
