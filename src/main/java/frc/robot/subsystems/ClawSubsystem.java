@@ -247,7 +247,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber("Claw/Angle", getRelativeAngle());
     SmartDashboard.putNumber("Claw/Absolute Angle", getAbsoluteAngle());
     SmartDashboard.putNumber("Claw/Combined Angle", Math.toDegrees(getMeasurement()));
-    SmartDashboard.putNumber("Claw/Encoder Delta", (getRelativeAngle() - getAbsoluteAngle() + 5.0));
+    SmartDashboard.putNumber("Claw/Encoder Delta", (getRelativeAngle() - getAbsoluteAngle()));
     SmartDashboard.putNumber("Claw/Voltage", voltageCommand);
     SmartDashboard.putNumber("Claw/Current", motor.getOutputCurrent());
     SmartDashboard.putNumber("Claw/Temp", motor.getMotorTemperature());
