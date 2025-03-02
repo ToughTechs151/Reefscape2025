@@ -15,11 +15,17 @@
           "data": {
             "name": "Level1Coral"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunRollerReverse"
+          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

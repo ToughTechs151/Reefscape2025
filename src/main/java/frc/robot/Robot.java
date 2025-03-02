@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,6 +27,9 @@ public class Robot extends TimedRobot {
   private RobotContainer robotContainer;
   private DataLogging datalog;
   private Timer disabledTimer;
+  private boolean allianceSet = false;
+  private LEDPattern redBreathe = LEDPattern.solid(Color.kRed).breathe(Seconds.of(4.0));
+  private LEDPattern blueBreathe = LEDPattern.solid(Color.kBlue).breathe(Seconds.of(4.0));
 
   /**
    * {@code robotInit} runs when the robot first starts up. It is used to create the robot
@@ -86,10 +91,23 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().cancelAll();
     this.robotContainer.disableSubsystems();
+
+    allianceSet = false;
   }
 
   @Override
   public void disabledPeriodic() {
+
+    var alliance = DriverStation.getAlliance();
+    if (!allianceSet && alliance.isPresent()) {
+      if (alliance.get() == DriverStation.Alliance.Red) {
+        robotContainer.setLeds(redBreathe);
+      } else {
+        robotContainer.setLeds(blueBreathe);
+      }
+      allianceSet = true;
+    }
+
     // Add code to run repeatedly while disabled.
     if (disabledTimer.hasElapsed(Constants.DriveConstants.WHEEL_LOCK_TIME)) {
       robotContainer.setMotorBrake(false);

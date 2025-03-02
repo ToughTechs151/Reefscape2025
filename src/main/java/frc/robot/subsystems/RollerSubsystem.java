@@ -152,6 +152,8 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     // Setup the encoder scale factors
     motorConfig.encoder.velocityConversionFactor(
         RollerConstants.ROLLER_ROTATIONS_PER_ENCODER_ROTATION);
+    motorConfig.encoder.positionConversionFactor(
+        RollerConstants.ROLLER_ROTATIONS_PER_ENCODER_ROTATION);
 
     rollerMotor.configure(
         motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -209,7 +211,8 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
 
     SmartDashboard.putBoolean("Roller/Enabled", rollerEnabled);
     SmartDashboard.putNumber("Roller/Setpoint", rollerController.getSetpoint());
-    SmartDashboard.putNumber("Roller/Speed", rollerEncoder.getVelocity());
+    SmartDashboard.putNumber("Roller/Speed", getRollerSpeed());
+    SmartDashboard.putNumber("Roller/Rotations", getRollerPosition());
     SmartDashboard.putNumber("Roller/Voltage", rollerVoltageCommand);
     SmartDashboard.putNumber("Roller/Temperature", rollerMotor.getMotorTemperature());
     SmartDashboard.putNumber("Roller/Current", rollerMotor.getOutputCurrent());
@@ -260,7 +263,9 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Loads Coral until CANRange detects Coral and then runs for a short time after. */
   public Command loadCoral() {
     return Commands.sequence(
-        runLoadCoral().until(this::isCoralInsideRoller), runLoadCoral().withTimeout(0.1));
+        runLoadCoral().until(this::isCoralInsideRoller),
+        runLoadCoral().withTimeout(0.1),
+        Commands.runOnce(() -> rollerEncoder.setPosition(0)));
   }
 
   /** Returns a Command that runs the motor in reverse to load coral. */
@@ -345,6 +350,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns the Roller speed for PID control and logging (Units are RPM). */
   public double getRollerSpeed() {
     return rollerEncoder.getVelocity();
+  }
+
+  /** Returns the Roller position (Units are number of rotations). */
+  public double getRollerPosition() {
+    return rollerEncoder.getPosition();
   }
 
   /** Returns the Roller motor commanded voltage. */
