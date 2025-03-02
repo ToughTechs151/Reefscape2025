@@ -30,6 +30,8 @@ public class LEDSubsystem extends SubsystemBase {
   /** The {@link AddressableLEDBuffer} object to manage LED color data. */
   private final AddressableLEDBuffer buffer;
 
+  private LEDPattern pattern;
+
   /**
    * Constructs the LEDSubsystem and initializes the LED strip and buffer. Sets the default command
    * to turn the strip off or display a default color.
@@ -45,6 +47,7 @@ public class LEDSubsystem extends SubsystemBase {
   /** Periodically sends the latest LED color data to the LED strip for display. */
   @Override
   public void periodic() {
+    pattern.applyTo(buffer);
     led.setData(buffer);
   }
 
@@ -52,10 +55,10 @@ public class LEDSubsystem extends SubsystemBase {
    * Creates a command to run a specific LED pattern on the strip.
    *
    * @param pattern the {@link LEDPattern} to apply to the LED strip
-   * @return a {@link Command} that applies the pattern to the LED strip
+   * @return a {@link Command} that sets the pattern for the LED strip
    */
   public Command runPattern(LEDPattern pattern) {
-    return run(() -> pattern.applyTo(buffer));
+    return runOnce(() -> this.pattern = pattern);
   }
 
   /**
@@ -64,6 +67,6 @@ public class LEDSubsystem extends SubsystemBase {
    * @param pattern the {@link LEDPattern} to apply to the LED strip
    */
   public void setPattern(LEDPattern pattern) {
-    pattern.applyTo(buffer);
+    this.pattern = pattern;
   }
 }
