@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 meter "
+            "pathName": "Coral Score - Middle Bottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level1Coral"
           }
         }
       ]

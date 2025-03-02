@@ -79,7 +79,7 @@ public class SwerveSubsystem extends SubsystemBase {
               .createSwerveDrive(
                   DriveConstants.MAX_SPEED,
                   new Pose2d(
-                      new Translation2d(Meter.of(1), Meter.of(4)), Rotation2d.fromDegrees(0)));
+                      new Translation2d(Meter.of(0.0), Meter.of(0.0)), Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
       // angleConversionFactor, driveConversionFactor);
@@ -106,6 +106,7 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+    resetOdometry(DriveConstants.START_POSE);
   }
 
   /**
@@ -121,7 +122,7 @@ public class SwerveSubsystem extends SubsystemBase {
             driveCfg,
             controllerCfg,
             DriveConstants.MAX_SPEED,
-            new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
+            new Pose2d(new Translation2d(Meter.of(0), Meter.of(0)), Rotation2d.fromDegrees(0)));
   }
 
   /** Setup the photon vision class. */
@@ -654,14 +655,23 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Check if the robot if within a 2m radius from the reef center
    *
-   * @return bool true or false denoting if the robot is near the reef
+   * @return bool true or false denoting if the robot is near the reef depending on the Alliance
+   *     color
    */
   public boolean isNearReef() {
     Translation2d currentTrans = getPose().getTranslation();
-    if (DriveConstants.REEF_CENTER.getDistance(currentTrans) < 2) {
-      return true;
+    if (isRedAlliance()) {
+      if (DriveConstants.RED_REEF_CENTER.getDistance(currentTrans) < 2) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      if (DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans) < 2) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
