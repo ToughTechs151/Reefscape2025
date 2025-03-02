@@ -414,11 +414,17 @@ public class RobotContainer {
   /** Set the LEDs to show robot status. */
   public void setLedStatus() {
     if (!isSafePosition()) {
-      led.setPattern(LEDPattern.solid(Color.kRed));
+      led.setPattern(LEDPattern.solid(Color.kGray));
+    } else if (drivebase.isNearReef()) {
+      led.setPattern(LEDPattern.solid(Color.kYellow));
     } else if (robotRoller.isCoralInsideRoller()) {
-      led.setPattern(LEDPattern.solid(Color.kGreen));
-    } else {
+      led.setPattern(LEDPattern.rainbow(255, 128));
+    } else if ((robotElevator.getMeasurement() < Units.inchesToMeters(0.5))
+        && (robotClaw.getAbsoluteAngle() < 20.0)) {
+      // Safe to load coral
       led.setPattern(LEDPattern.solid(Color.kBlue));
+    } else {
+      led.setPattern(LEDPattern.solid(Color.kOrange));
     }
   }
 
