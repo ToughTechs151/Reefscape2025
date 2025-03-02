@@ -380,6 +380,8 @@ public class RobotContainer {
   public void setLedStatus() {
     if (!isSafePosition()) {
       led.setPattern(LEDPattern.solid(Color.kGray));
+    } else if (drivebase.isNearReef()) {
+      led.setPattern(LEDPattern.solid(Color.kYellow));
     } else if (robotRoller.isCoralInsideRoller()) {
       led.setPattern(LEDPattern.rainbow(255, 128));
     } else if ((robotElevator.getMeasurement() < Units.inchesToMeters(0.5))
