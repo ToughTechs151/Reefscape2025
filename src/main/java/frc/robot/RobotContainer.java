@@ -173,6 +173,7 @@ public class RobotContainer {
             ElevatorConstants.ELEVATOR_PROCESSOR,
             ClawConstants.CLAW_LEVEL1_RADS,
             true));
+    NamedCommands.registerCommand("RunRollerReverse", robotRoller.runReverse().withTimeout(2));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
