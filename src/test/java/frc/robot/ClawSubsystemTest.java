@@ -67,12 +67,16 @@ class ClawSubsystemTest {
     assertThat(claw.getVoltageCommand()).isZero();
 
     // Position should be set to starting position
-    assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS);
+    assertThat(claw.getRelativeAngle()).isEqualTo(Math.toDegrees(ClawConstants.CLAW_OFFSET_RADS));
   }
 
   @Test
   @DisplayName("Test move command and disable.")
   void testMoveCommand() {
+
+    // Set values for mocked sensors
+    final double fakeAbsolutePosition = Constants.ClawConstants.ABSOLUTE_OFFSET_DEGREES / 360;
+    when(mockAbsoluteEncoder.getPosition()).thenReturn(fakeAbsolutePosition);
 
     // Create a command to move the claw then initialize
     Command moveCommand = claw.moveToPosition(Constants.ClawConstants.CLAW_LEVEL1_RADS);
@@ -142,7 +146,9 @@ class ClawSubsystemTest {
     // assertEquals(expectedCommand, argument.getValue(), DELTA);
 
     // Test position measurements from the encoders
-    assertThat(claw.getMeasurement()).isEqualTo(ClawConstants.CLAW_OFFSET_RADS + fakePosition);
+    assertThat(claw.getMeasurement())
+        .isEqualTo(
+            Math.toRadians(fakeAbsolutePosition * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES));
 
     // Check that telemetry was sent to dashboard
     claw.periodic();
