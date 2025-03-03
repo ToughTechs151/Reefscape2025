@@ -106,7 +106,13 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-    resetOdometry(DriveConstants.START_POSE);
+
+    if (isRedAlliance()) {
+      resetOdometry(DriveConstants.RED_START_POSE);
+    } else {
+      // Reset the odometry to the starting position.
+      resetOdometry(DriveConstants.BLUE_START_POSE);
+    }
   }
 
   /**
