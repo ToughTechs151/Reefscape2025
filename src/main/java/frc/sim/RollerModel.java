@@ -63,6 +63,12 @@ public class RollerModel implements AutoCloseable {
             motors.getCurrent(
                 rollerMotorSim.getAngularVelocityRadPerSec(),
                 rollerSubsystem.getRollerVoltageCommand()));
+
+    // Reset the simulation position if the subsystem has reset position
+    if (rollerSubsystem.getResetSimPosition()) {
+      sparkSim.setPosition(0.0);
+      rollerSubsystem.clearResetSimPosition();
+    }
   }
 
   /** Return the simulated current. */
