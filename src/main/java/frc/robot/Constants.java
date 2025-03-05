@@ -204,8 +204,8 @@ public final class Constants {
     public static final Boolean USE_ALLIANCE = true;
 
     public static final Pose2d BLUE_START_POSE =
-        new Pose2d(new Translation2d(Meter.of(7.45), Meter.of(1.51)), Rotation2d.fromDegrees(180));
+        new Pose2d(new Translation2d(Meter.of(7.5), Meter.of(1.9)), Rotation2d.fromDegrees(180));
     public static final Pose2d RED_START_POSE =
-        new Pose2d(new Translation2d(Meter.of(10.0), Meter.of(6.7)), Rotation2d.fromDegrees(0));
+        new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
   }
 }

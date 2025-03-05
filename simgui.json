@@ -2,7 +2,7 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "columns": 30
+        "columns": 21
       },
       "window": {
         "visible": true
@@ -72,10 +72,14 @@
       "/SmartDashboard/Claw Brake Mode": "Command",
       "/SmartDashboard/Claw Coast Mode": "Command",
       "/SmartDashboard/Claw Reset Position": "Command",
+      "/SmartDashboard/Claw: Shift Position Down": "Command",
+      "/SmartDashboard/Claw: Shift Position Up": "Command",
       "/SmartDashboard/ClawSubsystem": "Subsystem",
       "/SmartDashboard/Elevator Brake Mode": "Command",
       "/SmartDashboard/Elevator Coast Mode": "Command",
       "/SmartDashboard/Elevator Sim": "Mechanism2d",
+      "/SmartDashboard/Elevator: Shift Position Down": "Command",
+      "/SmartDashboard/Elevator: Shift Position Up": "Command",
       "/SmartDashboard/ElevatorSubsystem": "Subsystem",
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
@@ -83,6 +87,7 @@
       "/SmartDashboard/IntakeSubsystem": "Subsystem",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/RollerSubsystem": "Subsystem",
