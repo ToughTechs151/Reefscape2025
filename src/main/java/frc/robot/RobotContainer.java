@@ -227,7 +227,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povUp()
-        .and(() -> !drivebase.isNearReef())
+        .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
@@ -241,7 +241,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povRight()
-        .and(() -> !drivebase.isNearReef())
+        .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
@@ -266,7 +266,7 @@ public class RobotContainer {
     // on the operator's controller.
     operatorController
         .povDown()
-        .and(() -> !drivebase.isNearReef())
+        .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
                     ClawConstants.CLAW_PROCESSOR_RADS,
