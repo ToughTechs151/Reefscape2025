@@ -19,7 +19,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -369,12 +368,6 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     elevatorEnabled = false;
     useOutput();
 
-    // Remove the default command and cancel any command that is active
-    removeDefaultCommand();
-    Command currentCommand = CommandScheduler.getInstance().requiring(this);
-    if (currentCommand != null) {
-      CommandScheduler.getInstance().cancel(currentCommand);
-    }
     DataLogManager.log(
         "Elevator Disabled CurPos=" + getMeasurement() + " CurVel=" + encoder.getVelocity());
   }

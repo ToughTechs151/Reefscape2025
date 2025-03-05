@@ -70,7 +70,7 @@ public class ElevatorModel implements AutoCloseable {
           ElevatorConstants.ELEVATOR_MAX_HEIGHT_METERS / 2.0,
           true,
           0,
-          0.002,
+          0.0002,
           0);
 
   // Create a Mechanism2d visualization of the elevator
