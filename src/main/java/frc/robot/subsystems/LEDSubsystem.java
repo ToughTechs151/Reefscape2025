@@ -22,7 +22,7 @@ public class LEDSubsystem extends SubsystemBase {
   private static final int PORT = 0;
 
   /** The number of LED columns in the strip. */
-  private static final int COLUMNS = 30;
+  private static final int COLUMNS = 42;
 
   /** The {@link AddressableLED} object used to control the LED strip. */
   private final AddressableLED led;

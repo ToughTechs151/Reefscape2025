@@ -151,9 +151,10 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
-    public static final double ROLLER_KP = 0.00075;
-    public static final double ROLLER_KS_VOLTS = 0.0;
-    public static final double ROLLER_KV_VOLTS_PER_RPM = 0.0055;
+    public static final double POSITION_KP = 0.5;
+    public static final double SPEED_KP = 0.00075;
+    public static final double SPEED_KS_VOLTS = 0.0;
+    public static final double SPEED_KV_VOLTS_PER_RPM = 0.0055;
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
     public static final double ROLLER_SET_POINT_REVERSE_RPM = -750.0;
     public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
@@ -202,7 +203,9 @@ public final class Constants {
     public static final Boolean ENABLE_VISION = true;
     public static final Boolean USE_ALLIANCE = true;
 
-    public static final Pose2d START_POSE =
-        new Pose2d(new Translation2d(Meter.of(7.95), Meter.of(1.51)), Rotation2d.fromDegrees(180));
+    public static final Pose2d BLUE_START_POSE =
+        new Pose2d(new Translation2d(Meter.of(7.45), Meter.of(1.51)), Rotation2d.fromDegrees(180));
+    public static final Pose2d RED_START_POSE =
+        new Pose2d(new Translation2d(Meter.of(10.0), Meter.of(6.7)), Rotation2d.fromDegrees(0));
   }
 }

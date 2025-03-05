@@ -59,7 +59,7 @@ public final class Constants {
       throw new IllegalStateException("RollerSimConstants Utility Class");
     }
 
-    public static final double ROLLER_MOI_KG_METERS2 = 0.02;
+    public static final double ROLLER_MOI_KG_METERS2 = 0.01;
   }
 
   /** Launcher simulation constants. */

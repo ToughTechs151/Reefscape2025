@@ -101,11 +101,13 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   private final RelativeEncoder rollerEncoder;
   private final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
-  private PIDController rollerController = new PIDController(RollerConstants.ROLLER_KP, 0.0, 0.0);
+  private PIDController speedController = new PIDController(RollerConstants.SPEED_KP, 0.0, 0.0);
+  private PIDController positionController =
+      new PIDController(RollerConstants.POSITION_KP, 0.0, 0.0);
 
   SimpleMotorFeedforward feedforward =
       new SimpleMotorFeedforward(
-          RollerConstants.ROLLER_KS_VOLTS, RollerConstants.ROLLER_KV_VOLTS_PER_RPM, 0.0);
+          RollerConstants.SPEED_KS_VOLTS, RollerConstants.SPEED_KV_VOLTS_PER_RPM, 0.0);
 
   private double pidOutput = 0.0;
   private double newFeedforward = 0;
@@ -113,15 +115,22 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   private double rollerVoltageCommand = 0.0;
 
   // Setup tunable numbers for the Roller.
-  private TunableNumber kp = new TunableNumber("RollerKP", RollerConstants.ROLLER_KP);
-  private TunableNumber ks = new TunableNumber("RollerKS", RollerConstants.ROLLER_KS_VOLTS);
-  private TunableNumber kv = new TunableNumber("RollerKV", RollerConstants.ROLLER_KV_VOLTS_PER_RPM);
+  private TunableNumber positionKp =
+      new TunableNumber("RollerPositionKP", RollerConstants.POSITION_KP);
+  private TunableNumber speedKp = new TunableNumber("RollerSpeedKP", RollerConstants.SPEED_KP);
+  private TunableNumber speedKs =
+      new TunableNumber("RollerSpeedKS", RollerConstants.SPEED_KS_VOLTS);
+  private TunableNumber speedKv =
+      new TunableNumber("RollerSpeedKV", RollerConstants.SPEED_KV_VOLTS_PER_RPM);
   private TunableNumber forwardSetSpeed =
       new TunableNumber("RollerForwardRPM", RollerConstants.ROLLER_SET_POINT_FORWARD_RPM);
   private TunableNumber reverseSetSpeed =
       new TunableNumber("RollerReverseRPM", RollerConstants.ROLLER_SET_POINT_REVERSE_RPM);
   private TunableNumber loadSetSpeed =
       new TunableNumber("RollerLoadRPM", RollerConstants.ROLLER_LOAD_CORAL_RPM);
+
+  // Flag to reset the Roller position in simulation
+  private boolean resetSimPosition = false;
 
   /** Create a new RollerSubsystem controlled by a Profiled PID COntroller . */
   public RollerSubsystem(Hardware rollerHardware) {
@@ -137,11 +146,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     initializeCANRange();
 
     // Set tolerances that will be used to determine when the Roller is at the goal velocity.
-    rollerController.setTolerance(RollerConstants.ROLLER_TOLERANCE_RPM);
+    speedController.setTolerance(RollerConstants.ROLLER_TOLERANCE_RPM);
 
     disableRoller();
 
-    setDefaultCommand(runOnce(this::disableRoller).andThen(run(() -> {})).withName("Idle"));
+    setDefaultCommand(holdPosition().withName("Hold Position"));
   }
 
   private void initRollerMotor() {
@@ -210,33 +219,31 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   public void periodic() {
 
     SmartDashboard.putBoolean("Roller/Enabled", rollerEnabled);
-    SmartDashboard.putNumber("Roller/Setpoint", rollerController.getSetpoint());
+    SmartDashboard.putNumber("Roller/Setpoint", speedController.getSetpoint());
     SmartDashboard.putNumber("Roller/Speed", getRollerSpeed());
     SmartDashboard.putNumber("Roller/Rotations", getRollerPosition());
     SmartDashboard.putNumber("Roller/Voltage", rollerVoltageCommand);
     SmartDashboard.putNumber("Roller/Temperature", rollerMotor.getMotorTemperature());
     SmartDashboard.putNumber("Roller/Current", rollerMotor.getOutputCurrent());
+    SmartDashboard.putBoolean("Roller/Detected", isCoralInsideRoller());
 
     if (Constants.SD_SHOW_ROLLER_EXTENDED_LOGGING_DATA) {
       SmartDashboard.putNumber("Roller/Feedforward", newFeedforward);
       SmartDashboard.putNumber("Roller/PID output", pidOutput);
+      SmartDashboard.putNumber(
+          "Roller/Detector Distance", canRange.getDistance().getValueAsDouble());
+      SmartDashboard.putNumber(
+          "Roller/Detector Strength", canRange.getSignalStrength().getValueAsDouble());
     }
-
-    // Get distance, signal strength and detected. Get calls automatically call refresh(),
-    // no need to manually refresh.
-
-    SmartDashboard.putNumber("CANRange/Distance", canRange.getDistance().getValueAsDouble());
-    SmartDashboard.putNumber("CANRange/Strength", canRange.getSignalStrength().getValueAsDouble());
-    SmartDashboard.putBoolean("CANRange/Detected", isCoralInsideRoller());
   }
 
-  /** Generate the motor command using the PID controller output and feedforward. */
-  public void updateMotorController() {
+  /** Generate the motor command using the speed PID controller output and feedforward. */
+  public void updateSpeedController() {
     if (rollerEnabled) {
       // Calculate the the motor command by adding the PID controller output and feedforward to run
       // the Roller at the desired speed. Store the individual values for logging.
-      pidOutput = rollerController.calculate(getRollerSpeed());
-      newFeedforward = feedforward.calculate(rollerController.getSetpoint());
+      pidOutput = speedController.calculate(getRollerSpeed());
+      newFeedforward = feedforward.calculate(speedController.getSetpoint());
       rollerVoltageCommand = pidOutput + newFeedforward;
 
     } else {
@@ -250,29 +257,47 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     rollerMotor.setVoltage(rollerVoltageCommand);
   }
 
+  /** Generate the motor command using the position PID controller output. */
+  public void updatePositionController() {
+    if (rollerEnabled) {
+      // Calculate the the motor command using the PID controller output to hold
+      // the Roller at the desired position. Store the individual values for logging.
+      pidOutput = positionController.calculate(getRollerPosition());
+      rollerVoltageCommand = pidOutput;
+
+    } else {
+      // If the Roller isn't enabled, set the motor command to 0. In this state the Roller
+      // will slow down until it stops. Motor EMF braking will cause it to slow down faster
+      // if that mode is used.
+      pidOutput = 0;
+      rollerVoltageCommand = 0;
+    }
+    rollerMotor.setVoltage(rollerVoltageCommand);
+  }
+
   /** Returns a Command that runs the motor forward at the current set speed. */
   public Command runForward() {
     return new FunctionalCommand(
-        () -> startMotor(forwardSetSpeed),
-        this::updateMotorController,
+        () -> startSpeedControl(forwardSetSpeed),
+        this::updateSpeedController,
         interrupted -> disableRoller(),
         () -> false,
         this);
   }
 
-  /** Loads Coral until CANRange detects Coral and then runs for a short time after. */
+  /**
+   * Loads Coral until CANRange detects Coral, runs for a short time after and then holds position.
+   */
   public Command loadCoral() {
     return Commands.sequence(
-        runLoadCoral().until(this::isCoralInsideRoller),
-        runLoadCoral().withTimeout(0.1),
-        Commands.runOnce(() -> rollerEncoder.setPosition(0)));
+        runLoadCoral().until(this::isCoralInsideRoller), runLoadCoral().withTimeout(0.1));
   }
 
   /** Returns a Command that runs the motor in reverse to load coral. */
   public Command runLoadCoral() {
     return new FunctionalCommand(
-        () -> startMotor(loadSetSpeed),
-        this::updateMotorController,
+        () -> startSpeedControl(loadSetSpeed),
+        this::updateSpeedController,
         interrupted -> disableRoller(),
         () -> false,
         this);
@@ -281,20 +306,46 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /** Returns a Command that runs the motor in reverse at the current set speed. */
   public Command runReverse() {
     return new FunctionalCommand(
-        () -> startMotor(reverseSetSpeed),
-        this::updateMotorController,
+        () -> startSpeedControl(reverseSetSpeed),
+        this::updateSpeedController,
+        interrupted -> disableRoller(),
+        () -> false,
+        this);
+  }
+
+  /** Returns a Command that holds the motor at the current position. */
+  public Command holdPosition() {
+    return new FunctionalCommand(
+        this::startPositionControl,
+        this::updatePositionController,
         interrupted -> disableRoller(),
         () -> false,
         this);
   }
 
   /**
-   * Set the setpoint for the motor and start the motor. The PIDController drives the motor to this
-   * speed and holds it there.
+   * Set the setpoint for motor speed and start the motor. The PIDController drives the motor to
+   * this speed and holds it there.
    */
-  private void startMotor(TunableNumber speed) {
+  private void startSpeedControl(TunableNumber speed) {
     loadTunableNumbers();
-    rollerController.setSetpoint(speed.get());
+    speedController.setSetpoint(speed.get());
+
+    // Call enable() to configure and start the controller in case it is not already enabled.
+    enableRoller();
+  }
+
+  /**
+   * Set the setpoint for the motor and start the motor. The PIDController drives the motor to zero
+   * position and holds it there.
+   */
+  private void startPositionControl() {
+    loadTunableNumbers();
+    rollerEncoder.setPosition(0);
+    positionController.setSetpoint(0.0);
+
+    // Set a flag to tell simulation to reset the position
+    resetSimPosition = true;
 
     // Call enable() to configure and start the controller in case it is not already enabled.
     enableRoller();
@@ -302,7 +353,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
 
   /** Returns whether the Roller has reached the set point speed within limits. */
   public boolean rollerAtSetpoint() {
-    return rollerController.atSetpoint();
+    return speedController.atSetpoint();
   }
 
   /**
@@ -316,18 +367,17 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
       loadTunableNumbers();
 
       // Reset the PID controller to clear any previous state
-      rollerController.reset();
+      speedController.reset();
+      positionController.reset();
       rollerEnabled = true;
 
       DataLogManager.log(
-          "Roller Enabled - kP="
-              + rollerController.getP()
-              + " kI="
-              + rollerController.getI()
-              + " kD="
-              + rollerController.getD()
+          "Roller Enabled - Speed kP="
+              + speedController.getP()
+              + " Position kP="
+              + positionController.getP()
               + " Setpoint="
-              + rollerController.getSetpoint()
+              + speedController.getSetpoint()
               + " CurSpeed="
               + getRollerSpeed());
     }
@@ -342,7 +392,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
 
     // Clear the enabled flag and update the controller to zero the motor command
     rollerEnabled = false;
-    updateMotorController();
+    updateSpeedController();
 
     DataLogManager.log("Roller Disabled CurSpeed=" + getRollerSpeed());
   }
@@ -352,7 +402,7 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     return rollerEncoder.getVelocity();
   }
 
-  /** Returns the Roller position (Units are number of rotations). */
+  /** Returns the Roller position (Units are number of wheel rotations). */
   public double getRollerPosition() {
     return rollerEncoder.getPosition();
   }
@@ -373,11 +423,22 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
    */
   private void loadTunableNumbers() {
 
-    // Read values for PID controller
-    rollerController.setP(kp.get());
+    // Read values for PID controllerS
+    speedController.setP(speedKp.get());
+    positionController.setP(positionKp.get());
 
     // Read values for Feedforward and create a new instance
-    feedforward = new SimpleMotorFeedforward(ks.get(), kv.get(), 0.0);
+    feedforward = new SimpleMotorFeedforward(speedKs.get(), speedKv.get(), 0.0);
+  }
+
+  /** Get the flag to reset the Roller position in simulation. */
+  public boolean getResetSimPosition() {
+    return resetSimPosition;
+  }
+
+  /** Clear the flag to reset the Roller position in simulation. */
+  public void clearResetSimPosition() {
+    resetSimPosition = false;
   }
 
   /** Close any objects that support it. */
