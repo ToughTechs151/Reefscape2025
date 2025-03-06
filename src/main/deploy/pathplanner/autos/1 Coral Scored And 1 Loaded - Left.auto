@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
+            "name": "ScoreCoral"
           }
         },
         {
@@ -26,12 +26,6 @@
           "type": "path",
           "data": {
             "pathName": "To Coral Loading - Top"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadCoral"
           }
         }
       ]

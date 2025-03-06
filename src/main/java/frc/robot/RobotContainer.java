@@ -174,6 +174,16 @@ public class RobotContainer {
             ClawConstants.CLAW_LEVEL1_RADS,
             true));
     NamedCommands.registerCommand("RunRollerReverse", robotRoller.runReverse().withTimeout(2));
+    NamedCommands.registerCommand(
+      "ScoreCoral", 
+      Commands.sequence(
+        robotElevator.moveToPosition(
+          ElevatorConstants.ELEVATOR_LEVEL1), 
+          Commands.race(
+            robotRoller.runReverse().withTimeout(2), 
+            robotElevator.holdPosition()), 
+          robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL), 
+          Commands.runOnce(robotElevator::disable)));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();

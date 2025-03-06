@@ -13,13 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunRollerReverse"
+            "name": "ScoreCoral"
           }
         },
         {
@@ -32,12 +26,6 @@
           "type": "path",
           "data": {
             "pathName": "To Coral Loading - Bottom"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadCoral"
           }
         },
         {
@@ -55,13 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunRollerReverse"
+            "name": "ScoreCoral"
           }
         }
       ]

@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Coral Score - Top"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoral"
+            "pathName": "Drive 1m Left"
           }
         }
       ]
