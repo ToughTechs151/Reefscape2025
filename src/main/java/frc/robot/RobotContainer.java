@@ -159,31 +159,14 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Named Commands for Autos
+    NamedCommands.registerCommand("LoadCoral", robotRoller.loadCoral().withTimeout(2.5));
     NamedCommands.registerCommand(
-        "Level1Coral",
-        moveClawAndElevator(
-            ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-            ElevatorConstants.ELEVATOR_LEVEL1,
-            ClawConstants.CLAW_LEVEL1_RADS,
-            false));
-    NamedCommands.registerCommand(
-        "LoadCoral",
-        moveClawAndElevator(
-            ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-            ElevatorConstants.ELEVATOR_PROCESSOR,
-            ClawConstants.CLAW_LEVEL1_RADS,
-            true));
-    NamedCommands.registerCommand("RunRollerReverse", robotRoller.runReverse().withTimeout(2));
-    NamedCommands.registerCommand(
-      "ScoreCoral", 
-      Commands.sequence(
-        robotElevator.moveToPosition(
-          ElevatorConstants.ELEVATOR_LEVEL1), 
-          Commands.race(
-            robotRoller.runReverse().withTimeout(2), 
-            robotElevator.holdPosition()), 
-          robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL), 
-          Commands.runOnce(robotElevator::disable)));
+        "ScoreCoral",
+        Commands.sequence(
+            robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LEVEL1),
+            Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
+            robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
+            Commands.runOnce(robotElevator::disable)));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();

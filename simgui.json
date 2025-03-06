@@ -194,6 +194,9 @@
         "Roller": {
           "open": true
         },
+        "SendableChooser[0]": {
+          "open": true
+        },
         "TunableNumbers": {
           "open": true
         },

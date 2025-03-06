@@ -27,6 +27,12 @@
           "data": {
             "pathName": "To Coral Loading - Top"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LoadCoral"
+          }
         }
       ]
     }
