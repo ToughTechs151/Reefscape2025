@@ -134,7 +134,7 @@ public final class Constants {
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;
     public static final double ELEVATOR_MAX_HEIGHT_METERS = Units.inchesToMeters(63);
 
-    public static final double POSITION_TOLERANCE_METERS = 0.03;
+    public static final double POSITION_TOLERANCE_METERS = 0.04;
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
 
     public static final double POS_INCREMENT = Units.inchesToMeters(1.0); // For small adjustments

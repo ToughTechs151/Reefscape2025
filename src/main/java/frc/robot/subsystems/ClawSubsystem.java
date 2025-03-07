@@ -253,6 +253,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber("Claw/Temp", motor.getMotorTemperature());
     SmartDashboard.putNumber("Claw/SetPt Pos", Units.radiansToDegrees(setpoint.position));
     SmartDashboard.putBoolean("Claw/Encoder Valid", absoluteEncoderValid);
+    SmartDashboard.putBoolean("Claw/At Goal", atGoalPosition());
 
     if (Constants.SD_SHOW_CLAW_EXTENDED_LOGGING_DATA) {
       SmartDashboard.putNumber("Claw/Feedforward", newFeedforward);

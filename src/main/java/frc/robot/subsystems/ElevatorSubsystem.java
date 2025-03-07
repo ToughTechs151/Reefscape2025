@@ -227,6 +227,7 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     SmartDashboard.putNumber("Elevator/PID output", output);
     SmartDashboard.putNumber("Elevator/SetPt Pos", setpoint.position);
     SmartDashboard.putNumber("Elevator/SetPt Vel", setpoint.velocity);
+    SmartDashboard.putBoolean("Elevator/At Goal", atGoalPosition());
   }
 
   /** Generate the motor command using the PID controller output and feedforward. */
