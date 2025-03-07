@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Coral Score - Bottom"
+            "pathName": "Coral Score - Middle Bottom"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunRollerReverse"
+            "name": "ScoreCoral"
           }
         }
       ]

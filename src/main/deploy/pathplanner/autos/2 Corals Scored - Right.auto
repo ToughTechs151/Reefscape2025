@@ -13,13 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunRollerReverse"
+            "name": "ScoreCoral"
           }
         },
         {
@@ -41,12 +35,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Back To Score - Bottom"
@@ -55,13 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunRollerReverse"
+            "name": "ScoreCoral"
           }
         }
       ]

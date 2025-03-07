@@ -6,9 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -159,21 +156,14 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Named Commands for Autos
+    NamedCommands.registerCommand("LoadCoral", robotRoller.loadCoral().withTimeout(2.5));
     NamedCommands.registerCommand(
-        "Level1Coral",
-        moveClawAndElevator(
-            ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-            ElevatorConstants.ELEVATOR_LEVEL1,
-            ClawConstants.CLAW_LEVEL1_RADS,
-            false));
-    NamedCommands.registerCommand(
-        "LoadCoral",
-        moveClawAndElevator(
-            ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-            ElevatorConstants.ELEVATOR_PROCESSOR,
-            ClawConstants.CLAW_LEVEL1_RADS,
-            true));
-    NamedCommands.registerCommand("RunRollerReverse", robotRoller.runReverse().withTimeout(2));
+        "ScoreCoral",
+        Commands.sequence(
+            robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LEVEL1),
+            Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
+            robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
+            Commands.runOnce(robotElevator::disable)));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -198,11 +188,11 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
     // Drive to a set position near the reef when 'B' is pressed on the driver's controller
-    driverController
-        .b()
-        .whileTrue(
-            drivebase.driveToPose(
-                new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
+    // driverController
+    // .b()
+    // .whileTrue(
+    // drivebase.driveToPose(
+    // new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
 
     // lock the wheels in a X pattern while left bumper is held
     driverController

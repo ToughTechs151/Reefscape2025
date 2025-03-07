@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Coral Score - Middle Top"
+            "pathName": "Coral Score - Top"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Level1Coral"
+            "name": "ScoreCoral"
           }
         }
       ]
