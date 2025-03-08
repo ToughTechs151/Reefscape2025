@@ -103,7 +103,7 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
     public static final boolean INVERTED = true;
     // Constants tunable through TunableNumbers
-    public static final double ELEVATOR_KP = 12.0;
+    public static final double ELEVATOR_KP = 24.0;
     public static final double ELEVATOR_KS = 0.54;
     public static final double ELEVATOR_KG = 0.7;
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
