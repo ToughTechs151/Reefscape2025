@@ -156,7 +156,9 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // Named Commands for Autos
-    NamedCommands.registerCommand("LoadCoral", robotRoller.loadCoral().withTimeout(2.5));
+    NamedCommands.registerCommand(
+        "LoadCoral",
+        robotRoller.loadCoral().withTimeout(2.5).unless(robotRoller::isCoralInsideRoller));
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(

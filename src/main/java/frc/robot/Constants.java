@@ -103,7 +103,7 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 40;
     public static final boolean INVERTED = true;
     // Constants tunable through TunableNumbers
-    public static final double ELEVATOR_KP = 12.0;
+    public static final double ELEVATOR_KP = 24.0;
     public static final double ELEVATOR_KS = 0.54;
     public static final double ELEVATOR_KG = 0.7;
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
@@ -134,7 +134,7 @@ public final class Constants {
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;
     public static final double ELEVATOR_MAX_HEIGHT_METERS = Units.inchesToMeters(63);
 
-    public static final double POSITION_TOLERANCE_METERS = 0.03;
+    public static final double POSITION_TOLERANCE_METERS = 0.04;
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
 
     public static final double POS_INCREMENT = Units.inchesToMeters(1.0); // For small adjustments
@@ -156,7 +156,7 @@ public final class Constants {
     public static final double SPEED_KS_VOLTS = 0.0;
     public static final double SPEED_KV_VOLTS_PER_RPM = 0.0055;
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
-    public static final double ROLLER_SET_POINT_REVERSE_RPM = -750.0;
+    public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
     public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
