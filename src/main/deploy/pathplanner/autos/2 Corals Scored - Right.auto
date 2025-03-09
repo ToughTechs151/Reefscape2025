@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "To Coral Loading - Bottom"
@@ -35,9 +29,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Back To Score - Bottom"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Back To Score - Bottom"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LoadCoral"
+                }
+              }
+            ]
           }
         },
         {

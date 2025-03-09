@@ -160,7 +160,7 @@ public final class Constants {
     public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
 
     public static final double ROLLER_GEAR_RATIO =
-        30.0 / 12.0; // Ratio of motor rotations to output rotations  
+        30.0 / 12.0; // Ratio of motor rotations to output rotations
     public static final double ROLLER_ROTATIONS_PER_ENCODER_ROTATION = 1.0 / ROLLER_GEAR_RATIO;
     public static final double ROLLER_TOLERANCE_RPM = 20;
 
