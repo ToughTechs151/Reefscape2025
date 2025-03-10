@@ -287,17 +287,17 @@ public class Vision {
     /** Left Camera */
     LEFT_CAM(
         "Arducam_OV9281_Left",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(20)),
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(0)),
         new Translation3d(
-            Units.inchesToMeters(10.6), Units.inchesToMeters(10.0), Units.inchesToMeters(7.9)),
+            Units.inchesToMeters(10.5), Units.inchesToMeters(9.75), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
     /** Right Camera */
     RIGHT_CAM(
         "Arducam_OV9281_Right",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(-20)),
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(0)),
         new Translation3d(
-            Units.inchesToMeters(10.6), Units.inchesToMeters(-10.0), Units.inchesToMeters(7.9)),
+            Units.inchesToMeters(10.5), Units.inchesToMeters(-9.75), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
 
