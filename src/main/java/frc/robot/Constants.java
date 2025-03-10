@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import java.util.List;
 import swervelib.math.Matter;
 
 /**
@@ -207,5 +208,24 @@ public final class Constants {
         new Pose2d(new Translation2d(Meter.of(7.5), Meter.of(1.9)), Rotation2d.fromDegrees(180));
     public static final Pose2d RED_START_POSE =
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
+  }
+
+  /** Constants used for positions on the field. */
+  public static class FieldConstants {
+    private FieldConstants() {
+      throw new IllegalStateException("FieldConstants Utility Class");
+    }
+
+    // Positions of the April Tags on the reef
+    public static final List<Pose2d> REEF_POSITIONS =
+        List.of(
+            new Pose2d(
+                Units.inchesToMeters(530.49), // 6
+                Units.inchesToMeters(130.17),
+                Rotation2d.fromDegrees(-60)),
+            new Pose2d(
+                Units.inchesToMeters(546.87), // 7
+                Units.inchesToMeters(158.50),
+                Rotation2d.fromDegrees(0)));
   }
 }
