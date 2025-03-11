@@ -279,9 +279,9 @@ public final class Constants {
                 Rotation2d.fromDegrees(-60)));
 
     // Offsets for the robot to the left and right of the reef April Tags
-    public static final double REEF_FORWARD_OFFSET = 0.5;
-    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94) / 2;
-    public static final double REEF_LEFT_OFFSET = -REEF_RIGHT_OFFSET;
+    public static final double REEF_FORWARD_OFFSET = 0.4;
+    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94 / 2 - 0.75);
+    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters(-12.94 / 2 - 1.5);
     public static final Translation2d REEF_SHIFT_LEFT =
         new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
     public static final Translation2d REEF_SHIFT_RIGHT =
