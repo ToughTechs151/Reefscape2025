@@ -12,7 +12,6 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
@@ -26,7 +25,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -270,18 +268,11 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return PathFinding command
    */
   public Command driveToPose(Pose2d pose) {
-    // Create the constraints to use while pathfinding
-    PathConstraints constraints =
-        new PathConstraints(
-            swerveDrive.getMaximumChassisVelocity(),
-            4.0,
-            swerveDrive.getMaximumChassisAngularVelocity(),
-            Units.degreesToRadians(720));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands
     return AutoBuilder.pathfindToPose(
         pose,
-        constraints,
+        DriveConstants.DRIVE_POSE_CONSTRAINTS,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
         );
   }
@@ -575,7 +566,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @return true if the red alliance, false if blue. Defaults to false if none is available.
    */
-  private boolean isRedAlliance() {
+  public boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance();
     return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
   }
