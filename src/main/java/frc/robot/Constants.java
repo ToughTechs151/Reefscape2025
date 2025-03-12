@@ -209,6 +209,8 @@ public final class Constants {
     public static final double POV_SPEED = 0.05;
 
     public static final Boolean ENABLE_VISION = true;
+    public static final double MAX_TAG_DISTANCE = 3.0; // meters
+
     public static final Boolean USE_ALLIANCE = true;
 
     public static final Pose2d BLUE_START_POSE =
