@@ -480,6 +480,7 @@ public class RobotContainer {
         new Pose2d(
             nearestPose.getTranslation().plus(shift.rotateBy(nearestPose.getRotation())),
             nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
+    DataLogManager.log("Drive to Reef: " + targetPose);
     return drivebase.driveToPose(targetPose);
   }
 }
