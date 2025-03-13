@@ -35,6 +35,7 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.Comparator;
 import java.util.Set;
 import swervelib.SwerveInputStream;
 
@@ -483,4 +484,23 @@ public class RobotContainer {
     DataLogManager.log("Drive to Reef: " + targetPose);
     return drivebase.driveToPose(targetPose);
   }
+
+  private Command createDriveToNearestCoral() {
+    return new DeferredCommand(
+        () -> {
+            Pose2d currentPose = drivebase.getPose();
+            Pose2d closestPose = Constants.CORAL_POSITIONS.stream()
+                .min(Comparator.comparingDouble(
+                    pose -> currentPose.getTranslation().getDistance(pose.getTranslation())))
+                .orElse(currentPose);
+            DataLogManager.log("Drive to Coral: " + closestPose);
+            return drivebase.driveToPose(closestPose);
+        },
+        Set.of(drivebase)
+    ).withName("Drive to Nearest Coral");
+  }
+
+  private Command driveToNearestCoral = 
+    createDriveToNearestCoral().withName("Drive to Nearest Coral");
+
 }

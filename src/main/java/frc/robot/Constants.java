@@ -6,13 +6,15 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Meter;
 
+import java.util.List;
+
 import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.util.List;
 import swervelib.math.Matter;
 
 /**
@@ -280,6 +282,15 @@ public final class Constants {
                 Units.inchesToMeters(130.17),
                 Rotation2d.fromDegrees(-60)));
 
+
+
+    public static final List<Pose2d> CORAL_POSITIONS = List.of(
+      new Pose2d(365.20 * 0.0254, 241.44 * 0.0254, Rotation2d.fromDegrees(0)),   // Coral 1
+      new Pose2d(365.20 * 0.0254, 75.39 * 0.0254, Rotation2d.fromDegrees(0)),    // Coral 2
+      new Pose2d(530.49 * 0.0254, 130.17 * 0.0254, Rotation2d.fromDegrees(300)), // Coral 3
+      new Pose2d(546.87 * 0.0254, 158.50 * 0.0254, Rotation2d.fromDegrees(0))    // Coral 4
+    ); 
+    
     // Offsets for the robot to the left and right of the reef April Tags
     public static final double REEF_FORWARD_OFFSET = 0.4;
     public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94 / 2 - 0.75);
