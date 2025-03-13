@@ -22,6 +22,8 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -287,17 +289,17 @@ public class Vision {
     /** Left Camera */
     LEFT_CAM(
         "Arducam_OV9281_Left",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(20)),
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(0)),
         new Translation3d(
-            Units.inchesToMeters(10.6), Units.inchesToMeters(10.0), Units.inchesToMeters(7.9)),
+            Units.inchesToMeters(10.5), Units.inchesToMeters(9.75), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
     /** Right Camera */
     RIGHT_CAM(
         "Arducam_OV9281_Right",
-        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(-20)),
+        new Rotation3d(0, Math.toRadians(-20), Math.toRadians(0)),
         new Translation3d(
-            Units.inchesToMeters(10.6), Units.inchesToMeters(-10.0), Units.inchesToMeters(7.9)),
+            Units.inchesToMeters(10.5), Units.inchesToMeters(-9.75), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
 
@@ -379,8 +381,8 @@ public class Vision {
 
       if (Robot.isSimulation()) {
         SimCameraProperties cameraProp = new SimCameraProperties();
-        // A 640 x 480 camera with a 100 degree diagonal FOV.
-        cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(100));
+        // A 1280 x 800 camera with a 79 degree diagonal FOV.
+        cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(79));
         // Approximate detection noise with average and standard deviation error in pixels.
         cameraProp.setCalibError(0.25, 0.08);
         // Set the camera image capture framerate (Note: this is limited by robot loop rate).
@@ -491,9 +493,19 @@ public class Vision {
      */
     private void updateEstimatedGlobalPose() {
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
+      double distance = 0;
+
       for (var change : resultsList) {
-        visionEst = poseEstimator.update(change);
-        updateEstimationStdDevs(visionEst, change.getTargets());
+        // Check the distance to the April Tag and only use result if within a certain range
+        if (change.hasTargets()) {
+          var target = change.getBestTarget();
+          distance = target.getBestCameraToTarget().getTranslation().getNorm();
+        }
+        if (distance < DriveConstants.MAX_TAG_DISTANCE) {
+          visionEst = poseEstimator.update(change);
+          updateEstimationStdDevs(visionEst, change.getTargets());
+        }
+        SmartDashboard.putNumber(camera.getName() + " distance", distance);
       }
       estimatedRobotPose = visionEst;
     }

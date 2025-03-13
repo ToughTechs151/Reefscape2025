@@ -6,11 +6,13 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Meter;
 
+import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import java.util.List;
 import swervelib.math.Matter;
 
 /**
@@ -184,7 +186,13 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
   }
 
+  /** Constants used for the swerve drive subsystem. */
   public static final class DriveConstants {
+
+    private DriveConstants() {
+      throw new IllegalStateException("DriveConstants Utility Class");
+    }
+
     public static final double ROBOT_MASS = 40.0 * 0.453592; // 40lbs * kg per pound
     public static final Matter CHASSIS =
         new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
@@ -201,11 +209,84 @@ public final class Constants {
     public static final double POV_SPEED = 0.05;
 
     public static final Boolean ENABLE_VISION = true;
+    public static final double MAX_TAG_DISTANCE = 3.0; // meters
+
     public static final Boolean USE_ALLIANCE = true;
 
     public static final Pose2d BLUE_START_POSE =
         new Pose2d(new Translation2d(Meter.of(7.5), Meter.of(1.9)), Rotation2d.fromDegrees(180));
     public static final Pose2d RED_START_POSE =
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
+
+    public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
+        new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
+  }
+
+  /** Constants used for positions on the field. */
+  public static class FieldConstants {
+    private FieldConstants() {
+      throw new IllegalStateException("FieldConstants Utility Class");
+    }
+
+    // Positions of the April Tags on the reef
+    public static final List<Pose2d> REEF_POSITIONS =
+        List.of(
+            new Pose2d(
+                Units.inchesToMeters(530.49), // 6
+                Units.inchesToMeters(130.17),
+                Rotation2d.fromDegrees(-60)),
+            new Pose2d(
+                Units.inchesToMeters(546.87), // 7
+                Units.inchesToMeters(158.50),
+                Rotation2d.fromDegrees(0)),
+            new Pose2d(
+                Units.inchesToMeters(530.49), // 8
+                Units.inchesToMeters(186.83),
+                Rotation2d.fromDegrees(60)),
+            new Pose2d(
+                Units.inchesToMeters(497.77), // 9
+                Units.inchesToMeters(186.83),
+                Rotation2d.fromDegrees(120)),
+            new Pose2d(
+                Units.inchesToMeters(481.39), // 10
+                Units.inchesToMeters(158.50),
+                Rotation2d.fromDegrees(180)),
+            new Pose2d(
+                Units.inchesToMeters(497.77), // 11
+                Units.inchesToMeters(130.17),
+                Rotation2d.fromDegrees(-120)),
+            new Pose2d(
+                Units.inchesToMeters(160.39), // 17
+                Units.inchesToMeters(130.17),
+                Rotation2d.fromDegrees(-120)),
+            new Pose2d(
+                Units.inchesToMeters(144.00), // 18
+                Units.inchesToMeters(158.50),
+                Rotation2d.fromDegrees(180)),
+            new Pose2d(
+                Units.inchesToMeters(160.39), // 19
+                Units.inchesToMeters(186.83),
+                Rotation2d.fromDegrees(120)),
+            new Pose2d(
+                Units.inchesToMeters(193.10), // 20
+                Units.inchesToMeters(186.83),
+                Rotation2d.fromDegrees(60)),
+            new Pose2d(
+                Units.inchesToMeters(209.49), // 21
+                Units.inchesToMeters(158.50),
+                Rotation2d.fromDegrees(0)),
+            new Pose2d(
+                Units.inchesToMeters(193.10), // 22
+                Units.inchesToMeters(130.17),
+                Rotation2d.fromDegrees(-60)));
+
+    // Offsets for the robot to the left and right of the reef April Tags
+    public static final double REEF_FORWARD_OFFSET = 0.4;
+    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94 / 2 - 0.75);
+    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters(-12.94 / 2 - 1.5);
+    public static final Translation2d REEF_SHIFT_LEFT =
+        new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
+    public static final Translation2d REEF_SHIFT_RIGHT =
+        new Translation2d(REEF_FORWARD_OFFSET, REEF_RIGHT_OFFSET);
   }
 }

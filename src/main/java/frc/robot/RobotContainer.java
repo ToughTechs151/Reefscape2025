@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -18,11 +21,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -30,6 +35,7 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.Set;
 import swervelib.SwerveInputStream;
 
 /**
@@ -66,6 +72,16 @@ public class RobotContainer {
 
   private final Trigger unsafeTrigger = new Trigger(() -> !isSafePosition());
   private final Trigger safeTrigger = new Trigger(() -> isSafePosition());
+
+  // Commands to drive to the closest face of the reef offset to left or right.
+  private Command driveToClosestReefLeft =
+      new DeferredCommand(
+              () -> createDriveReefCommand(FieldConstants.REEF_SHIFT_LEFT), Set.of(drivebase))
+          .withName("Drive to Reef Left");
+  private Command driveToClosestReefRight =
+      new DeferredCommand(
+              () -> createDriveReefCommand(FieldConstants.REEF_SHIFT_RIGHT), Set.of(drivebase))
+          .withName("Drive to Reef Right");
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -189,12 +205,10 @@ public class RobotContainer {
     // 'RB' is pressed on the driver's controller
     driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
-    // Drive to a set position near the reef when 'B' is pressed on the driver's controller
-    // driverController
-    // .b()
-    // .whileTrue(
-    // drivebase.driveToPose(
-    // new Pose2d(new Translation2d(3.75, 2.65), Rotation2d.fromDegrees(60.0))));
+    // Drive to the closest position near the reef offset to the left/right when 'A' / 'B' is
+    // pressed on the driver's controller
+    driverController.a().whileTrue(driveToClosestReefLeft);
+    driverController.b().whileTrue(driveToClosestReefRight);
 
     // lock the wheels in a X pattern while left bumper is held
     driverController
@@ -454,5 +468,19 @@ public class RobotContainer {
    */
   public RollerSubsystem getRollerSubsystem() {
     return robotRoller;
+  }
+
+  /**
+   * Create a command to drive to a position in front of the nearest reef position and shifted by a
+   * set amount relative to the face of the reef.
+   */
+  private Command createDriveReefCommand(Translation2d shift) {
+    var nearestPose = drivebase.getPose().nearest(FieldConstants.REEF_POSITIONS);
+    var targetPose =
+        new Pose2d(
+            nearestPose.getTranslation().plus(shift.rotateBy(nearestPose.getRotation())),
+            nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
+    DataLogManager.log("Drive to Reef: " + targetPose);
+    return drivebase.driveToPose(targetPose);
   }
 }
