@@ -326,6 +326,55 @@ public class RobotContainer {
 
     // The trigger if we are not in a safe position becomes aborted.
     unsafeTrigger.onTrue(Commands.parallel(robotClaw.abortCommand(), robotElevator.abortCommand()));
+
+    // Shift the Claw Right
+    operatorController
+    .leftStick()
+    .whileTrue(
+        Commands.run(
+            () -> robotClaw.moveToPosition(
+                robotClaw.getAbsoluteAngle() + Constants.ClawConstants.POS_INCREMENT),
+            robotClaw)
+        .andThen(() -> robotClaw.useOutput())
+        .until(robotClaw::atGoalPosition)
+    );
+
+    // Shift the Claw Left
+    operatorController
+    .leftStick()
+    .whileTrue(
+        Commands.run(
+            () -> robotClaw.moveToPosition(
+                robotClaw.getAbsoluteAngle() - Constants.ClawConstants.POS_INCREMENT),
+            robotClaw)
+        .andThen(() -> robotClaw.useOutput())
+        .until(robotClaw::atGoalPosition)
+    );
+
+    // Shift the Elevator Up
+    operatorController
+        .rightStick()
+        .whileTrue(
+        Commands.run(
+            () -> robotElevator.moveToPosition(
+              robotElevator.getMeasurement() + Constants.ElevatorConstants.POS_INCREMENT),
+                robotElevator)
+        .andThen(() -> robotElevator.useOutput())
+        .until(robotElevator::atGoalPosition)
+        );
+
+    // Shift the Elevator Down
+    operatorController
+        .rightStick()
+        .whileTrue(
+        Commands.run(
+            () -> robotElevator.moveToPosition(
+              robotElevator.getMeasurement() - Constants.ElevatorConstants.POS_INCREMENT),
+                robotElevator)
+        .andThen(() -> robotElevator.useOutput())
+        .until(robotElevator::atGoalPosition)
+        );
+
   }
 
   /**
