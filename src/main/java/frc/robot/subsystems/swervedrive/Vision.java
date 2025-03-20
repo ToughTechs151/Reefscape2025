@@ -131,6 +131,7 @@ public class Vision {
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(
             pose.estimatedPose.toPose2d(), pose.timestampSeconds, camera.curStdDevs);
+        field2d.getObject("VisionPose").setPose(pose.estimatedPose.toPose2d());
       }
     }
   }
@@ -494,18 +495,22 @@ public class Vision {
     private void updateEstimatedGlobalPose() {
       Optional<EstimatedRobotPose> visionEst = Optional.empty();
       double distance = 0;
+      double ambiguity = 0;
 
       for (var change : resultsList) {
         // Check the distance to the April Tag and only use result if within a certain range
         if (change.hasTargets()) {
           var target = change.getBestTarget();
           distance = target.getBestCameraToTarget().getTranslation().getNorm();
+          ambiguity = target.getPoseAmbiguity();
         }
-        if (distance < DriveConstants.MAX_TAG_DISTANCE) {
+        if (distance < DriveConstants.MAX_TAG_DISTANCE
+            && ambiguity < DriveConstants.MAX_POSE_AMBIGUITY) {
           visionEst = poseEstimator.update(change);
           updateEstimationStdDevs(visionEst, change.getTargets());
         }
         SmartDashboard.putNumber(camera.getName() + " distance", distance);
+        SmartDashboard.putNumber(camera.getName() + " ambiguity", ambiguity);
       }
       estimatedRobotPose = visionEst;
     }
