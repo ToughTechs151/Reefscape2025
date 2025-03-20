@@ -182,6 +182,21 @@ public class RobotContainer {
             Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
             robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
             Commands.runOnce(robotElevator::disable)));
+    NamedCommands.registerCommand(
+        "ScoreL2Coral",
+        Commands.sequence(
+            moveClawAndElevator(
+                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ElevatorConstants.ELEVATOR_LEVEL2,
+                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                false),
+            Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
+            moveClawAndElevator(
+                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ElevatorConstants.ELEVATOR_LOAD_CORAL,
+                ClawConstants.CLAW_LEVEL1_RADS,
+                true),
+            Commands.runOnce(robotElevator::disable)));
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
