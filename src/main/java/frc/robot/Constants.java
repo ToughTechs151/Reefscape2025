@@ -115,7 +115,7 @@ public final class Constants {
     // Spool Diameter in Inches
     public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
 
-    public static final double GEAR_RATIO = 16.0;
+    public static final double GEAR_RATIO = 15.0;
 
     // Factor of 2 is due to using a cascade elevator
     public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION =
@@ -281,9 +281,9 @@ public final class Constants {
                 Rotation2d.fromDegrees(-60)));
 
     // Offsets for the robot to the left and right of the reef April Tags
-    public static final double REEF_FORWARD_OFFSET = 0.45;
-    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94 / 2 + 1.25);
-    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters(-12.94 / 2 + 0.5);
+    public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(24.0);
+    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(7.0);
+    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters(-7.0);
     public static final Translation2d REEF_SHIFT_LEFT =
         new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
     public static final Translation2d REEF_SHIFT_RIGHT =
