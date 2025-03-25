@@ -220,6 +220,10 @@ public class RobotContainer {
     // 'RB' is pressed on the driver's controller
     driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
+    // Sysid commands for Test mode
+    // driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+    // driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
+
     // Drive to the closest position near the reef offset to the left/right when 'A' / 'B' is
     // pressed on the driver's controller
     driverController.a().whileTrue(driveToClosestReefLeft);
