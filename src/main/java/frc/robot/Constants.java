@@ -232,7 +232,7 @@ public final class Constants {
     // Tolerance distance until going to PPHolonomic PID
     public static final double kDistanceUntilPID = Units.inchesToMeters(3);
     public static final double kRotationGoalBeforePID = 1;
-    public static final LinearVelocity kPathfindEndGoalVelocity = MetersPerSecond.of(10);
+    public static final LinearVelocity kPathfindEndGoalVelocity = MetersPerSecond.of(0.0);
 
     public static final Rotation2d kRotationTolerance = Rotation2d.fromDegrees(2.0);
     public static final Distance kPositionTolerance = Centimeter.of(1.0);
