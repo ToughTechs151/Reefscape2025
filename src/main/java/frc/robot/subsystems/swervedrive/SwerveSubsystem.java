@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.ProfileToPose;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -275,6 +276,58 @@ public class SwerveSubsystem extends SubsystemBase {
         DriveConstants.DRIVE_POSE_CONSTRAINTS,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
         );
+  }
+
+  /**
+   * Use PathPlanner Path finding to go near to a point on the field and then switch to Profiled PID
+   * control for final movement.
+   *
+   * @param pose Target {@link Pose2d} to go to.
+   * @return PathFinding and PID command sequence
+   */
+  public Command driveToPosePID(Pose2d pose) {
+    return
+    // Path find to near the target pose
+    AutoBuilder.pathfindToPose(
+            pose,
+            DriveConstants.DRIVE_POSE_CONSTRAINTS,
+            DriveConstants.kPathfindEndGoalVelocity) // Goal end velocity in meters/sec
+        .until(
+            () ->
+                poseIsNear(
+                    pose,
+                    getPose(),
+                    DriveConstants.kDistanceUntilPID,
+                    DriveConstants.kRotationGoalBeforePID))
+        // Then switch to Holonomic pid control.
+        .andThen(new ProfileToPose(this, pose));
+  }
+
+  /**
+   * Checks given pose matches an expected value within a tolerance.
+   *
+   * @param expected The expected value
+   * @param actual The actual value
+   * @param toleranceMeters The allowed difference between the actual and the expected location in
+   *     meters
+   * @param toleranceDegrees The allowed difference between the actual and the expected angle in
+   *     degrees
+   * @return Whether the actual value is within the allowed tolerance
+   */
+  public boolean poseIsNear(
+      Pose2d expected, Pose2d actual, double toleranceMeters, double toleranceDegrees) {
+    double expectedRotation = expected.getRotation().getDegrees();
+    double actualRotation = actual.getRotation().getDegrees();
+    double expectedX = expected.getX();
+    double expectedY = expected.getY();
+    double actualX = actual.getX();
+    double actualY = actual.getY();
+    // Gets the absolute value of expected pose minus actual pose, if the actual pose is exactly
+    // right it would return 0.
+    // Since it is unreasonable to reach 0 a tolerance is added to reach a reasonable state.
+    return Math.abs(expectedX - actualX) < toleranceMeters
+        && Math.abs(expectedY - actualY) < toleranceMeters
+        && Math.abs(expectedRotation - actualRotation) < toleranceDegrees;
   }
 
   /**

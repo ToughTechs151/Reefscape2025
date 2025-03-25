@@ -5,13 +5,16 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.LinearVelocity;
 import java.util.List;
 import swervelib.math.Matter;
 
@@ -220,6 +223,17 @@ public final class Constants {
 
     public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
         new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
+
+    // Tolerance distance until going to PPHolonomic PID
+    public static final double kDistanceUntilPID = Units.inchesToMeters(3);
+    public static final double kRotationGoalBeforePID = 1;
+    public static final LinearVelocity kPathfindEndGoalVelocity = MetersPerSecond.of(10);
+    public static final double kTranslationTolerance = .1;
+    public static final double kRotationTolerance = 1; // Degrees
+
+    // Pathplanner holonomic controller
+    public static final PIDConstants KP_TRANSLATION_PID = new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants KP_ROTATION_PID = new PIDConstants(5.0, 0.0, 0.0);
   }
 
   /** Constants used for positions on the field. */
