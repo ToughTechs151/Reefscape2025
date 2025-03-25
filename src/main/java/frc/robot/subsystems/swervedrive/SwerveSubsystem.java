@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.ProfileToPose;
+import frc.robot.commands.PositionPIDCommand;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -300,7 +300,8 @@ public class SwerveSubsystem extends SubsystemBase {
                     DriveConstants.kDistanceUntilPID,
                     DriveConstants.kRotationGoalBeforePID))
         // Then switch to Holonomic pid control.
-        .andThen(new ProfileToPose(this, pose));
+        .andThen(
+            PositionPIDCommand.generateCommand(this, pose, DriveConstants.kAutoAlignAdjustTimeout));
   }
 
   /**
@@ -732,6 +733,18 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public ChassisSpeeds getFieldVelocity() {
     return swerveDrive.getFieldVelocity();
+  }
+
+  /**
+   * Gets the current velocity magnitude of the robot.
+   *
+   * @return The current field-relative velocity
+   */
+  public double getSpeed() {
+    ChassisSpeeds fieldVelocity = getFieldVelocity();
+    return Math.sqrt(
+        fieldVelocity.vxMetersPerSecond * fieldVelocity.vxMetersPerSecond
+            + fieldVelocity.vyMetersPerSecond * fieldVelocity.vyMetersPerSecond);
   }
 
   /**
