@@ -279,8 +279,8 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Use PathPlanner Path finding to go near to a point on the field and then switch to Profiled PID
-   * control for final movement.
+   * Use PathPlanner Path finding to go near to a point on the field and then switch to Holonomic
+   * PID control for final movement.
    *
    * @param pose Target {@link Pose2d} to go to.
    * @return PathFinding and PID command sequence
@@ -291,17 +291,18 @@ public class SwerveSubsystem extends SubsystemBase {
     AutoBuilder.pathfindToPose(
             pose,
             DriveConstants.DRIVE_POSE_CONSTRAINTS,
-            DriveConstants.kPathfindEndGoalVelocity) // Goal end velocity in meters/sec
+            DriveConstants.PATH_FIND_END_VELOCITY) // Goal end velocity in meters/sec
         .until(
             () ->
                 poseIsNear(
                     pose,
                     getPose(),
-                    DriveConstants.kDistanceUntilPID,
-                    DriveConstants.kRotationGoalBeforePID))
+                    DriveConstants.DISTANCE_UNTIL_PID,
+                    DriveConstants.ROTATION_GOAL_BEFORE_PID))
         // Then switch to Holonomic pid control.
         .andThen(
-            PositionPIDCommand.generateCommand(this, pose, DriveConstants.kAutoAlignAdjustTimeout));
+            PositionPIDCommand.generateCommand(
+                this, pose, DriveConstants.AUTO_ALIGN_ADJUST_TIMEOUT));
   }
 
   /**

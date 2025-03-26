@@ -226,25 +226,22 @@ public final class Constants {
     public static final Pose2d RED_START_POSE =
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
 
+    // Constants for drive to pose initial path following
     public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
         new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
 
-    // Tolerance distance until going to PPHolonomic PID
-    public static final double kDistanceUntilPID = Units.inchesToMeters(3);
-    public static final double kRotationGoalBeforePID = 1;
-    public static final LinearVelocity kPathfindEndGoalVelocity = MetersPerSecond.of(0.0);
+    public static final double DISTANCE_UNTIL_PID = Units.inchesToMeters(3);
+    public static final double ROTATION_GOAL_BEFORE_PID = 1;
+    public static final LinearVelocity PATH_FIND_END_VELOCITY = MetersPerSecond.of(0.0);
 
-    public static final Rotation2d kRotationTolerance = Rotation2d.fromDegrees(2.0);
-    public static final Distance kPositionTolerance = Centimeter.of(1.0);
-    public static final LinearVelocity kSpeedTolerance = InchesPerSecond.of(1);
-
-    public static final Time kEndTriggerDebounce = Seconds.of(0.1);
-
-    public static final Time kTeleopAlignAdjustTimeout = Seconds.of(2);
-    public static final Time kAutoAlignAdjustTimeout = Seconds.of(0.6);
-    // Pathplanner holonomic controller
-    public static final PIDConstants KP_TRANSLATION_PID = new PIDConstants(5.0, 0.0, 0.0);
-    public static final PIDConstants KP_ROTATION_PID = new PIDConstants(5.0, 0.0, 0.0);
+    // Constants for drive to pose final Holonomic controller
+    public static final Rotation2d ROTATION_TOLERANCE = Rotation2d.fromDegrees(2.0);
+    public static final Distance POSITION_TOLERANCE = Centimeter.of(1.0);
+    public static final LinearVelocity SPEED_TOLERANCE = InchesPerSecond.of(1);
+    public static final Time END_TRIGGER_DEBOUNCE = Seconds.of(0.1);
+    public static final Time AUTO_ALIGN_ADJUST_TIMEOUT = Seconds.of(1.0);
+    public static final PIDConstants TRANSLATION_PID = new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants ROTATION_PID = new PIDConstants(5.0, 0.0, 0.0);
   }
 
   /** Constants used for positions on the field. */

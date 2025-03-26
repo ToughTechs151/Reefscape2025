@@ -82,10 +82,6 @@ public class RobotContainer {
       new DeferredCommand(
               () -> createDriveReefCommand(FieldConstants.REEF_SHIFT_RIGHT), Set.of(drivebase))
           .withName("Drive to Reef Right");
-  private Command driveToClosestReefRightPID =
-      new DeferredCommand(
-              () -> createDrivePoseCommand(FieldConstants.REEF_SHIFT_RIGHT), Set.of(drivebase))
-          .withName("Drive to Reef Right");
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -224,7 +220,7 @@ public class RobotContainer {
     // 'RB' is pressed on the driver's controller
     driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
 
-    // Sysid commands for Test mode
+    // Sysid commands
     // driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
     // driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
 
@@ -232,7 +228,6 @@ public class RobotContainer {
     // pressed on the driver's controller
     driverController.a().whileTrue(driveToClosestReefLeft);
     driverController.b().whileTrue(driveToClosestReefRight);
-    driverController.y().whileTrue(driveToClosestReefRightPID);
 
     // lock the wheels in a X pattern while left bumper is held
     driverController
@@ -499,20 +494,6 @@ public class RobotContainer {
    * set amount relative to the face of the reef.
    */
   private Command createDriveReefCommand(Translation2d shift) {
-    var nearestPose = drivebase.getPose().nearest(FieldConstants.REEF_POSITIONS);
-    var targetPose =
-        new Pose2d(
-            nearestPose.getTranslation().plus(shift.rotateBy(nearestPose.getRotation())),
-            nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
-    DataLogManager.log("Drive to Reef: " + targetPose);
-    return drivebase.driveToPose(targetPose);
-  }
-
-  /**
-   * Create a command to drive to a position in front of the nearest reef position and shifted by a
-   * set amount relative to the face of the reef.
-   */
-  private Command createDrivePoseCommand(Translation2d shift) {
     var nearestPose = drivebase.getPose().nearest(FieldConstants.REEF_POSITIONS);
     var targetPose =
         new Pose2d(

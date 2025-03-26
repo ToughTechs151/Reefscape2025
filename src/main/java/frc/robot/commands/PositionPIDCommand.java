@@ -32,8 +32,7 @@ public class PositionPIDCommand extends Command {
   public SwerveSubsystem mSwerve;
   public final Pose2d goalPose;
   private PPHolonomicDriveController mDriveController =
-      new PPHolonomicDriveController(
-          DriveConstants.KP_TRANSLATION_PID, DriveConstants.KP_ROTATION_PID);
+      new PPHolonomicDriveController(DriveConstants.TRANSLATION_PID, DriveConstants.ROTATION_PID);
 
   private final Trigger endTrigger;
   private final Trigger endTriggerDebounced;
@@ -63,14 +62,14 @@ public class PositionPIDCommand extends Command {
                   MathUtil.isNear(
                       0.0,
                       diff.getRotation().getRotations(),
-                      DriveConstants.kRotationTolerance.getRotations(),
+                      DriveConstants.ROTATION_TOLERANCE.getRotations(),
                       0.0,
                       1.0);
 
               var position =
-                  diff.getTranslation().getNorm() < DriveConstants.kPositionTolerance.in(Meters);
+                  diff.getTranslation().getNorm() < DriveConstants.POSITION_TOLERANCE.in(Meters);
 
-              var speed = mSwerve.getSpeed() < DriveConstants.kSpeedTolerance.in(MetersPerSecond);
+              var speed = mSwerve.getSpeed() < DriveConstants.SPEED_TOLERANCE.in(MetersPerSecond);
 
               // System.out.println("end trigger conditions R: "+ rotation + "\tP: " + position +
               // "\tS: " + speed);
@@ -78,7 +77,7 @@ public class PositionPIDCommand extends Command {
               return rotation && position && speed;
             });
 
-    endTriggerDebounced = endTrigger.debounce(DriveConstants.kEndTriggerDebounce.in(Seconds));
+    endTriggerDebounced = endTrigger.debounce(DriveConstants.END_TRIGGER_DEBOUNCE.in(Seconds));
   }
 
   public static Command generateCommand(SwerveSubsystem swerve, Pose2d goalPose, Time timeout) {
