@@ -218,6 +218,7 @@ public final class Constants {
 
     public static final Boolean ENABLE_VISION = true;
     public static final double MAX_TAG_DISTANCE = 3.0; // meters
+    public static final double MAX_POSE_AMBIGUITY = 0.1;
 
     public static final Boolean USE_ALLIANCE = true;
 
@@ -255,11 +256,11 @@ public final class Constants {
         List.of(
             new Pose2d(
                 Units.inchesToMeters(530.49), // 6
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)),
             new Pose2d(
                 Units.inchesToMeters(546.87), // 7
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(0)),
             new Pose2d(
                 Units.inchesToMeters(530.49), // 8
@@ -271,23 +272,23 @@ public final class Constants {
                 Rotation2d.fromDegrees(120)),
             new Pose2d(
                 Units.inchesToMeters(481.39), // 10
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(180)),
             new Pose2d(
                 Units.inchesToMeters(497.77), // 11
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-120)),
             new Pose2d(
                 Units.inchesToMeters(160.39), // 17
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-120)),
             new Pose2d(
                 Units.inchesToMeters(144.00), // 18
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(180)),
             new Pose2d(
                 Units.inchesToMeters(160.39), // 19
-                Units.inchesToMeters(186.83),
+                Units.inchesToMeters(186.63),
                 Rotation2d.fromDegrees(120)),
             new Pose2d(
                 Units.inchesToMeters(193.10), // 20
@@ -295,11 +296,11 @@ public final class Constants {
                 Rotation2d.fromDegrees(60)),
             new Pose2d(
                 Units.inchesToMeters(209.49), // 21
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(0)),
             new Pose2d(
                 Units.inchesToMeters(193.10), // 22
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)));
 
     // Offsets for the robot to the left and right of the reef April Tags
