@@ -1,9 +1,5 @@
 package frc.robot.subsystems.swervedrive;
 
-import static edu.wpi.first.units.Units.Microseconds;
-import static edu.wpi.first.units.Units.Milliseconds;
-import static edu.wpi.first.units.Units.Seconds;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
@@ -18,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -343,9 +338,6 @@ public class Vision {
     /** Results list to be updated periodically and cached to avoid unnecessary queries. */
     public List<PhotonPipelineResult> resultsList = new ArrayList<>();
 
-    /** Last read from the camera timestamp to prevent lag due to slow data fetches. */
-    private double lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-
     /**
      * Construct a Photon Camera class with help. Standard deviations are fake values, experiment
      * and determine estimation noise on an actual robot.
@@ -458,27 +450,16 @@ public class Vision {
      * timestamp.
      */
     private void updateUnreadResults() {
-      double mostRecentTimestamp =
-          resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
-      double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
-      double debounceTime = Milliseconds.of(15).in(Seconds);
-      for (PhotonPipelineResult result : resultsList) {
-        mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());
-      }
-      if ((resultsList.isEmpty() || (currentTimestamp - mostRecentTimestamp >= debounceTime))
-          && (currentTimestamp - lastReadTimestamp) >= debounceTime) {
-        resultsList =
-            Robot.isReal()
-                ? camera.getAllUnreadResults()
-                : cameraSim.getCamera().getAllUnreadResults();
-        lastReadTimestamp = currentTimestamp;
-        resultsList.sort(
-            (PhotonPipelineResult a, PhotonPipelineResult b) -> {
-              return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
-            });
-        if (!resultsList.isEmpty()) {
-          updateEstimatedGlobalPose();
-        }
+      resultsList =
+          Robot.isReal()
+              ? camera.getAllUnreadResults()
+              : cameraSim.getCamera().getAllUnreadResults();
+      resultsList.sort(
+          (PhotonPipelineResult a, PhotonPipelineResult b) -> {
+            return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
+          });
+      if (!resultsList.isEmpty()) {
+        updateEstimatedGlobalPose();
       }
     }
 
