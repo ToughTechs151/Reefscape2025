@@ -135,6 +135,14 @@
             255.0
           ]
         },
+        "VisionPose": {
+          "color": [
+            0.0,
+            187.21522521972656,
+            255.0,
+            255.0
+          ]
+        },
         "XModules": {
           "arrowColor": [
             0.09611687064170837,
@@ -173,11 +181,27 @@
         }
       },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
+        "VisionEstimation": {
+          "color": [
+            0.0,
+            255.0,
+            238.8607177734375,
+            255.0
+          ]
+        },
         "bottom": 1476,
         "height": 8.210550308227539,
         "left": 150,
         "right": 2961,
         "top": 79,
+        "visibleTargetPoses": {
+          "color": [
+            245.3164825439453,
+            255.0,
+            0.0,
+            255.0
+          ]
+        },
         "width": 16.541748046875,
         "window": {
           "visible": true
@@ -190,21 +214,8 @@
       "SmartDashboard": {
         "CANRange": {
           "open": true
-        },
-        "Roller": {
-          "open": true
-        },
-        "SendableChooser[0]": {
-          "open": true
-        },
-        "TunableNumbers": {
-          "open": true
-        },
-        "open": true
+        }
       }
     }
-  },
-  "NetworkTables Info": {
-    "visible": true
   }
 }
