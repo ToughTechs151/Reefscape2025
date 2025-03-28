@@ -174,7 +174,7 @@ public class RobotContainer {
     // Named Commands for Autos
     NamedCommands.registerCommand(
         "LoadCoral",
-        robotRoller.loadCoral().withTimeout(2.5).unless(robotRoller::isCoralInsideRoller));
+        robotRoller.loadCoral().withTimeout(2.0).unless(robotRoller::isCoralInsideRoller));
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(
@@ -190,13 +190,15 @@ public class RobotContainer {
                 ElevatorConstants.ELEVATOR_LEVEL2,
                 ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                 false),
-            Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
+            Commands.race(robotRoller.runReverse().withTimeout(0.5), robotElevator.holdPosition()),
             moveClawAndElevator(
                 ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                 ElevatorConstants.ELEVATOR_LOAD_CORAL,
                 ClawConstants.CLAW_LEVEL1_RADS,
                 true),
             Commands.runOnce(robotElevator::disable)));
+    NamedCommands.registerCommand("DriveReefLeft", driveToClosestReefLeft);
+    NamedCommands.registerCommand("DriveReefRight", driveToClosestReefRight);
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
