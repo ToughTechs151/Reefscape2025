@@ -190,7 +190,7 @@ public class RobotContainer {
                 ElevatorConstants.ELEVATOR_LEVEL2,
                 ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                 false),
-            Commands.race(robotRoller.runReverse().withTimeout(0.5), robotElevator.holdPosition()),
+            Commands.race(robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
             moveClawAndElevator(
                 ClawConstants.CLAW_SAFE_ANGLE_RADS,
                 ElevatorConstants.ELEVATOR_LOAD_CORAL,
