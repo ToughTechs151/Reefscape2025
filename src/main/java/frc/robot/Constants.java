@@ -88,7 +88,8 @@ public final class Constants {
 
     // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
-    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(45.0);
+    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(42.0);
+    public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(45.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(178.0);
@@ -304,7 +305,7 @@ public final class Constants {
                 Rotation2d.fromDegrees(-60)));
 
     // Offsets for the robot to the left and right of the reef April Tags
-    public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(18.0);
+    public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
     public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters((13 / 2) - 0.375);
     public static final double REEF_LEFT_OFFSET = Units.inchesToMeters((-13 / 2) - 0.375);
     public static final Translation2d REEF_SHIFT_LEFT =

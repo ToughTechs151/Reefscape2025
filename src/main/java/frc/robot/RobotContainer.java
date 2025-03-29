@@ -186,13 +186,13 @@ public class RobotContainer {
         "ScoreL2Coral",
         Commands.sequence(
             moveClawAndElevator(
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ClawConstants.CLAW_SAFE_ANGLE_RADS,
                 ElevatorConstants.ELEVATOR_LEVEL2,
                 ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                 false),
             Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
             moveClawAndElevator(
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ClawConstants.CLAW_SAFE_ANGLE_RADS,
                 ElevatorConstants.ELEVATOR_LOAD_CORAL,
                 ClawConstants.CLAW_LEVEL1_RADS,
                 true),
@@ -255,7 +255,7 @@ public class RobotContainer {
         .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL3_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS,
                     false)
@@ -269,7 +269,7 @@ public class RobotContainer {
         .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL2_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS,
                     false)
@@ -281,7 +281,7 @@ public class RobotContainer {
         .povLeft()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LOAD_CORAL,
                     ClawConstants.CLAW_LEVEL1_RADS,
                     true)
@@ -305,7 +305,7 @@ public class RobotContainer {
         .a()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL1,
                     ClawConstants.CLAW_LEVEL1_RADS,
                     false)
@@ -316,7 +316,7 @@ public class RobotContainer {
         .b()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL2,
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false)
@@ -327,7 +327,7 @@ public class RobotContainer {
         .x()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL3,
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false)
@@ -338,7 +338,7 @@ public class RobotContainer {
         .y()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL4,
                     ClawConstants.CLAW_LEVEL4_RADS,
                     false)
