@@ -174,7 +174,7 @@ public class RobotContainer {
     // Named Commands for Autos
     NamedCommands.registerCommand(
         "LoadCoral",
-        robotRoller.loadCoral().withTimeout(2.5).unless(robotRoller::isCoralInsideRoller));
+        robotRoller.loadCoral().withTimeout(2.0).unless(robotRoller::isCoralInsideRoller));
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(
@@ -186,17 +186,19 @@ public class RobotContainer {
         "ScoreL2Coral",
         Commands.sequence(
             moveClawAndElevator(
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ClawConstants.CLAW_SAFE_ANGLE_RADS,
                 ElevatorConstants.ELEVATOR_LEVEL2,
                 ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                 false),
-            Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
+            Commands.race(robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
             moveClawAndElevator(
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                ClawConstants.CLAW_SAFE_ANGLE_RADS,
                 ElevatorConstants.ELEVATOR_LOAD_CORAL,
                 ClawConstants.CLAW_LEVEL1_RADS,
                 true),
             Commands.runOnce(robotElevator::disable)));
+    NamedCommands.registerCommand("DriveReefLeft", driveToClosestReefLeft);
+    NamedCommands.registerCommand("DriveReefRight", driveToClosestReefRight);
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -219,6 +221,10 @@ public class RobotContainer {
     // Change drive type from field oriented to robot oriented, which is similar to tank drive, when
     // 'RB' is pressed on the driver's controller
     driverController.rightBumper().whileTrue(driveRobotOrientedAngularVelocity);
+
+    // Sysid commands
+    // driverController.a().whileTrue(drivebase.sysIdAngleMotorCommand());
+    // driverController.b().whileTrue(drivebase.sysIdDriveMotorCommand());
 
     // Drive to the closest position near the reef offset to the left/right when 'A' / 'B' is
     // pressed on the driver's controller
@@ -251,7 +257,7 @@ public class RobotContainer {
         .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL3_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS,
                     false)
@@ -265,7 +271,7 @@ public class RobotContainer {
         .and(() -> !drivebase.isNearReef() || operatorController.getHID().getLeftBumperButton())
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL2_ALGAE,
                     ClawConstants.CLAW_ALGAE_RADS,
                     false)
@@ -277,7 +283,7 @@ public class RobotContainer {
         .povLeft()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LOAD_CORAL,
                     ClawConstants.CLAW_LEVEL1_RADS,
                     true)
@@ -301,7 +307,7 @@ public class RobotContainer {
         .a()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL1,
                     ClawConstants.CLAW_LEVEL1_RADS,
                     false)
@@ -312,7 +318,7 @@ public class RobotContainer {
         .b()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL2,
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false)
@@ -323,7 +329,7 @@ public class RobotContainer {
         .x()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL3,
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false)
@@ -334,7 +340,7 @@ public class RobotContainer {
         .y()
         .onTrue(
             moveClawAndElevator(
-                    ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
+                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LEVEL4,
                     ClawConstants.CLAW_LEVEL4_RADS,
                     false)
@@ -496,6 +502,8 @@ public class RobotContainer {
             nearestPose.getTranslation().plus(shift.rotateBy(nearestPose.getRotation())),
             nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
     DataLogManager.log("Drive to Reef: " + targetPose);
-    return drivebase.driveToPose(targetPose);
+    SmartDashboard.putNumber("Drive to Reef X", targetPose.getX());
+    SmartDashboard.putNumber("Drive to Reef Y", targetPose.getY());
+    return drivebase.driveToPosePID(targetPose);
   }
 }

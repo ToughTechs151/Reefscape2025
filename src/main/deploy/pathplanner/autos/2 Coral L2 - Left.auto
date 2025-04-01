@@ -1,0 +1,88 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L2 Coral Score - Top"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveReefLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreL2Coral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L2 To Coral Loading - Top"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LoadCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L2 Back To Score - Top"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LoadCoral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveReefRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreL2Coral"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

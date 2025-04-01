@@ -4,14 +4,22 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Centimeter;
+import static edu.wpi.first.units.Units.InchesPerSecond;
 import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import java.util.List;
 import swervelib.math.Matter;
 
@@ -71,7 +79,7 @@ public final class Constants {
     public static final double CLAW_KS = 0.0;
     public static final double CLAW_KG = 0.1;
     public static final double CLAW_KV_VOLTS_PER_RAD_PER_SEC = 3.5;
-    public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(135.0);
+    public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(180.0);
     public static final double CLAW_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(540.0);
 
     public static final double GEAR_RATIO = 75 * 30 / 12.0;
@@ -80,7 +88,8 @@ public final class Constants {
 
     // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
-    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(45.0);
+    public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(42.0);
+    public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(45.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(178.0);
@@ -106,16 +115,16 @@ public final class Constants {
     public static final boolean INVERTED = true;
     // Constants tunable through TunableNumbers
     public static final double ELEVATOR_KP = 24.0;
-    public static final double ELEVATOR_KS = 0.54;
+    public static final double ELEVATOR_KS = 0;
     public static final double ELEVATOR_KG = 0.7;
-    public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 6.25;
-    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 0.9;
+    public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 5.5;
+    public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 1.3;
     public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 3.6;
 
     // Spool Diameter in Inches
     public static final double SPOOL_DIAMETER = Units.inchesToMeters(1.73);
 
-    public static final double GEAR_RATIO = 16.0;
+    public static final double GEAR_RATIO = 15.0;
 
     // Factor of 2 is due to using a cascade elevator
     public static final double ELEVATOR_METERS_PER_ENCODER_ROTATION =
@@ -210,6 +219,7 @@ public final class Constants {
 
     public static final Boolean ENABLE_VISION = true;
     public static final double MAX_TAG_DISTANCE = 3.0; // meters
+    public static final double MAX_POSE_AMBIGUITY = 0.1;
 
     public static final Boolean USE_ALLIANCE = true;
 
@@ -218,8 +228,22 @@ public final class Constants {
     public static final Pose2d RED_START_POSE =
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
 
+    // Constants for drive to pose initial path following
     public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
         new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
+
+    public static final double DISTANCE_UNTIL_PID = Units.inchesToMeters(3);
+    public static final double ROTATION_GOAL_BEFORE_PID = 1;
+    public static final LinearVelocity PATH_FIND_END_VELOCITY = MetersPerSecond.of(0.0);
+
+    // Constants for drive to pose final Holonomic controller
+    public static final Rotation2d ROTATION_TOLERANCE = Rotation2d.fromDegrees(2.0);
+    public static final Distance POSITION_TOLERANCE = Centimeter.of(1.0);
+    public static final LinearVelocity SPEED_TOLERANCE = InchesPerSecond.of(1);
+    public static final Time END_TRIGGER_DEBOUNCE = Seconds.of(0.1);
+    public static final Time AUTO_ALIGN_ADJUST_TIMEOUT = Seconds.of(1.0);
+    public static final PIDConstants TRANSLATION_PID = new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants ROTATION_PID = new PIDConstants(5.0, 0.0, 0.0);
   }
 
   /** Constants used for positions on the field. */
@@ -233,11 +257,11 @@ public final class Constants {
         List.of(
             new Pose2d(
                 Units.inchesToMeters(530.49), // 6
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)),
             new Pose2d(
                 Units.inchesToMeters(546.87), // 7
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(0)),
             new Pose2d(
                 Units.inchesToMeters(530.49), // 8
@@ -249,23 +273,23 @@ public final class Constants {
                 Rotation2d.fromDegrees(120)),
             new Pose2d(
                 Units.inchesToMeters(481.39), // 10
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(180)),
             new Pose2d(
                 Units.inchesToMeters(497.77), // 11
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-120)),
             new Pose2d(
                 Units.inchesToMeters(160.39), // 17
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-120)),
             new Pose2d(
                 Units.inchesToMeters(144.00), // 18
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(180)),
             new Pose2d(
                 Units.inchesToMeters(160.39), // 19
-                Units.inchesToMeters(186.83),
+                Units.inchesToMeters(186.63),
                 Rotation2d.fromDegrees(120)),
             new Pose2d(
                 Units.inchesToMeters(193.10), // 20
@@ -273,17 +297,17 @@ public final class Constants {
                 Rotation2d.fromDegrees(60)),
             new Pose2d(
                 Units.inchesToMeters(209.49), // 21
-                Units.inchesToMeters(158.50),
+                Units.inchesToMeters(158.30),
                 Rotation2d.fromDegrees(0)),
             new Pose2d(
                 Units.inchesToMeters(193.10), // 22
-                Units.inchesToMeters(130.17),
+                Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)));
 
     // Offsets for the robot to the left and right of the reef April Tags
-    public static final double REEF_FORWARD_OFFSET = 0.45;
-    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters(12.94 / 2 + 1.25);
-    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters(-12.94 / 2 + 0.5);
+    public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
+    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters((13 / 2) - 0.375);
+    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters((-13 / 2) - 0.375);
     public static final Translation2d REEF_SHIFT_LEFT =
         new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
     public static final Translation2d REEF_SHIFT_RIGHT =
