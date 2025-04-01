@@ -11,15 +11,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "DriveReefRight"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreL2Coral"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveReefLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreL2Coral"
+                }
+              }
+            ]
           }
         },
         {

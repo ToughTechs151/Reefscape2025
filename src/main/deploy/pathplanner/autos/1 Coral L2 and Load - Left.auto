@@ -7,19 +7,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Coral Score L2 - Top"
+            "pathName": "L2 Coral Score - Top"
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "ScoreL2Coral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreL2Coral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveReefLeft"
+                }
+              }
+            ]
           }
         },
         {
