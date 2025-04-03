@@ -292,7 +292,7 @@ public class Vision {
         VecBuilder.fill(0.5, 0.5, 1)),
     /** Right Camera */
     RIGHT_CAM(
-        "Arducam_OV9281_Right",
+        "Arducam_OV9281_Right", 
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(25)),
         new Translation3d(
             Units.inchesToMeters(10.75), Units.inchesToMeters(-9.5), Units.inchesToMeters(7.9)),

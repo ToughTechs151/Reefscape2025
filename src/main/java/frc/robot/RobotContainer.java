@@ -212,7 +212,7 @@ public class RobotContainer {
                 ClawConstants.CLAW_LEVEL1_RADS,
                 true),
             Commands.runOnce(robotElevator::disable))
-            .onlyIf(robotRoller::isCoralInsideRoller));
+          .onlyIf(robotRoller::isCoralInsideRoller));
     NamedCommands.registerCommand("DriveReefLeft", driveToClosestReefLeft);
     NamedCommands.registerCommand("DriveReefRight", driveToClosestReefRight);
 
