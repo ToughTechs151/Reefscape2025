@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2Coral"
+                  "name": "ScoreL2CoralCAN"
                 }
               }
             ]
@@ -73,7 +73,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2Coral"
+                  "name": "ScoreL2CoralCAN"
                 }
               }
             ]
