@@ -90,7 +90,7 @@ public final class Constants {
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
     public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(42.0);
     public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(45.0);
-    public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(80.0);
+    public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(65.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
@@ -135,7 +135,7 @@ public final class Constants {
     public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(1.0);
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(26.5);
-    public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(55.0);
+    public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52.0);
     public static final double ELEVATOR_LEVEL2_ALGAE = Units.inchesToMeters(18.0);
     public static final double ELEVATOR_LEVEL3_ALGAE = Units.inchesToMeters(33.9);
     public static final double ELEVATOR_PROCESSOR = Units.inchesToMeters(2.0);
