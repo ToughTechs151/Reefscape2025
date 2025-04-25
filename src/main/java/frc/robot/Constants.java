@@ -304,13 +304,22 @@ public final class Constants {
                 Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)));
 
-    // Offsets for the robot to the left and right of the reef April Tags
+    // Offsets for the robot to the forward and backward sets of left and right of the reef April
+    // Tags
     public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
+    public static final double REEF_BACKWARD_OFFSET =
+        Units.inchesToMeters(REEF_FORWARD_OFFSET + 12);
     public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters((13 / 2) - 0.375);
     public static final double REEF_LEFT_OFFSET = Units.inchesToMeters((-13 / 2) - 0.375);
-    public static final Translation2d REEF_SHIFT_LEFT =
+
+    // Translations for the Robot in Auto Align
+    public static final Translation2d REEF_SHIFT_FOWARD_LEFT =
         new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
-    public static final Translation2d REEF_SHIFT_RIGHT =
+    public static final Translation2d REEF_SHIFT_FORWARD_RIGHT =
         new Translation2d(REEF_FORWARD_OFFSET, REEF_RIGHT_OFFSET);
+    public static final Translation2d REEF_SHIFT_BACKWARD_LEFT =
+        new Translation2d(REEF_BACKWARD_OFFSET, REEF_LEFT_OFFSET);
+    public static final Translation2d REEF_SHIFT_BACKWARD_RIGHT =
+        new Translation2d(REEF_BACKWARD_OFFSET, REEF_RIGHT_OFFSET);
   }
 }
