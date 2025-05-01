@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L2 Coral Score - Bottom"
+            "pathName": "Middle Left L4 Score"
           }
         },
         {
@@ -17,28 +17,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "DriveReefRight"
+                  "name": "DriveReefLeft"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2Coral"
+                  "name": "ScoreL4Coral"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L2 To Coral Loading - Bottom"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LoadCoral"
           }
         }
       ]
