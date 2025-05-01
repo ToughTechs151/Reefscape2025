@@ -234,7 +234,7 @@ public final class Constants {
 
     public static final double DISTANCE_UNTIL_PID = Units.inchesToMeters(3);
     public static final double ROTATION_GOAL_BEFORE_PID = 1;
-    public static final LinearVelocity PATH_FIND_END_VELOCITY = MetersPerSecond.of(0.0);
+    public static final LinearVelocity PATH_FIND_END_VELOCITY = MetersPerSecond.of(1.0);
 
     // Constants for drive to pose final Holonomic controller
     public static final Rotation2d ROTATION_TOLERANCE = Rotation2d.fromDegrees(2.0);
@@ -308,7 +308,7 @@ public final class Constants {
     // Tags
     public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
     public static final double REEF_BACKWARD_OFFSET =
-        Units.inchesToMeters(REEF_FORWARD_OFFSET + 12);
+        REEF_FORWARD_OFFSET + Units.inchesToMeters(12);
     public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters((13 / 2) - 0.375);
     public static final double REEF_LEFT_OFFSET = Units.inchesToMeters((-13 / 2) - 0.375);
 
