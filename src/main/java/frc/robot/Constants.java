@@ -242,8 +242,8 @@ public final class Constants {
     public static final LinearVelocity SPEED_TOLERANCE = InchesPerSecond.of(1);
     public static final Time END_TRIGGER_DEBOUNCE = Seconds.of(0.1);
     public static final Time AUTO_ALIGN_ADJUST_TIMEOUT = Seconds.of(1.0);
-    public static final PIDConstants TRANSLATION_PID = new PIDConstants(5.0, 0.0, 0.0);
-    public static final PIDConstants ROTATION_PID = new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants TRANSLATION_PID = new PIDConstants(2.5, 0.0, 0.0);
+    public static final PIDConstants ROTATION_PID = new PIDConstants(2.5, 0.0, 0.0);
   }
 
   /** Constants used for positions on the field. */
@@ -304,13 +304,18 @@ public final class Constants {
                 Units.inchesToMeters(129.97),
                 Rotation2d.fromDegrees(-60)));
 
+    public static final double CLAW_OFFSET_LEFT_INCHES = 1.25;
+    public static final double CLAW_OFFSET_RIGHT_INCHES = 0.25;
+
     // Offsets for the robot to the forward and backward sets of left and right of the reef April
     // Tags
     public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
     public static final double REEF_BACKWARD_OFFSET =
         REEF_FORWARD_OFFSET + Units.inchesToMeters(12);
-    public static final double REEF_RIGHT_OFFSET = Units.inchesToMeters((13 / 2) - 0.375);
-    public static final double REEF_LEFT_OFFSET = Units.inchesToMeters((-13 / 2) - 0.375);
+    public static final double REEF_RIGHT_OFFSET =
+        Units.inchesToMeters((13 / 2) - CLAW_OFFSET_RIGHT_INCHES);
+    public static final double REEF_LEFT_OFFSET =
+        Units.inchesToMeters((-13 / 2) - CLAW_OFFSET_LEFT_INCHES);
 
     // Translations for the Robot in Auto Align
     public static final Translation2d REEF_SHIFT_FOWARD_LEFT =
