@@ -285,24 +285,24 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param pose Target {@link Pose2d} to go to.
    * @return PathFinding and PID command sequence
    */
-  public Command driveToPosePID(Pose2d pose) {
+  public Command driveToPosePID(Pose2d pose1, Pose2d pose2) {
     return
     // Path find to near the target pose
     AutoBuilder.pathfindToPose(
-            pose,
+            pose1,
             DriveConstants.DRIVE_POSE_CONSTRAINTS,
             DriveConstants.PATH_FIND_END_VELOCITY) // Goal end velocity in meters/sec
         .until(
             () ->
                 poseIsNear(
-                    pose,
+                    pose1,
                     getPose(),
                     DriveConstants.DISTANCE_UNTIL_PID,
                     DriveConstants.ROTATION_GOAL_BEFORE_PID))
         // Then switch to Holonomic pid control.
         .andThen(
             PositionPIDCommand.generateCommand(
-                this, pose, DriveConstants.AUTO_ALIGN_ADJUST_TIMEOUT));
+                this, pose2, DriveConstants.AUTO_ALIGN_ADJUST_TIMEOUT));
   }
 
   /**

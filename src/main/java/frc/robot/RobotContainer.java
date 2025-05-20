@@ -76,11 +76,19 @@ public class RobotContainer {
   // Commands to drive to the closest face of the reef offset to left or right.
   private Command driveToClosestReefLeft =
       new DeferredCommand(
-              () -> createDriveReefCommand(FieldConstants.REEF_SHIFT_LEFT), Set.of(drivebase))
+              () ->
+                  createDriveReefCommand(
+                      FieldConstants.REEF_SHIFT_BACKWARD_LEFT,
+                      FieldConstants.REEF_SHIFT_FOWARD_LEFT),
+              Set.of(drivebase))
           .withName("Drive to Reef Left");
   private Command driveToClosestReefRight =
       new DeferredCommand(
-              () -> createDriveReefCommand(FieldConstants.REEF_SHIFT_RIGHT), Set.of(drivebase))
+              () ->
+                  createDriveReefCommand(
+                      FieldConstants.REEF_SHIFT_BACKWARD_RIGHT,
+                      FieldConstants.REEF_SHIFT_FORWARD_RIGHT),
+              Set.of(drivebase))
           .withName("Drive to Reef Right");
 
   /**
@@ -527,15 +535,25 @@ public class RobotContainer {
    * Create a command to drive to a position in front of the nearest reef position and shifted by a
    * set amount relative to the face of the reef.
    */
-  private Command createDriveReefCommand(Translation2d shift) {
+  private Command createDriveReefCommand(Translation2d shift1, Translation2d shift2) {
     var nearestPose = drivebase.getPose().nearest(FieldConstants.REEF_POSITIONS);
-    var targetPose =
+    var targetPose1 =
         new Pose2d(
-            nearestPose.getTranslation().plus(shift.rotateBy(nearestPose.getRotation())),
+            nearestPose.getTranslation().plus(shift1.rotateBy(nearestPose.getRotation())),
             nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
-    DataLogManager.log("Drive to Reef: " + targetPose);
-    SmartDashboard.putNumber("Drive to Reef X", targetPose.getX());
-    SmartDashboard.putNumber("Drive to Reef Y", targetPose.getY());
-    return drivebase.driveToPosePID(targetPose);
+    DataLogManager.log("Drive to Reef: " + targetPose1);
+
+    var targetPose2 =
+        new Pose2d(
+            nearestPose.getTranslation().plus(shift2.rotateBy(nearestPose.getRotation())),
+            nearestPose.getRotation().minus(new Rotation2d(Math.toRadians(180))));
+    DataLogManager.log("Drive to Reef: " + targetPose2);
+
+    SmartDashboard.putNumber("Drive to Reef 1st X", targetPose1.getX());
+    SmartDashboard.putNumber("Drive to Reef 1st Y", targetPose1.getY());
+    SmartDashboard.putNumber("Drive to Reef 2nd X", targetPose2.getX());
+    SmartDashboard.putNumber("Drive to Reef 2nd Y", targetPose2.getY());
+
+    return drivebase.driveToPosePID(targetPose1, targetPose2);
   }
 }
