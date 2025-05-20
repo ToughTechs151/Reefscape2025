@@ -304,7 +304,7 @@ public class Vision {
         "Arducam_OV9281_Back",
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180)),
         new Translation3d(
-            Units.inchesToMeters(-10.7), Units.inchesToMeters(-10.0), Units.inchesToMeters(9.7)),
+            Units.inchesToMeters(-10.7), Units.inchesToMeters(10.0), Units.inchesToMeters(9.7)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
 
