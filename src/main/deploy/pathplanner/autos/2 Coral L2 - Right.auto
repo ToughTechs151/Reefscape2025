@@ -17,32 +17,32 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "DriveReefRight"
+                  "name": "ScoreL2Coral"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2Coral"
+                  "name": "DriveReefRight"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ClawElevatorLoad"
                 }
               },
               {
-                "type": "parallel",
+                "type": "path",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "ClawElevatorLoad"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "L2 To Coral Loading - Bottom"
-                      }
-                    }
-                  ]
+                  "pathName": "L2 To Coral Loading - Bottom"
                 }
               }
             ]

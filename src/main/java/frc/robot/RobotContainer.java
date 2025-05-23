@@ -188,7 +188,6 @@ public class RobotContainer {
         "LoadCoralLong",
         robotRoller.loadCoral().withTimeout(3.0).unless(robotRoller::isCoralInsideRoller));
 
-
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(
@@ -196,7 +195,7 @@ public class RobotContainer {
             Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
             robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
             Commands.runOnce(robotElevator::disable)));
-    
+
     NamedCommands.registerCommand(
         "ScoreL2Coral",
         Commands.sequence(
@@ -211,12 +210,11 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "ClawElevatorLoad",
-                moveClawAndElevator(
-                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                    ElevatorConstants.ELEVATOR_LOAD_CORAL,
-                    ClawConstants.CLAW_LEVEL1_RADS,
-                    true));
-
+        moveClawAndElevator(
+            ClawConstants.CLAW_SAFE_ANGLE_RADS,
+            ElevatorConstants.ELEVATOR_LOAD_CORAL,
+            ClawConstants.CLAW_LEVEL1_RADS,
+            true));
 
     NamedCommands.registerCommand(
         "ScoreL4Coral",
