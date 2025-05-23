@@ -182,7 +182,13 @@ public class RobotContainer {
     // Named Commands for Autos
     NamedCommands.registerCommand(
         "LoadCoral",
-        robotRoller.loadCoral().withTimeout(2.0).unless(robotRoller::isCoralInsideRoller));
+        robotRoller.loadCoral().withTimeout(1.0).unless(robotRoller::isCoralInsideRoller));
+
+    NamedCommands.registerCommand(
+        "LoadCoralLong",
+        robotRoller.loadCoral().withTimeout(3.0).unless(robotRoller::isCoralInsideRoller));
+
+
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(
@@ -190,23 +196,9 @@ public class RobotContainer {
             Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
             robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
             Commands.runOnce(robotElevator::disable)));
+    
     NamedCommands.registerCommand(
         "ScoreL2Coral",
-        Commands.sequence(
-            moveClawAndElevator(
-                ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                ElevatorConstants.ELEVATOR_LEVEL2,
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-                false),
-            Commands.race(robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
-            moveClawAndElevator(
-                ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                ElevatorConstants.ELEVATOR_LOAD_CORAL,
-                ClawConstants.CLAW_LEVEL1_RADS,
-                true),
-            Commands.runOnce(robotElevator::disable)));
-    NamedCommands.registerCommand(
-        "ScoreL2CoralCAN",
         Commands.sequence(
                 moveClawAndElevator(
                     ClawConstants.CLAW_SAFE_ANGLE_RADS,
@@ -214,14 +206,18 @@ public class RobotContainer {
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false),
                 Commands.race(
-                    robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
+                    robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()))
+            .onlyIf(robotRoller::isCoralInsideRoller));
+
+    NamedCommands.registerCommand(
+        "ClawElevatorLoad",
                 moveClawAndElevator(
                     ClawConstants.CLAW_SAFE_ANGLE_RADS,
                     ElevatorConstants.ELEVATOR_LOAD_CORAL,
                     ClawConstants.CLAW_LEVEL1_RADS,
-                    true),
-                Commands.runOnce(robotElevator::disable))
-            .onlyIf(robotRoller::isCoralInsideRoller));
+                    true));
+
+
     NamedCommands.registerCommand(
         "ScoreL4Coral",
         Commands.sequence(
