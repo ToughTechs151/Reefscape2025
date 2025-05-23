@@ -23,16 +23,29 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2CoralCAN"
+                  "name": "ScoreL2Coral"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ClawElevatorLoad"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "L2 To Coral Loading - Bottom"
+                      }
+                    }
+                  ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L2 To Coral Loading - Bottom"
           }
         },
         {
@@ -54,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "LoadCoral"
+                  "name": "LoadCoralLong"
                 }
               }
             ]
@@ -73,7 +86,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2CoralCAN"
+                  "name": "ScoreL2Coral"
                 }
               }
             ]
