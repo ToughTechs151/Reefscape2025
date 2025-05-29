@@ -17,22 +17,35 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "DriveReefLeft"
+                  "name": "ScoreL2Coral"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2CoralCAN"
+                  "name": "DriveReefLeft"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "L2 To Coral Loading - Top"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ClawElevatorLoad"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L2 To Coral Loading - Top"
+                }
+              }
+            ]
           }
         },
         {
@@ -54,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "LoadCoral"
+                  "name": "LoadCoralLong"
                 }
               }
             ]
@@ -73,10 +86,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ScoreL2CoralCAN"
+                  "name": "ScoreL2Coral"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClawElevatorLoad"
           }
         }
       ]
