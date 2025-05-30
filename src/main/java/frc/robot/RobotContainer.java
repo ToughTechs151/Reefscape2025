@@ -205,7 +205,7 @@ public class RobotContainer {
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false),
                 Commands.race(
-                    robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()))
+                    robotRoller.runReverse().withTimeout(0.5), robotElevator.holdPosition()))
             .onlyIf(robotRoller::isCoralInsideRoller));
 
     NamedCommands.registerCommand(
