@@ -218,7 +218,7 @@ public final class Constants {
     public static final double POV_SPEED = 0.05;
 
     public static final Boolean ENABLE_VISION = true;
-    public static final double MAX_TAG_DISTANCE = 3.0; // meters
+    public static final double MAX_TAG_DISTANCE = 2.75; // meters
     public static final double MAX_POSE_AMBIGUITY = 0.1;
 
     public static final Boolean USE_ALLIANCE = true;
