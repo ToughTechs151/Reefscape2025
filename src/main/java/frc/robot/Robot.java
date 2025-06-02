@@ -124,8 +124,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    robotContainer.setLeds(LEDPattern.solid(Color.kOrange));
-
     if (this.robotContainer == null) {
       DriverStation.reportError("autonomousInit called with null robotContainer", false);
     } else {
@@ -149,6 +147,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     datalog.startLoopTime();
     // Add code to run repeatedly during Autonomous mode.
+    robotContainer.setLedStatus();
   }
 
   /** This function is called once at the start of operator control. */

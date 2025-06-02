@@ -493,7 +493,7 @@ public class RobotContainer {
       // Safe to load coral
       led.setPattern(LEDPattern.solid(Color.kBlue));
     } else {
-      led.setPattern(LEDPattern.solid(Color.kOrange));
+      led.setPattern(LEDPattern.solid(Color.kRed));
     }
   }
 
