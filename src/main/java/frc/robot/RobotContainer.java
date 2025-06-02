@@ -78,18 +78,24 @@ public class RobotContainer {
       new DeferredCommand(
               () ->
                   createDriveReefCommand(
-                      FieldConstants.REEF_SHIFT_BACKWARD_LEFT,
-                      FieldConstants.REEF_SHIFT_FOWARD_LEFT),
+                      FieldConstants.REEF_SHIFT_FIRST_LEFT, FieldConstants.REEF_SHIFT_FINAL_LEFT),
               Set.of(drivebase))
           .withName("Drive to Reef Left");
   private Command driveToClosestReefRight =
       new DeferredCommand(
               () ->
                   createDriveReefCommand(
-                      FieldConstants.REEF_SHIFT_BACKWARD_RIGHT,
-                      FieldConstants.REEF_SHIFT_FORWARD_RIGHT),
+                      FieldConstants.REEF_SHIFT_FIRST_RIGHT, FieldConstants.REEF_SHIFT_FINAL_RIGHT),
               Set.of(drivebase))
           .withName("Drive to Reef Right");
+  private Command driveToClosestReefCenter =
+      new DeferredCommand(
+              () ->
+                  createDriveReefCommand(
+                      FieldConstants.REEF_SHIFT_FIRST_CENTER,
+                      FieldConstants.REEF_SHIFT_FINAL_CENTER),
+              Set.of(drivebase))
+          .withName("Drive to Reef Center");
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -233,6 +239,7 @@ public class RobotContainer {
             Commands.runOnce(robotElevator::disable)));
     NamedCommands.registerCommand("DriveReefLeft", driveToClosestReefLeft);
     NamedCommands.registerCommand("DriveReefRight", driveToClosestReefRight);
+    NamedCommands.registerCommand("DriveReefCenter", driveToClosestReefCenter);
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -264,6 +271,7 @@ public class RobotContainer {
     // pressed on the driver's controller
     driverController.a().whileTrue(driveToClosestReefLeft);
     driverController.b().whileTrue(driveToClosestReefRight);
+    driverController.x().whileTrue(driveToClosestReefCenter);
 
     // lock the wheels in a X pattern while left bumper is held
     driverController
