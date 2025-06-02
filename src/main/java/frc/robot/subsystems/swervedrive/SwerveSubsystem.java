@@ -713,13 +713,13 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean isNearReef() {
     Translation2d currentTrans = getPose().getTranslation();
     if (isRedAlliance()) {
-      if (DriveConstants.RED_REEF_CENTER.getDistance(currentTrans) < 2) {
+      if (DriveConstants.RED_REEF_CENTER.getDistance(currentTrans) < DriveConstants.NEAR_REEF_DISTANCE) {
         return true;
       } else {
         return false;
       }
     } else {
-      if (DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans) < 2) {
+      if (DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans) < DriveConstants.NEAR_REEF_DISTANCE) {
         return true;
       } else {
         return false;

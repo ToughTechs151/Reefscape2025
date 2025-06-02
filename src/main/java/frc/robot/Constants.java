@@ -211,6 +211,7 @@ public final class Constants {
 
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.45, 4);
     public static final Translation2d RED_REEF_CENTER = new Translation2d(12.95, 4);
+    public static final double NEAR_REEF_DISTANCE = 1.7;
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
