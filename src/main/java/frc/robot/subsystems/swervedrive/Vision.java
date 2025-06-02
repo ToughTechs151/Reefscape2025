@@ -485,8 +485,7 @@ public class Vision {
           distance = target.getBestCameraToTarget().getTranslation().getNorm();
           ambiguity = target.getPoseAmbiguity();
         }
-        if (distance < DriveConstants.MAX_TAG_DISTANCE
-            && ambiguity < DriveConstants.MAX_POSE_AMBIGUITY) {
+        if (ambiguity < DriveConstants.MAX_POSE_AMBIGUITY) {
           visionEst = poseEstimator.update(change);
           updateEstimationStdDevs(visionEst, change.getTargets());
         }
@@ -541,7 +540,7 @@ public class Vision {
             estStdDevs = multiTagStdDevs;
           }
           // Increase std devs based on (average) distance
-          if (numTags == 1 && avgDist > 4) {
+          if (numTags == 1 && avgDist > DriveConstants.MAX_TAG_DISTANCE) {
             estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
           } else {
             estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
