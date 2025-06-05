@@ -434,7 +434,7 @@ public class RobotContainer {
     } else {
       double clawAngle = robotClaw.getAbsoluteAngle();
       double elevatorHeight = robotElevator.getMeasurement();
-      if ((clawAngle < 40 && elevatorHeight > Units.inchesToMeters(5))
+      if ((clawAngle < Constants.ClawConstants.CLAW_UNSAFE_RADS && elevatorHeight > Units.inchesToMeters(5))
           || (clawAngle > 60
               && elevatorHeight < Units.inchesToMeters(50)
               && elevatorHeight > Units.inchesToMeters(40))) {
