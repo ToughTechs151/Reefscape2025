@@ -211,6 +211,7 @@ public final class Constants {
 
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.45, 4);
     public static final Translation2d RED_REEF_CENTER = new Translation2d(12.95, 4);
+    public static final double NEAR_REEF_DISTANCE = 1.7;
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
@@ -218,7 +219,7 @@ public final class Constants {
     public static final double POV_SPEED = 0.05;
 
     public static final Boolean ENABLE_VISION = true;
-    public static final double MAX_TAG_DISTANCE = 3.0; // meters
+    public static final double MAX_TAG_DISTANCE = 2.75; // meters
     public static final double MAX_POSE_AMBIGUITY = 0.1;
 
     public static final Boolean USE_ALLIANCE = true;
@@ -309,22 +310,26 @@ public final class Constants {
 
     // Offsets for the robot to the forward and backward sets of left and right of the reef April
     // Tags
-    public static final double REEF_FORWARD_OFFSET = Units.inchesToMeters(16.0);
-    public static final double REEF_BACKWARD_OFFSET =
-        REEF_FORWARD_OFFSET + Units.inchesToMeters(12);
+    public static final double REEF_FINAL_X_OFFSET = Units.inchesToMeters(16.0);
+    public static final double REEF_FIRST_X_OFFSET = REEF_FINAL_X_OFFSET + Units.inchesToMeters(12);
     public static final double REEF_RIGHT_OFFSET =
         Units.inchesToMeters((13 / 2) - CLAW_OFFSET_RIGHT_INCHES);
     public static final double REEF_LEFT_OFFSET =
         Units.inchesToMeters((-13 / 2) - CLAW_OFFSET_LEFT_INCHES);
+    public static final double REEF_CENTER_X_OFFSET = Units.inchesToMeters(8.0);
 
     // Translations for the Robot in Auto Align
-    public static final Translation2d REEF_SHIFT_FOWARD_LEFT =
-        new Translation2d(REEF_FORWARD_OFFSET, REEF_LEFT_OFFSET);
-    public static final Translation2d REEF_SHIFT_FORWARD_RIGHT =
-        new Translation2d(REEF_FORWARD_OFFSET, REEF_RIGHT_OFFSET);
-    public static final Translation2d REEF_SHIFT_BACKWARD_LEFT =
-        new Translation2d(REEF_BACKWARD_OFFSET, REEF_LEFT_OFFSET);
-    public static final Translation2d REEF_SHIFT_BACKWARD_RIGHT =
-        new Translation2d(REEF_BACKWARD_OFFSET, REEF_RIGHT_OFFSET);
+    public static final Translation2d REEF_SHIFT_FINAL_LEFT =
+        new Translation2d(REEF_FINAL_X_OFFSET, REEF_LEFT_OFFSET);
+    public static final Translation2d REEF_SHIFT_FINAL_RIGHT =
+        new Translation2d(REEF_FINAL_X_OFFSET, REEF_RIGHT_OFFSET);
+    public static final Translation2d REEF_SHIFT_FIRST_LEFT =
+        new Translation2d(REEF_FIRST_X_OFFSET, REEF_LEFT_OFFSET);
+    public static final Translation2d REEF_SHIFT_FIRST_RIGHT =
+        new Translation2d(REEF_FIRST_X_OFFSET, REEF_RIGHT_OFFSET);
+    public static final Translation2d REEF_SHIFT_FIRST_CENTER =
+        new Translation2d(REEF_FIRST_X_OFFSET + REEF_CENTER_X_OFFSET, 0.0);
+    public static final Translation2d REEF_SHIFT_FINAL_CENTER =
+        new Translation2d(REEF_FINAL_X_OFFSET + REEF_CENTER_X_OFFSET, 0.0);
   }
 }

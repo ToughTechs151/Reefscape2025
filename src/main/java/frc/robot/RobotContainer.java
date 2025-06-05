@@ -78,18 +78,24 @@ public class RobotContainer {
       new DeferredCommand(
               () ->
                   createDriveReefCommand(
-                      FieldConstants.REEF_SHIFT_BACKWARD_LEFT,
-                      FieldConstants.REEF_SHIFT_FOWARD_LEFT),
+                      FieldConstants.REEF_SHIFT_FIRST_LEFT, FieldConstants.REEF_SHIFT_FINAL_LEFT),
               Set.of(drivebase))
           .withName("Drive to Reef Left");
   private Command driveToClosestReefRight =
       new DeferredCommand(
               () ->
                   createDriveReefCommand(
-                      FieldConstants.REEF_SHIFT_BACKWARD_RIGHT,
-                      FieldConstants.REEF_SHIFT_FORWARD_RIGHT),
+                      FieldConstants.REEF_SHIFT_FIRST_RIGHT, FieldConstants.REEF_SHIFT_FINAL_RIGHT),
               Set.of(drivebase))
           .withName("Drive to Reef Right");
+  private Command driveToClosestReefCenter =
+      new DeferredCommand(
+              () ->
+                  createDriveReefCommand(
+                      FieldConstants.REEF_SHIFT_FIRST_CENTER,
+                      FieldConstants.REEF_SHIFT_FINAL_CENTER),
+              Set.of(drivebase))
+          .withName("Drive to Reef Center");
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular
@@ -182,7 +188,12 @@ public class RobotContainer {
     // Named Commands for Autos
     NamedCommands.registerCommand(
         "LoadCoral",
-        robotRoller.loadCoral().withTimeout(2.0).unless(robotRoller::isCoralInsideRoller));
+        robotRoller.loadCoral().withTimeout(1.0).unless(robotRoller::isCoralInsideRoller));
+
+    NamedCommands.registerCommand(
+        "LoadCoralLong",
+        robotRoller.loadCoral().withTimeout(3.0).unless(robotRoller::isCoralInsideRoller));
+
     NamedCommands.registerCommand(
         "ScoreCoral",
         Commands.sequence(
@@ -190,23 +201,9 @@ public class RobotContainer {
             Commands.race(robotRoller.runReverse().withTimeout(2), robotElevator.holdPosition()),
             robotElevator.moveToPosition(ElevatorConstants.ELEVATOR_LOAD_CORAL),
             Commands.runOnce(robotElevator::disable)));
+
     NamedCommands.registerCommand(
         "ScoreL2Coral",
-        Commands.sequence(
-            moveClawAndElevator(
-                ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                ElevatorConstants.ELEVATOR_LEVEL2,
-                ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
-                false),
-            Commands.race(robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
-            moveClawAndElevator(
-                ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                ElevatorConstants.ELEVATOR_LOAD_CORAL,
-                ClawConstants.CLAW_LEVEL1_RADS,
-                true),
-            Commands.runOnce(robotElevator::disable)));
-    NamedCommands.registerCommand(
-        "ScoreL2CoralCAN",
         Commands.sequence(
                 moveClawAndElevator(
                     ClawConstants.CLAW_SAFE_ANGLE_RADS,
@@ -214,14 +211,17 @@ public class RobotContainer {
                     ClawConstants.CLAW_LEVEL2_AND_LEVEL3_RADS,
                     false),
                 Commands.race(
-                    robotRoller.runReverse().withTimeout(1.0), robotElevator.holdPosition()),
-                moveClawAndElevator(
-                    ClawConstants.CLAW_SAFE_ANGLE_RADS,
-                    ElevatorConstants.ELEVATOR_LOAD_CORAL,
-                    ClawConstants.CLAW_LEVEL1_RADS,
-                    true),
-                Commands.runOnce(robotElevator::disable))
+                    robotRoller.runReverse().withTimeout(0.5), robotElevator.holdPosition()))
             .onlyIf(robotRoller::isCoralInsideRoller));
+
+    NamedCommands.registerCommand(
+        "ClawElevatorLoad",
+        moveClawAndElevator(
+            ClawConstants.CLAW_SAFE_ANGLE_RADS,
+            ElevatorConstants.ELEVATOR_LOAD_CORAL,
+            ClawConstants.CLAW_LEVEL1_RADS,
+            true));
+
     NamedCommands.registerCommand(
         "ScoreL4Coral",
         Commands.sequence(
@@ -239,6 +239,7 @@ public class RobotContainer {
             Commands.runOnce(robotElevator::disable)));
     NamedCommands.registerCommand("DriveReefLeft", driveToClosestReefLeft);
     NamedCommands.registerCommand("DriveReefRight", driveToClosestReefRight);
+    NamedCommands.registerCommand("DriveReefCenter", driveToClosestReefCenter);
 
     // Setup the auto command chooser using the PathPlanner autos
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -270,6 +271,7 @@ public class RobotContainer {
     // pressed on the driver's controller
     driverController.a().whileTrue(driveToClosestReefLeft);
     driverController.b().whileTrue(driveToClosestReefRight);
+    driverController.x().whileTrue(driveToClosestReefCenter);
 
     // lock the wheels in a X pattern while left bumper is held
     driverController
@@ -491,7 +493,7 @@ public class RobotContainer {
       // Safe to load coral
       led.setPattern(LEDPattern.solid(Color.kBlue));
     } else {
-      led.setPattern(LEDPattern.solid(Color.kOrange));
+      led.setPattern(LEDPattern.solid(Color.kRed));
     }
   }
 

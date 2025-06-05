@@ -304,7 +304,7 @@ public class Vision {
         "Arducam_OV9281_Back",
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180)),
         new Translation3d(
-            Units.inchesToMeters(-10.7), Units.inchesToMeters(-10.0), Units.inchesToMeters(9.7)),
+            Units.inchesToMeters(-10.7), Units.inchesToMeters(10.0), Units.inchesToMeters(9.7)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1));
 
@@ -485,8 +485,7 @@ public class Vision {
           distance = target.getBestCameraToTarget().getTranslation().getNorm();
           ambiguity = target.getPoseAmbiguity();
         }
-        if (distance < DriveConstants.MAX_TAG_DISTANCE
-            && ambiguity < DriveConstants.MAX_POSE_AMBIGUITY) {
+        if (ambiguity < DriveConstants.MAX_POSE_AMBIGUITY) {
           visionEst = poseEstimator.update(change);
           updateEstimationStdDevs(visionEst, change.getTargets());
         }
@@ -541,7 +540,7 @@ public class Vision {
             estStdDevs = multiTagStdDevs;
           }
           // Increase std devs based on (average) distance
-          if (numTags == 1 && avgDist > 4) {
+          if (numTags == 1 && avgDist > DriveConstants.MAX_TAG_DISTANCE) {
             estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
           } else {
             estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));

@@ -30,15 +30,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "L2 To Coral Loading - Top"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L2 To Coral Loading - Top"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ClawElevatorLoad"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LoadCoral"
+            "name": "LoadCoralLong"
           }
         }
       ]
