@@ -89,11 +89,12 @@ public final class Constants {
     // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
     public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(42.0);
-    public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(45.0);
+    public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(42.0);
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(65.0);
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(178.0);
     public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
+    public static final double CLAW_UNSAFE_RADS = Units.degreesToRadians(35.0);
     public static final double MIN_ANGLE_RADS = Units.degreesToRadians(18.0);
     public static final double MAX_ANGLE_RADS = Units.degreesToRadians(180.0);
     public static final double POS_INCREMENT = Units.degreesToRadians(1.0); // For small adjustments
