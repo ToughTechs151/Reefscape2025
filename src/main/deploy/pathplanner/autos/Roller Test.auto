@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Drive 1m Middle"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "ScoreL2Coral"
