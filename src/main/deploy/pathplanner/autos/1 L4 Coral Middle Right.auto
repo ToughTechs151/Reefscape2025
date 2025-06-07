@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Right L4 Score"
+            "pathName": "Middle Left L4 Score"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "DriveReefRight"
+                  "name": "DriveReefLeft"
                 }
               },
               {
