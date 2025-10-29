@@ -30,10 +30,8 @@ import frc.robot.Constants.ClawConstants;
 import frc.robot.util.TunableNumber;
 
 /**
- * The {@code ArmSubsystem} class is a subsystem that controls the movement of an claw using a
- * Profiled PID Controller. It uses a CANSparkMax motor and a RelativeEncoder to measure the claw's
- * position. The class provides methods to move the claw to a specific position, hold the claw at
- * the current position, and shift the claw's position up or down by a fixed increment.
+/**
+ * Subsystem that controls the claw mechanism using a Profiled PID Controller for position control.
  *
  * <p>Example Usage:
  *
@@ -100,10 +98,20 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   /** Hardware components for the claw subsystem. */
   public static class Hardware {
+    /** The SparkMax motor used to control the claw. */
     SparkMax motor;
+    /** The relative encoder for position feedback. */
     RelativeEncoder encoder;
+    /** The absolute encoder for position verification. */
     AbsoluteEncoder absoluteEncoder;
 
+    /**
+     * Constructs a Hardware object with the specified motor, encoder, and absolute encoder.
+     *
+     * @param motor the SparkMax motor
+     * @param encoder the relative encoder
+     * @param absoluteEncoder the absolute encoder
+     */
     public Hardware(SparkMax motor, RelativeEncoder encoder, AbsoluteEncoder absoluteEncoder) {
       this.motor = motor;
       this.encoder = encoder;
@@ -153,7 +161,11 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   private TunableNumber maxAcceleration =
       new TunableNumber("ClawMaxAcceleration", ClawConstants.CLAW_MAX_ACCELERATION_RAD_PER_SEC2);
 
-  /** Create a new ClawSubsystem controlled by a Profiled PID COntroller . */
+  /**
+   * Creates a new ClawSubsystem controlled by a Profiled PID Controller.
+   *
+   * @param clawHardware the hardware components for the claw subsystem
+   */
   public ClawSubsystem(Hardware clawHardware) {
     this.motor = clawHardware.motor;
     this.encoder = clawHardware.encoder;
@@ -263,7 +275,12 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     }
   }
 
-  /** Generate the motor command using the PID controller and feedforward. */
+  /**
+   * Generates the motor command using the PID controller and feedforward.
+   * <p>
+   * When enabled, calculates the PID output and feedforward to move to the goal position.
+   * When disabled, sets all outputs to zero.
+   */
   public void useOutput() {
     if (clawEnabled) {
       // Calculate the next set point along the profile to the goal and the next PID output based
@@ -290,7 +307,12 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     motor.setVoltage(voltageCommand);
   }
 
-  /** Returns a Command that moves the claw to a new position. */
+  /**
+   * Returns a Command that moves the claw to a new position.
+   *
+   * @param goal the desired position in radians
+   * @return Command that moves the claw to the specified position
+   */
   public Command moveToPosition(double goal) {
     return new FunctionalCommand(
         () -> setGoalPosition(goal),
@@ -303,12 +325,19 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Returns a Command that holds the claw at the last goal position using the PID Controller
    * driving the motor.
+   *
+   * @return Command that holds the claw at its current goal position
    */
   public Command holdPosition() {
     return run(this::useOutput).withName("Claw: Hold Position");
   }
 
-  /** Abort Command will set the claw position to the goal position in any restricted areas. */
+  /**
+   * Creates an abort command that sets the claw position to the current position in any restricted
+   * areas.
+   *
+   * @return InstantCommand that stops movement and sets goal to current position
+   */
   public Command abortCommand() {
     return new InstantCommand(
         () -> {
@@ -317,7 +346,11 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
         });
   }
 
-  /** Returns a Command that shifts claw position up by a fixed increment. */
+  /**
+   * Returns a Command that shifts claw position up by a fixed increment.
+   *
+   * @return Command that shifts the claw position upward by POS_INCREMENT
+   */
   public Command shiftUp() {
     return runOnce(
             () ->
@@ -328,7 +361,11 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
         .withName("Claw: Shift Position Up");
   }
 
-  /** Returns a Command that shifts claw position down by a fixed increment. */
+  /**
+   * Returns a Command that shifts claw position down by a fixed increment.
+   *
+   * @return Command that shifts the claw position downward by POS_INCREMENT
+   */
   public Command shiftDown() {
     return runOnce(
             () ->
@@ -356,7 +393,11 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     enable();
   }
 
-  /** Returns whether the claw has reached the goal position and velocity is within limits. */
+  /**
+   * Returns whether the claw has reached the goal position and velocity is within limits.
+   *
+   * @return true if the claw is at the goal position and velocity within tolerance, false otherwise
+   */
   public boolean atGoalPosition() {
     return clawController.atGoal();
   }
@@ -408,12 +449,20 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
             + Units.radiansToDegrees(encoder.getVelocity()));
   }
 
-  /** Returns the relative claw angle using the built in encoder. The units are in degrees */
+  /**
+   * Returns the relative claw angle using the built-in encoder.
+   *
+   * @return the current claw angle in degrees relative to the encoder zero position
+   */
   public double getRelativeAngle() {
     return Math.toDegrees(encoder.getPosition() + ClawConstants.CLAW_OFFSET_RADS);
   }
 
-  /** Returns the claw position for PID control and logging (Units are Radians from horizontal). */
+  /**
+   * Returns the claw position for PID control and logging.
+   *
+   * @return the claw position in radians from horizontal (corrected using absolute or relative encoder)
+   */
   public double getMeasurement() {
     if (absoluteEncoderValid) {
       return Math.toRadians(getAbsoluteAngle());
@@ -423,7 +472,11 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     }
   }
 
-  /** Returns the absolute claw angle. The units are in degrees */
+  /**
+   * Returns the absolute claw angle.
+   *
+   * @return the current claw angle in degrees from the absolute encoder
+   */
   public double getAbsoluteAngle() {
     // Add the offset from the 0 point of the encoder.
     double angle = absoluteEncoder.getPosition() * 360 - ClawConstants.ABSOLUTE_OFFSET_DEGREES;
@@ -433,8 +486,10 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     return angle;
   }
 
-  // Check the absolute encoder for freeze condition. Due to noise a normally functioning encoder
-  // will change value continually.
+  /**
+   * Checks the absolute encoder for freeze condition. Due to noise, a normally functioning encoder
+   * will change value continually. This method detects when the encoder appears frozen.
+   */
   private void checkAbsoluteEncoder() {
 
     if (RobotBase.isReal()) {
@@ -452,12 +507,20 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     }
   }
 
-  /** Returns the Motor Commanded Voltage. */
+  /**
+   * Returns the motor commanded voltage.
+   *
+   * @return the voltage command currently being sent to the motor in volts
+   */
   public double getVoltageCommand() {
     return voltageCommand;
   }
 
-  /** Returns the motor for simulation. */
+  /**
+   * Returns the motor for simulation.
+   *
+   * @return the SparkMax motor used for simulation purposes
+   */
   public SparkMax getMotor() {
     return motor;
   }
@@ -492,7 +555,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Checks if the claw is enabled or not.
    *
-   * @return boolean clawEnabled
+   * @return true if PID control is enabled for the claw, false otherwise
    */
   public boolean isEnabled() {
     return clawEnabled;
@@ -515,7 +578,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     feedforward = new ArmFeedforward(ks.get(), kg.get(), kv.get(), 0);
   }
 
-  /** Close any objects that support it. */
+  /**
+   * Closes any Closable objects including the motor.
+   */
   @Override
   public void close() {
     motor.close();
