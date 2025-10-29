@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ class RobotContainerTest {
   @DisplayName("Test RobotContainer construction.")
   void createRobotContainer() {
     // Instantiate RobotContainer
-    new RobotContainer();
+    RobotContainer robotContainer = new RobotContainer();
+    Assertions.assertNotNull(robotContainer);
   }
 }
