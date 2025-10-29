@@ -1,3 +1,4 @@
+Arducam
 assertj
 Autofetch
 Blinkin
@@ -12,13 +13,16 @@ deployhost
 deploytime
 EEPROM
 Feedforward
+Holonomic
 Intellicode
 jacoco
 javadoc
 Jayamanne
 myname
+odometry
 orgname
 projectname
+Reefscape
 Robo
 roborio
 sendables
@@ -29,10 +33,15 @@ slname
 sonarcloud
 Sonarlint
 Sonarqube
+Spartronics
 spotbugs
 statusfile
+swervedrive
+swervelib
 teleop
 teleoperated
 Tutorialspoint
 WPILIB
 wpilibj
+xerr
+yerr

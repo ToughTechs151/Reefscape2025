@@ -27,11 +27,30 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
+/**
+ * A command that uses PID controllers to drive the swerve robot to a target pose (position and
+ * rotation).
+ *
+ * <p>This command utilizes a {@link PPHolonomicDriveController} to calculate the required chassis
+ * speeds to reach the goal pose. It monitors translation error, rotation error, and robot speed to
+ * determine completion. The command ends when the robot is within specified position and rotation
+ * tolerances, moving slowly enough, and this condition is debounced to prevent premature
+ * termination.
+ *
+ * <p>The command includes logging for diagnostic purposes and stops the robot motors upon
+ * completion or interruption.
+ *
+ * @see PPHolonomicDriveController
+ * @see SwerveSubsystem
+ */
 public class PositionPIDCommand extends Command {
 
-  public SwerveSubsystem mSwerve;
+  private SwerveSubsystem swerve;
   public final Pose2d goalPose;
-  private PPHolonomicDriveController mDriveController =
+
+  private static final String LOGGING_TABLE = "logging";
+
+  private PPHolonomicDriveController driveController =
       new PPHolonomicDriveController(DriveConstants.TRANSLATION_PID, DriveConstants.ROTATION_PID);
 
   private final Trigger endTrigger;
@@ -41,22 +60,22 @@ public class PositionPIDCommand extends Command {
 
   private final BooleanPublisher endTriggerLogger =
       NetworkTableInstance.getDefault()
-          .getTable("logging")
+          .getTable(LOGGING_TABLE)
           .getBooleanTopic("PositionPIDEndTrigger")
           .publish();
-  private final DoublePublisher xErrLogger =
-      NetworkTableInstance.getDefault().getTable("logging").getDoubleTopic("X Error").publish();
-  private final DoublePublisher yErrLogger =
-      NetworkTableInstance.getDefault().getTable("logging").getDoubleTopic("Y Error").publish();
+  private final DoublePublisher xerrLogger =
+      NetworkTableInstance.getDefault().getTable(LOGGING_TABLE).getDoubleTopic("X Error").publish();
+  private final DoublePublisher yerrLogger =
+      NetworkTableInstance.getDefault().getTable(LOGGING_TABLE).getDoubleTopic("Y Error").publish();
 
-  private PositionPIDCommand(SwerveSubsystem mSwerve, Pose2d goalPose) {
-    this.mSwerve = mSwerve;
+  private PositionPIDCommand(SwerveSubsystem swerve, Pose2d goalPose) {
+    this.swerve = swerve;
     this.goalPose = goalPose;
 
     endTrigger =
         new Trigger(
             () -> {
-              Pose2d diff = mSwerve.getPose().relativeTo(goalPose);
+              Pose2d diff = swerve.getPose().relativeTo(goalPose);
 
               var rotation =
                   MathUtil.isNear(
@@ -69,10 +88,7 @@ public class PositionPIDCommand extends Command {
               var position =
                   diff.getTranslation().getNorm() < DriveConstants.POSITION_TOLERANCE.in(Meters);
 
-              var speed = mSwerve.getSpeed() < DriveConstants.SPEED_TOLERANCE.in(MetersPerSecond);
-
-              // System.out.println("end trigger conditions R: "+ rotation + "\tP: " + position +
-              // "\tS: " + speed);
+              var speed = swerve.getSpeed() < DriveConstants.SPEED_TOLERANCE.in(MetersPerSecond);
 
               return rotation && position && speed;
             });
@@ -80,6 +96,16 @@ public class PositionPIDCommand extends Command {
     endTriggerDebounced = endTrigger.debounce(DriveConstants.END_TRIGGER_DEBOUNCE.in(Seconds));
   }
 
+  /**
+   * Generates a command to drive the robot to a target pose using PID control, with a specified
+   * timeout and stopping behavior.
+   *
+   * @param swerve the SwerveSubsystem instance used for driving
+   * @param goalPose the target pose (position and rotation) to reach
+   * @param timeout the maximum time allowed for the command to complete
+   * @return a configured Command that drives to the goal pose, times out after the specified
+   *     duration, and stops the robot upon completion
+   */
   public static Command generateCommand(SwerveSubsystem swerve, Pose2d goalPose, Time timeout) {
     return new PositionPIDCommand(swerve, goalPose)
         .withTimeout(timeout)
@@ -103,10 +129,10 @@ public class PositionPIDCommand extends Command {
 
     endTriggerLogger.accept(endTrigger.getAsBoolean());
 
-    mSwerve.drive(mDriveController.calculateRobotRelativeSpeeds(mSwerve.getPose(), goalState));
+    swerve.drive(driveController.calculateRobotRelativeSpeeds(swerve.getPose(), goalState));
 
-    xErrLogger.accept(mSwerve.getPose().getX() - goalPose.getX());
-    yErrLogger.accept(mSwerve.getPose().getY() - goalPose.getY());
+    xerrLogger.accept(swerve.getPose().getX() - goalPose.getX());
+    yerrLogger.accept(swerve.getPose().getY() - goalPose.getY());
   }
 
   @Override
@@ -114,10 +140,10 @@ public class PositionPIDCommand extends Command {
     endTriggerLogger.accept(endTrigger.getAsBoolean());
     timer.stop();
 
-    Pose2d diff = mSwerve.getPose().relativeTo(goalPose);
+    Pose2d diff = swerve.getPose().relativeTo(goalPose);
 
     System.out.println(
-        "Adjustments to alginment took: "
+        "Adjustments to alignment took: "
             + timer.get()
             + " seconds and interrupted = "
             + interrupted
@@ -128,7 +154,7 @@ public class PositionPIDCommand extends Command {
             + diff.getRotation().getMeasure().in(Degrees)
             + " deg"
             + "\nVelocity value: "
-            + mSwerve.getSpeed()
+            + swerve.getSpeed()
             + "m/s");
   }
 

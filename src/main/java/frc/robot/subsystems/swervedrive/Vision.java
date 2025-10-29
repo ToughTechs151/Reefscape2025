@@ -16,10 +16,10 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,19 +49,26 @@ public class Vision {
       AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
   /** Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}. */
-  private final double maximumAmbiguity = 0.25;
+  private static final double MAX_AMBIGUITY = 0.25;
 
-  /** Photon Vision Simulation */
-  public VisionSystemSim visionSim;
+  /** Photon Vision Simulation. */
+  private VisionSystemSim visionSim;
 
   /** Count of times that the odom thinks we're more than 10meters away from the april tag. */
-  private double longDistangePoseEstimationCount = 0;
+  private double longDistancePoseEstimationCount = 0;
 
   /** Current pose from the pose estimator using wheel odometry. */
   private Supplier<Pose2d> currentPose;
 
-  /** Field from {@link swervelib.SwerveDrive#field} */
+  /** Field from {@link swervelib.SwerveDrive#field}. */
   private Field2d field2d;
+
+  /** Custom exception thrown when an AprilTag cannot be found. */
+  private static class AprilTagNotFoundException extends RuntimeException {
+    public AprilTagNotFoundException(String message) {
+      super(message);
+    }
+  }
 
   /**
    * Constructor for the Vision class.
@@ -73,7 +80,7 @@ public class Vision {
     this.currentPose = currentPose;
     this.field2d = field;
 
-    if (Robot.isSimulation()) {
+    if (RobotBase.isSimulation()) {
       visionSim = new VisionSystemSim("Vision");
       visionSim.addAprilTags(fieldLayout);
 
@@ -98,7 +105,7 @@ public class Vision {
     if (aprilTagPose3d.isPresent()) {
       return aprilTagPose3d.get().toPose2d().transformBy(robotOffset);
     } else {
-      throw new RuntimeException(
+      throw new AprilTagNotFoundException(
           "Cannot get AprilTag " + aprilTag + " from field " + fieldLayout.toString());
     }
   }
@@ -109,16 +116,17 @@ public class Vision {
    * @param swerveDrive {@link SwerveDrive} instance.
    */
   public void updatePoseEstimation(SwerveDrive swerveDrive) {
-    if (SwerveDriveTelemetry.isSimulation
-        && swerveDrive.getSimulationDriveTrainPose().isPresent()) {
+    Optional<Pose2d> simPose = swerveDrive.getSimulationDriveTrainPose();
+    if (SwerveDriveTelemetry.isSimulation && simPose.isPresent()) {
       /*
-       * In the maple-sim, odometry is simulated using encoder values, accounting for factors like skidding and drifting.
-       * As a result, the odometry may not always be 100% accurate.
-       * However, the vision system should be able to provide a reasonably accurate pose estimation, even when odometry is incorrect.
-       * (This is why teams implement vision system to correct odometry.)
-       * Therefore, we must ensure that the actual robot pose is provided in the simulator when updating the vision simulation during the simulation.
+       * In the maple-sim, odometry is simulated using encoder values, accounting for factors like
+       * skidding and drifting. As a result, the odometry may not always be 100% accurate.
+       * However, the vision system should be able to provide a reasonably accurate pose
+       * estimation, even when odometry is incorrect. (This is why teams implement vision system
+       * to correct odometry.) Therefore, we must ensure that the actual robot pose is provided
+       * in the simulator when updating the vision simulation during the simulation.
        */
-      visionSim.update(swerveDrive.getSimulationDriveTrainPose().get());
+      visionSim.update(simPose.get());
     }
     for (Cameras camera : Cameras.values()) {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
@@ -144,14 +152,15 @@ public class Vision {
    */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Cameras camera) {
     Optional<EstimatedRobotPose> poseEst = camera.getEstimatedGlobalPose();
-    if (Robot.isSimulation()) {
+    if (RobotBase.isSimulation()) {
       Field2d debugField = visionSim.getDebugField();
       // Uncomment to enable outputting of vision targets in sim.
       poseEst.ifPresentOrElse(
           est -> debugField.getObject("VisionEstimation").setPose(est.estimatedPose.toPose2d()),
           () -> {
             debugField.getObject("VisionEstimation").setPoses();
-          });
+          }
+      );
     }
     return poseEst;
   }
@@ -173,23 +182,23 @@ public class Vision {
           bestTargetAmbiguity = ambiguity;
         }
       }
-      // ambiguity to high dont use estimate
-      if (bestTargetAmbiguity > maximumAmbiguity) {
+      // ambiguity too high don't use estimate
+      if (bestTargetAmbiguity > MAX_AMBIGUITY) {
         return Optional.empty();
       }
 
       // est pose is very far from recorded robot pose
       if (PhotonUtils.getDistanceToPose(currentPose.get(), pose.get().estimatedPose.toPose2d())
           > 1) {
-        longDistangePoseEstimationCount++;
+        longDistancePoseEstimationCount++;
 
         // if it calculates that were 10 meter away for more than 10 times in a row its probably
         // right
-        if (longDistangePoseEstimationCount < 10) {
+        if (longDistancePoseEstimationCount < 10) {
           return Optional.empty();
         }
       } else {
-        longDistangePoseEstimationCount = 0;
+        longDistancePoseEstimationCount = 0;
       }
       return pose;
     }
@@ -339,7 +348,7 @@ public class Vision {
     public List<PhotonPipelineResult> resultsList = new ArrayList<>();
 
     /**
-     * Construct a Photon Camera class with help. Standard deviations are fake values, experiment
+     * Construct a Photon Camera class with help. Standard deviations are fake values. Experiment
      * and determine estimation noise on an actual robot.
      *
      * @param name Name of the PhotonVision camera found in the PV UI.
@@ -372,7 +381,7 @@ public class Vision {
       this.singleTagStdDevs = singleTagStdDevs;
       this.multiTagStdDevs = multiTagStdDevsMatrix;
 
-      if (Robot.isSimulation()) {
+      if (RobotBase.isSimulation()) {
         SimCameraProperties cameraProp = new SimCameraProperties();
         // A 1280 x 800 camera with a 79 degree diagonal FOV.
         cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(79));
@@ -395,7 +404,7 @@ public class Vision {
      * @param systemSim {@link VisionSystemSim} to use.
      */
     public void addToVisionSim(VisionSystemSim systemSim) {
-      if (Robot.isSimulation()) {
+      if (RobotBase.isSimulation()) {
         systemSim.addCamera(cameraSim, robotToCamTransform);
       }
     }
@@ -413,13 +422,13 @@ public class Vision {
       }
 
       PhotonPipelineResult bestResult = resultsList.get(0);
-      double amiguity = bestResult.getBestTarget().getPoseAmbiguity();
+      double ambiguity = bestResult.getBestTarget().getPoseAmbiguity();
       double currentAmbiguity = 0;
       for (PhotonPipelineResult result : resultsList) {
         currentAmbiguity = result.getBestTarget().getPoseAmbiguity();
-        if (currentAmbiguity < amiguity && currentAmbiguity > 0) {
+        if (currentAmbiguity < ambiguity && currentAmbiguity > 0) {
           bestResult = result;
-          amiguity = currentAmbiguity;
+          ambiguity = currentAmbiguity;
         }
       }
       return Optional.of(bestResult);
@@ -451,7 +460,7 @@ public class Vision {
      */
     private void updateUnreadResults() {
       resultsList =
-          Robot.isReal()
+          RobotBase.isReal()
               ? camera.getAllUnreadResults()
               : cameraSim.getCamera().getAllUnreadResults();
       resultsList.sort(
