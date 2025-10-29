@@ -24,7 +24,7 @@ public class DataLogging {
     DataLogManager.start();
     final DataLog log = DataLogManager.getLog();
 
-    // Record both DS control and joystick data. To
+    // Record both DS control and joystick data.
     DriverStation.startDataLog(DataLogManager.getLog(), Constants.LOG_JOYSTICK_DATA);
 
     DataLogManager.log(String.format("Brownout Voltage: %f", RobotController.getBrownoutVoltage()));
@@ -80,8 +80,8 @@ public class DataLogging {
   }
 
   /**
-   * Runs at each loop slice.. This method should be called in the robotPeriodic method in
-   * Robot.java. the code must be the last thing in the method.
+   * Runs at each loop slice. Should be called in the robotPeriodic method in Robot.java as
+   * the last thing in the method.
    *
    * <pre>{@code
    * //must be at end
