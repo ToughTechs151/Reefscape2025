@@ -166,12 +166,12 @@ public class Vision {
   }
 
   /**
-   * Filter pose via the ambiguity and find best estimate between all of the camera's throwing out
-   * distances more than 10m for a short amount of time.
-   *
-   * @param pose Estimated robot pose.
-   * @return Could be empty if there isn't a good reading.
-   */
+ * Filter pose via the ambiguity and find best estimate between all of the camera's throwing out
+ * distances more than 10m for a short amount of time.
+ *
+ * @param pose Estimated robot pose.
+ * @return Could be empty if there isn't a good reading.
+ */
   @Deprecated(since = "2024", forRemoval = true)
   private Optional<EstimatedRobotPose> filterPose(Optional<EstimatedRobotPose> pose) {
     if (pose.isPresent()) {
@@ -218,7 +218,7 @@ public class Vision {
   }
 
   /**
-   * Get tracked target from a camera of AprilTagID
+   * Get tracked target from a camera of AprilTagID.
    *
    * @param id AprilTag ID
    * @param camera Camera to check.
@@ -265,7 +265,7 @@ public class Vision {
     }
   }
 
-  /** Update the {@link Field2d} to include tracked targets/ */
+  /** Update the {@link Field2d} to include tracked targets. */
   public void updateVisionField() {
 
     List<PhotonTrackedTarget> targets = new ArrayList<PhotonTrackedTarget>();
@@ -289,9 +289,9 @@ public class Vision {
     field2d.getObject("tracked targets").setPoses(poses);
   }
 
-  /** Camera Enum to select each camera */
+  /** Camera Enum to select each camera. */
   enum Cameras {
-    /** Left Camera */
+    /** Left Camera. */
     LEFT_CAM(
         "Arducam_OV9281_Left",
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(-25)),
@@ -299,7 +299,7 @@ public class Vision {
             Units.inchesToMeters(10.75), Units.inchesToMeters(9.5), Units.inchesToMeters(7.9)),
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
-    /** Right Camera */
+    /** Right Camera. */
     RIGHT_CAM(
         "Arducam_OV9281_Right",
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(25)),
@@ -308,7 +308,7 @@ public class Vision {
         VecBuilder.fill(4, 4, 8),
         VecBuilder.fill(0.5, 0.5, 1)),
 
-    /** Back Camera */
+    /** Back Camera. */
     BACK_CAM(
         "Arducam_OV9281_Back",
         new Rotation3d(0, Math.toRadians(-20), Math.toRadians(180)),
@@ -332,7 +332,7 @@ public class Vision {
     /** Standard deviation for multi-tag readings for pose estimation. */
     private final Matrix<N3, N1> multiTagStdDevs;
 
-    /** Transform of the camera rotation and translation relative to the center of the robot */
+    /** Transform of the camera rotation and translation relative to the center of the robot. */
     private final Transform3d robotToCamTransform;
 
     /** Current standard deviations used. */
