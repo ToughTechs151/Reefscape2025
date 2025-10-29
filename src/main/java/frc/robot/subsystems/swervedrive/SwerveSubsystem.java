@@ -282,7 +282,8 @@ public class SwerveSubsystem extends SubsystemBase {
    * Use PathPlanner Path finding to go near to a point on the field and then switch to Holonomic
    * PID control for final movement.
    *
-   * @param pose Target {@link Pose2d} to go to.
+   * @param pose1 Target {@link Pose2d} for the pathfinding phase.
+   * @param pose2 Target {@link Pose2d} for the final PID control phase.
    * @return PathFinding and PID command sequence
    */
   public Command driveToPosePID(Pose2d pose1, Pose2d pose2) {
