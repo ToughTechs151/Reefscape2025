@@ -379,6 +379,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Set the goal state for the subsystem, limited to allowable range. Goal velocity is set to zero.
    * The ProfiledPIDController drives the claw to this position and holds it there.
+   *
+   * @param goal the desired goal position in radians
    */
   private void setGoalPosition(double goal) {
     clawController.setGoal(

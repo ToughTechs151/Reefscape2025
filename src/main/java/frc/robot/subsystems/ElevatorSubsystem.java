@@ -100,6 +100,12 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     SparkMax motor;
     RelativeEncoder encoder;
 
+    /**
+     * Constructs a Hardware object with the specified motor and encoder.
+     *
+     * @param motor the SparkMax motor for elevator control
+     * @param encoder the RelativeEncoder for position feedback
+     */
     public Hardware(SparkMax motor, RelativeEncoder encoder) {
       this.motor = motor;
       this.encoder = encoder;
@@ -145,7 +151,11 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
       new TunableNumber(
           "ElevatorMaxAcceleration", ElevatorConstants.ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2);
 
-  /** Create a new ElevatorSubsystem controlled by a Profiled PID COntroller . */
+  /**
+   * Create a new ElevatorSubsystem controlled by a Profiled PID Controller.
+   *
+   * @param elevatorHardware the hardware components for the elevator subsystem
+   */
   public ElevatorSubsystem(Hardware elevatorHardware) {
     this.motor = elevatorHardware.motor;
     this.encoder = elevatorHardware.encoder;
@@ -330,6 +340,8 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Set the goal state for the subsystem, limited to allowable range. Goal velocity is set to zero.
    * The ProfiledPIDController drives the elevator to this position and holds it there.
+   *
+   * @param goal the desired goal position in meters
    */
   private void setGoalPosition(double goal) {
     elevatorController.setGoal(

@@ -87,7 +87,13 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     RelativeEncoder encoder;
     CANrange canRange;
 
-    /** Create the Hardware object using the specified hardware objects. */
+    /**
+     * Create the Hardware object using the specified hardware objects.
+     *
+     * @param motor the SparkMax motor for roller control
+     * @param encoder the RelativeEncoder for position feedback
+     * @param canRange the CANrange sensor for coral detection
+     */
     public Hardware(SparkMax motor, RelativeEncoder encoder, CANrange canRange) {
       this.motor = motor;
       this.encoder = encoder;
@@ -132,7 +138,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   // Flag to reset the Roller position in simulation
   private boolean resetSimPosition = false;
 
-  /** Create a new RollerSubsystem controlled by a Profiled PID COntroller . */
+  /**
+   * Create a new RollerSubsystem controlled by a Profiled PID Controller.
+   *
+   * @param rollerHardware the hardware components for the roller subsystem
+   */
   public RollerSubsystem(Hardware rollerHardware) {
     this.rollerMotor = rollerHardware.motor;
     this.rollerEncoder = rollerHardware.encoder;
@@ -275,7 +285,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     rollerMotor.setVoltage(rollerVoltageCommand);
   }
 
-  /** Returns a Command that runs the motor forward at the current set speed. */
+  /**
+   * Returns a Command that runs the motor forward at the current set speed.
+   *
+   * @return Command that runs the motor forward at the current set speed
+   */
   public Command runForward() {
     return new FunctionalCommand(
         () -> startSpeedControl(forwardSetSpeed),
@@ -287,13 +301,19 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
 
   /**
    * Loads Coral until CANRange detects Coral, runs for a short time after and then holds position.
+   *
+   * @return Command that loads coral until detected, runs for a short time, then holds position
    */
   public Command loadCoral() {
     return Commands.sequence(
         runLoadCoral().until(this::isCoralInsideRoller), runLoadCoral().withTimeout(0.1));
   }
 
-  /** Returns a Command that runs the motor in reverse to load coral. */
+  /**
+   * Returns a Command that runs the motor in reverse to load coral.
+   *
+   * @return Command that runs the motor in reverse to load coral
+   */
   public Command runLoadCoral() {
     return new FunctionalCommand(
         () -> startSpeedControl(loadSetSpeed),
@@ -303,7 +323,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
         this);
   }
 
-  /** Returns a Command that runs the motor in reverse at the current set speed. */
+  /**
+   * Returns a Command that runs the motor in reverse at the current set speed.
+   *
+   * @return Command that runs the motor in reverse at the current set speed
+   */
   public Command runReverse() {
     return new FunctionalCommand(
         () -> startSpeedControl(reverseSetSpeed),
@@ -313,7 +337,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
         this);
   }
 
-  /** Returns a Command that holds the motor at the current position. */
+  /**
+   * Returns a Command that holds the motor at the current position.
+   *
+   * @return Command that holds the motor at the current position
+   */
   public Command holdPosition() {
     return new FunctionalCommand(
         this::startPositionControl,
@@ -326,6 +354,8 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Set the setpoint for motor speed and start the motor. The PIDController drives the motor to
    * this speed and holds it there.
+   *
+   * @param speed the tunable number for the desired speed setpoint
    */
   private void startSpeedControl(TunableNumber speed) {
     loadTunableNumbers();
@@ -351,7 +381,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     enableRoller();
   }
 
-  /** Returns whether the Roller has reached the set point speed within limits. */
+  /**
+   * Returns whether the Roller has reached the set point speed within limits.
+   *
+   * @return true if roller is at setpoint speed within tolerance, false otherwise
+   */
   public boolean rollerAtSetpoint() {
     return speedController.atSetpoint();
   }
@@ -397,17 +431,29 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     DataLogManager.log("Roller Disabled CurSpeed=" + getRollerSpeed());
   }
 
-  /** Returns the Roller speed for PID control and logging (Units are RPM). */
+  /**
+   * Returns the Roller speed for PID control and logging (Units are RPM).
+   *
+   * @return the roller speed in RPM
+   */
   public double getRollerSpeed() {
     return rollerEncoder.getVelocity();
   }
 
-  /** Returns the Roller position (Units are number of wheel rotations). */
+  /**
+   * Returns the Roller position (Units are number of wheel rotations).
+   *
+   * @return the roller position in rotations
+   */
   public double getRollerPosition() {
     return rollerEncoder.getPosition();
   }
 
-  /** Returns the Roller motor commanded voltage. */
+  /**
+   * Returns the Roller motor commanded voltage.
+   *
+   * @return the commanded voltage for the motor
+   */
   public double getRollerVoltageCommand() {
     return rollerVoltageCommand;
   }
