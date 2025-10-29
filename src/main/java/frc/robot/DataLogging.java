@@ -104,10 +104,16 @@ public class DataLogging {
     SmartDashboard.putNumber("Robot/PDP Temperature", pdp.getTemperature());
   }
 
+  /** Records the current timestamp for loop timing calculations. */
   public void startLoopTime() {
     startTime = Timer.getFPGATimestamp();
   }
 
+  /**
+   * Returns whether the robot has ever experienced a brownout since startup.
+   *
+   * @return true if the robot has browned out at least once, false otherwise
+   */
   public final boolean getEverBrownOut() {
     return this.everBrownout;
   }

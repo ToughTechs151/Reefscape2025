@@ -224,6 +224,11 @@ public class Robot extends TimedRobot {
     }
   }
 
+  /**
+   * Gets the robot container that contains all subsystems and commands.
+   *
+   * @return the RobotContainer instance for this robot
+   */
   public RobotContainer getRobotContainer() {
     return robotContainer;
   }

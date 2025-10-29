@@ -9,6 +9,13 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import frc.robot.Robot;
 import java.util.Random;
 
+/**
+ * Robot simulation model for WPILib simulation support.
+ * <p>
+ * Provides realistic simulation of robot mechanics including elevator, claw, and roller systems.
+ * Models battery voltage drops based on subsystem current draw and updates PDP simulation values.
+ * Works in conjunction with subsystem classes to provide accurate simulation behavior.
+ */
 public class RobotModel {
 
   PDPSim simpdp;

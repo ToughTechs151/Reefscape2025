@@ -22,18 +22,38 @@ public class StartPose {
       this.heading = heading;
     }
 
+    /**
+     * Gets the name of this pose.
+     *
+     * @return the pose name identifier
+     */
     public String name() {
       return this.name;
     }
 
+    /**
+     * Gets the X coordinate of this pose.
+     *
+     * @return the X position in meters
+     */
     public double x() {
       return this.positionX;
     }
 
+    /**
+     * Gets the Y coordinate of this pose.
+     *
+     * @return the Y position in meters
+     */
     public double y() {
       return this.positionY;
     }
 
+    /**
+     * Gets the heading angle of this pose.
+     *
+     * @return the heading angle in degrees
+     */
     public double heading() {
       return this.heading;
     }
@@ -53,6 +73,11 @@ public class StartPose {
     new NamedPose("Red Far Left", 15.2, 2.0, 180)
   };
 
+  /**
+   * Gets the array of predefined starting poses for robot positioning.
+   *
+   * @return array of NamedPose objects containing starting field positions and headings
+   */
   public static NamedPose[] get() {
     return START_POSE_LIST;
   }

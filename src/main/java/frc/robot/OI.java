@@ -22,14 +22,29 @@ public class OI {
     this.aux = aux;
   }
 
+  /**
+   * Gets the pilot controller.
+   *
+   * @return the GenericHID controller for the pilot
+   */
   public GenericHID getPilot() {
     return pilot;
   }
 
+  /**
+   * Gets the co-pilot controller.
+   *
+   * @return the GenericHID controller for the co-pilot
+   */
   public GenericHID getCoPilot() {
     return copilot;
   }
 
+  /**
+   * Gets the auxiliary controller.
+   *
+   * @return the GenericHID controller for auxiliary functions
+   */
   public GenericHID getAux() {
     return aux;
   }

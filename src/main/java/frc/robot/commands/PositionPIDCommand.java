@@ -46,6 +46,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class PositionPIDCommand extends Command {
 
   private SwerveSubsystem swerve;
+  /** The target pose (position and rotation) that the robot should drive to. */
   public final Pose2d goalPose;
 
   private static final String LOGGING_TABLE = "logging";

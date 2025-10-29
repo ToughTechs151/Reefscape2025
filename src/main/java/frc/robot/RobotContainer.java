@@ -417,6 +417,11 @@ public class RobotContainer {
     DataLogManager.log("disableSubsystems");
   }
 
+  /**
+   * Sets the motor brake mode for the drivebase.
+   *
+   * @param brake true to enable motor braking, false to set coast mode
+   */
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
     DataLogManager.log("Drive Brake: " + brake);

@@ -55,6 +55,23 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+/**
+ * Swerve drive subsystem that provides holonomic drive capabilities and integrates with vision
+ * and path planning systems.
+ * <p>
+ * This subsystem manages:
+ * <ul>
+ *   <li>Swerve drive configuration and control using the Swervelib library</li>
+ *   <li>Pose odometry with optional vision integration for improved accuracy</li>
+ *   <li>AutoBuilder integration for PathPlanner autonomous path following</li>
+ *   <li>Alliance-aware field-relative driving and pose management</li>
+ *   <li>Motor temperature monitoring and diagnostic data publishing</li>
+ *   <li>Various driving modes including PID positioning, pathfinding, and targeting</li>
+ * </ul>
+ * <p>
+ * The subsystem initializes with drive configuration from JSON files and sets up all necessary
+ * drive modes, vision systems, and autonomous capabilities.
+ */
 public class SwerveSubsystem extends SubsystemBase {
 
   /** Swerve drive object. */
