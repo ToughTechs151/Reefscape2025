@@ -558,6 +558,10 @@ public class RobotContainer {
   /**
    * Create a command to drive to a position in front of the nearest reef position and shifted by a
    * set amount relative to the face of the reef.
+   *
+   * @param shift1 the first translation shift
+   * @param shift2 the second translation shift
+   * @return the command to drive to the shifted reef position
    */
   private Command createDriveReefCommand(Translation2d shift1, Translation2d shift2) {
     var nearestPose = drivebase.getPose().nearest(FieldConstants.REEF_POSITIONS);
