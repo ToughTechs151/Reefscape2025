@@ -61,6 +61,8 @@ public class TunableNumber {
   /**
    * Publishes a new value. Note that the value will not be returned by {@link #get()} until the
    * next cycle.
+   *
+   * @param value the value to set
    */
   public void set(double value) {
     if (Constants.TUNING_MODE) {

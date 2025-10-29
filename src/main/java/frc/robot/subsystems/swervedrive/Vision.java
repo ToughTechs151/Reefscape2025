@@ -147,6 +147,7 @@ public class Vision {
    *   <li>The generated pose estimate was considered not accurate
    * </ul>
    *
+   * @param camera the camera to use for pose estimation
    * @return an {@link EstimatedRobotPose} with an estimated pose, timestamp, and targets used to
    *     create the estimate
    */

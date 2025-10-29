@@ -493,7 +493,11 @@ public class RobotContainer {
         .onlyIf(safeTrigger);
   }
 
-  /** Set the LEDs to a specified color. */
+  /**
+   * Set the LEDs to a specified color.
+   *
+   * @param pattern the LED pattern to set
+   */
   public void setLeds(LEDPattern pattern) {
     led.setPattern(pattern);
   }

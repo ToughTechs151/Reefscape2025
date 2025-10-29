@@ -244,6 +244,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Aim the robot at the target returned by PhotonVision.
    *
+   * @param camera The camera to get targeting data from.
    * @return A {@link Command} which will run the alignment.
    */
   public Command aimAtTarget(Cameras camera) {
@@ -561,7 +562,8 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Drive the robot given a chassis field oriented velocity.
    *
-   * @param velocity Velocity according to the field.
+   * @param velocity Supplier providing velocity according to the field.
+   * @return A {@link Command} which will drive the robot with the given velocity.
    */
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
     return run(
