@@ -256,7 +256,12 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     motor.setVoltage(voltageCommand);
   }
 
-  /** Returns a Command that moves the elevator to a new position. */
+  /**
+   * Returns a Command that moves the elevator to a new position.
+   *
+   * @param goal the desired position in meters
+   * @return Command that moves the elevator to the specified position
+   */
   public Command moveToPosition(double goal) {
     return new FunctionalCommand(
         () -> setGoalPosition(goal),
@@ -269,12 +274,18 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Returns a Command that holds the elevator at the last goal position using the PID Controller
    * driving the motor.
+   *
+   * @return Command that holds the elevator at its current goal position
    */
   public Command holdPosition() {
     return run(this::useOutput).withName("Elevator: Hold Position");
   }
 
-  /** Returns a Command that shifts elevator position up by a fixed increment. */
+  /**
+   * Returns a Command that shifts elevator position up by a fixed increment.
+   *
+   * @return Command that shifts the elevator position upward by POS_INCREMENT
+   */
   public Command shiftUp() {
     return runOnce(
             () ->
@@ -286,7 +297,11 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
         .withName("Elevator: Shift Position Up");
   }
 
-  /** Returns a Command that shifts elevator position down by a fixed increment. */
+  /**
+   * Returns a Command that shifts elevator position down by a fixed increment.
+   *
+   * @return Command that shifts the elevator position downward by POS_INCREMENT
+   */
   public Command shiftDown() {
     return runOnce(
             () ->
@@ -298,7 +313,12 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
         .withName("Elevator: Shift Position Down");
   }
 
-  /** Abort Command will set the elevator position to the goal position in any restricted areas. */
+  /**
+   * Creates an abort command that sets the elevator position to the current position in any
+   * restricted areas.
+   *
+   * @return InstantCommand that stops movement and sets goal to current position
+   */
   public Command abortCommand() {
     return new InstantCommand(
         () -> {
@@ -324,7 +344,11 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     enable();
   }
 
-  /** Returns whether the elevator has reached the goal position and velocity is within limits. */
+  /**
+   * Returns whether the elevator has reached the goal position and velocity is within limits.
+   *
+   * @return true if the elevator is at the goal position and velocity within tolerance, false otherwise
+   */
   public boolean atGoalPosition() {
     return elevatorController.atGoal();
   }
@@ -374,7 +398,9 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   }
 
   /**
-   * Returns the elevator position for PID control and logging (Units are meters from low position).
+   * Returns the elevator position for PID control and logging.
+   *
+   * @return the elevator position in meters from the low position
    */
   public double getMeasurement() {
     // Add the offset from the starting point. The elevator must be at this position at startup for
@@ -382,12 +408,20 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
     return encoder.getPosition() + ElevatorConstants.ELEVATOR_OFFSET_METERS;
   }
 
-  /** Returns the Motor Commanded Voltage. */
+  /**
+   * Returns the motor commanded voltage.
+   *
+   * @return the voltage command currently being sent to the motor in volts
+   */
   public double getVoltageCommand() {
     return voltageCommand;
   }
 
-  /** Returns the motor for simulation. */
+  /**
+   * Returns the motor for simulation.
+   *
+   * @return the SparkMax motor used for simulation purposes
+   */
   public SparkMax getMotor() {
     return motor;
   }
