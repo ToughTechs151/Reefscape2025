@@ -162,9 +162,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
       new TunableNumber("ClawMaxAcceleration", ClawConstants.CLAW_MAX_ACCELERATION_RAD_PER_SEC2);
 
   /**
-   * Creates a new ClawSubsystem controlled by a Profiled PID Controller.
+   * Generates the motor command using the PID controller and feedforward.
    *
-   * @param clawHardware the hardware components for the claw subsystem
+   * <p>When enabled, calculates the PID output and feedforward to move to the goal position.
    */
   public ClawSubsystem(Hardware clawHardware) {
     this.motor = clawHardware.motor;
