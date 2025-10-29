@@ -359,7 +359,8 @@ public class ElevatorSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Returns whether the elevator has reached the goal position and velocity is within limits.
    *
-   * @return true if the elevator is at the goal position and velocity within tolerance, false otherwise
+   * @return true if the elevator is at the goal position and velocity within tolerance, false
+   *     otherwise
    */
   public boolean atGoalPosition() {
     return elevatorController.atGoal();

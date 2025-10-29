@@ -174,7 +174,9 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    // Needed to override the defult.
+  }
 
   /** Setup AutoBuilder for PathPlanner. */
   public void setupPathPlanner() {
@@ -410,7 +412,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Command to characterize the robot drive motors using SysId
+   * Command to characterize the robot drive motors using SysId.
    *
    * @return SysId Drive Command
    */
@@ -423,7 +425,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Command to characterize the robot angle motors using SysId
+   * Command to characterize the robot angle motors using SysId.
    *
    * @return SysId Angle Command
    */
@@ -647,7 +649,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * This will zero (calibrate) the robot to assume the current position is facing forward
+   * This will zero (calibrate) the robot to assume the current position is facing forward.
    *
    * <p>If red alliance rotate the robot 180 after the drviebase zero command
    */
@@ -725,7 +727,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Check if the robot if within a 2m radius from the reef center
+   * Check if the robot if within a 2m radius from the reef center.
    *
    * @return bool true or false denoting if the robot is near the reef depending on the Alliance
    *     color
@@ -750,7 +752,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Gets the current field-relative velocity (x, y and omega) of the robot
+   * Gets the current field-relative velocity (x, y and omega) of the robot.
    *
    * @return A ChassisSpeeds object of the current field-relative velocity
    */
@@ -771,7 +773,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Gets the current velocity (x, y and omega) of the robot
+   * Gets the current velocity (x, y and omega) of the robot.
    *
    * @return A {@link ChassisSpeeds} object of the current velocity
    */

@@ -162,9 +162,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
       new TunableNumber("ClawMaxAcceleration", ClawConstants.CLAW_MAX_ACCELERATION_RAD_PER_SEC2);
 
   /**
-   * Generates the motor command using the PID controller and feedforward.
+   * Constructs a new ClawSubsystem with the provided hardware components.
    *
-   * <p>When enabled, calculates the PID output and feedforward to move to the goal position.
+   * @param clawHardware the hardware components required for the claw subsystem
    */
   public ClawSubsystem(Hardware clawHardware) {
     this.motor = clawHardware.motor;
@@ -277,8 +277,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   /**
    * Generates the motor command using the PID controller and feedforward.
-   * <p>
-   * When enabled, calculates the PID output and feedforward to move to the goal position.
+   * 
+   * <p>When enabled, calculates the PID output and feedforward to move to the goal position.
    * When disabled, sets all outputs to zero.
    */
   public void useOutput() {
@@ -463,7 +463,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   /**
    * Returns the claw position for PID control and logging.
    *
-   * @return the claw position in radians from horizontal (corrected using absolute or relative encoder)
+   * @return the claw position in radians from horizontal (corrected using absolute or relative
+   *     encoder)
    */
   public double getMeasurement() {
     if (absoluteEncoderValid) {

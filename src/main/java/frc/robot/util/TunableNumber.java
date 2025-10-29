@@ -15,7 +15,7 @@ public class TunableNumber {
   private boolean m_hasDefault = false;
 
   /**
-   * Create a new TunableNumber
+   * Create a new TunableNumber.
    *
    * @param dashboardKey Key on dashboard
    */
@@ -24,7 +24,7 @@ public class TunableNumber {
   }
 
   /**
-   * Create a new TunableNumber with the default value
+   * Create a new TunableNumber with the default value.
    *
    * @param dashboardKey Key on dashboard
    * @param defaultValue Default value
@@ -50,7 +50,7 @@ public class TunableNumber {
   }
 
   /**
-   * Get the default value for the number that has been set
+   * Get the default value for the number that has been set.
    *
    * @return The default value
    */

@@ -287,7 +287,8 @@ public final class Constants {
         new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
     /** Control loop time in seconds (20ms + 110ms SparkMax velocity lag). */
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms spark max velocity lag
-    /** Maximum robot speed calculated for Neo Vortex motors at 6700 RPM with 6.75:1 gears and 4" wheels. */
+    /** Maximum robot speed calculated for Neo Vortex motors at 6700 RPM with 6.75:1 gears and 4" 
+     * wheels. */
     public static final double MAX_SPEED = Units.feetToMeters(6700 / 6.75 / 60 * 4 * Math.PI / 12);
 
     /** Center position of the blue alliance reef in meters. */
@@ -321,7 +322,8 @@ public final class Constants {
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
 
     // Constants for drive to pose initial path following
-    /** Path constraints for initial pathfinding (max velocity, acceleration, angular velocity, angular acceleration). */
+    /** Path constraints for initial pathfinding (max velocity, acceleration, angular velocity, 
+     * angular acceleration). */
     public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
         new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
 
