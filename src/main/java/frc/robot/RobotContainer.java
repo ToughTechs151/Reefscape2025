@@ -427,12 +427,20 @@ public class RobotContainer {
     DataLogManager.log("Drive Brake: " + brake);
   }
 
-  /** Get the drive command from the drive subsystem. */
+  /**
+   * Get the drive command from the drive subsystem.
+   *
+   * @return the Command for teleop driving or null
+   */
   public Command getTeleopDriveCommand() {
     return Commands.none();
   }
 
-  /** Check if position is safe or unsafe and creates a limit for the robot. */
+  /**
+   * Check if position is safe or unsafe and creates a limit for the robot.
+   *
+   * @return true if the current claw and elevator position is safe, false otherwise
+   */
   public boolean isSafePosition() {
     if (operatorController.getHID().getLeftBumperButton()) {
       return true;
@@ -464,6 +472,10 @@ public class RobotContainer {
    * Return a Teleop command with the intention of moving the claw to a safe position, then moving
    * the elevator and the claw to your desired position.
    *
+   * @param firstClawPos the initial safe position for the claw in radians
+   * @param elevatorPos the target position for the elevator in meters
+   * @param clawPos the target position for the claw in radians
+   * @param disableElevator true to disable elevator control after movement, false to leave enabled
    * @return the command sequence for teleop elevator + claw movements
    */
   public Command moveClawAndElevator(

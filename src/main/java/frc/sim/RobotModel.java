@@ -41,7 +41,7 @@ public class RobotModel {
    * Create robot simulation. Does nothing if not running a simulation. Called from Robot.java as a
    * class field.
    *
-   * @param robot Robot
+   * @param robot the Robot instance
    */
   public RobotModel(Robot robot) {
     if (RobotBase.isSimulation()) {

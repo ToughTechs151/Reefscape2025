@@ -14,7 +14,14 @@ public class StartPose {
     double positionY; // Y position in meters
     double heading; // Heading in degrees
 
-    /** Construct a NamedPose object. */
+    /**
+     * Construct a NamedPose object.
+     *
+     * @param name the name identifier of the pose
+     * @param x the X position in meters
+     * @param y the Y position in meters
+     * @param heading the heading angle in degrees
+     */
     public NamedPose(String name, double x, double y, double heading) {
       this.name = name;
       this.positionX = x;

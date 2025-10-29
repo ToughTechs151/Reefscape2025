@@ -458,7 +458,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     return rollerVoltageCommand;
   }
 
-  /** Returns the motor for simulation. */
+  /**
+   * Returns the motor for simulation.
+   *
+   * @return the SparkMax motor for simulation purposes
+   */
   public SparkMax getMotor() {
     return rollerMotor;
   }
@@ -477,7 +481,11 @@ public class RollerSubsystem extends SubsystemBase implements AutoCloseable {
     feedforward = new SimpleMotorFeedforward(speedKs.get(), speedKv.get(), 0.0);
   }
 
-  /** Get the flag to reset the Roller position in simulation. */
+  /**
+   * Get the flag to reset the Roller position in simulation.
+   *
+   * @return the flag indicating whether to reset position in simulation
+   */
   public boolean getResetSimPosition() {
     return resetSimPosition;
   }

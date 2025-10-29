@@ -31,7 +31,11 @@ public class RollerModel implements AutoCloseable {
 
   private final DCMotorSim rollerMotorSim = new DCMotorSim(plant, motors);
 
-  /** Create a new ElevatorModel. */
+  /**
+   * Create a new RollerModel.
+   *
+   * @param rollerSubsystemToSimulate the RollerSubsystem to simulate
+   */
   public RollerModel(RollerSubsystem rollerSubsystemToSimulate) {
 
     rollerSubsystem = rollerSubsystemToSimulate;
@@ -71,7 +75,11 @@ public class RollerModel implements AutoCloseable {
     }
   }
 
-  /** Return the simulated current. */
+  /**
+   * Return the simulated current.
+   *
+   * @return the simulated roller motor current in amperes
+   */
   public double getSimCurrent() {
     return simRollerCurrent;
   }

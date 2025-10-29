@@ -91,7 +91,12 @@ public class ElevatorModel implements AutoCloseable {
               6,
               new Color8Bit(Color.kYellow)));
 
-  /** Create a new ElevatorModel including the movable claw. */
+  /**
+   * Create a new ElevatorModel including the movable claw.
+   *
+   * @param elevatorSubsystemToSimulate the ElevatorSubsystem to simulate
+   * @param clawSubsystemToSimulate the ClawSubsystem to simulate
+   */
   public ElevatorModel(
       ElevatorSubsystem elevatorSubsystemToSimulate, ClawSubsystem clawSubsystemToSimulate) {
 
@@ -140,12 +145,20 @@ public class ElevatorModel implements AutoCloseable {
     clawMech2d.setAngle(Units.radiansToDegrees(clawSim.getAngleRads()) - 90);
   }
 
-  /** Return the simulated claw motor current. */
+  /**
+   * Return the simulated claw motor current.
+   *
+   * @return the simulated claw motor current in amperes
+   */
   public double getSimClawCurrent() {
     return simClawCurrent;
   }
 
-  /** Return the simulated elevator motor current. */
+  /**
+   * Return the simulated elevator motor current.
+   *
+   * @return the simulated elevator motor current in amperes
+   */
   public double getSimElevatorCurrent() {
     return simElevatorCurrent;
   }
