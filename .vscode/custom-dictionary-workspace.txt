@@ -19,6 +19,7 @@ jacoco
 javadoc
 Jayamanne
 myname
+NOSONAR
 odometry
 orgname
 projectname

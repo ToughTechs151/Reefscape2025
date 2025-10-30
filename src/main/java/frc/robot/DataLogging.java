@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /** The DataLogging class contains all the logic for using telemetry. */
-public class DataLogging {
+public class DataLogging {  //NOSONAR(java:S6548)
 
   private DoubleLogEntry loopTime;
   private double startTime;
