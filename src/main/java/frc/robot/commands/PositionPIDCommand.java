@@ -144,7 +144,7 @@ public class PositionPIDCommand extends Command {
 
     Pose2d diff = swerve.getPose().relativeTo(goalPose);
 
-    System.out.println(  // NOSONAR (java:S106)
+    System.out.println(// NOSONAR (java:S106)
         "Adjustments to alignment took: "
             + timer.get()
             + " seconds and interrupted = "
