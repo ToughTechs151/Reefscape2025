@@ -280,8 +280,9 @@ public class Vision {
 
     List<Pose2d> poses = new ArrayList<>();
     for (PhotonTrackedTarget target : targets) {
-      if (fieldLayout.getTagPose(target.getFiducialId()).isPresent()) {
-        Pose2d targetPose = fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
+      Optional<Pose3d> tagPose = fieldLayout.getTagPose(target.getFiducialId());
+      if (tagPose.isPresent()) {
+        Pose2d targetPose = tagPose.get().toPose2d();
         poses.add(targetPose);
       }
     }
