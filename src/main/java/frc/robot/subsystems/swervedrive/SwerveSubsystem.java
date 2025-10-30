@@ -403,9 +403,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Supplier<ChassisSpeeds> fieldRelativeSpeeds) {
     try {
       return driveWithSetpointGenerator(
-          () -> {
-            return ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds.get(), getHeading());
-          });
+          () -> ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds.get(), getHeading()));
     } catch (Exception e) {
       DriverStation.reportError(e.toString(), true);
     }
@@ -576,10 +574,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return A {@link Command} which will drive the robot with the given velocity.
    */
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
-    return run(
-        () -> {
-          swerveDrive.driveFieldOriented(velocity.get());
-        });
+    return run(() -> swerveDrive.driveFieldOriented(velocity.get()));
   }
 
   /**
