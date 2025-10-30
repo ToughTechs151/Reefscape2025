@@ -160,19 +160,18 @@ public class Vision {
           est -> debugField.getObject("VisionEstimation").setPose(est.estimatedPose.toPose2d()),
           () -> {
             debugField.getObject("VisionEstimation").setPoses();
-          }
-      );
+          });
     }
     return poseEst;
   }
 
   /**
- * Filter pose via the ambiguity and find best estimate between all of the camera's throwing out
- * distances more than 10m for a short amount of time.
- *
- * @param pose Estimated robot pose.
- * @return Could be empty if there isn't a good reading.
- */
+   * Filter pose via the ambiguity and find best estimate between all of the camera's throwing out
+   * distances more than 10m for a short amount of time.
+   *
+   * @param pose Estimated robot pose.
+   * @return Could be empty if there isn't a good reading.
+   */
   @Deprecated(since = "2024", forRemoval = true)
   private Optional<EstimatedRobotPose> filterPose(Optional<EstimatedRobotPose> pose) {
     if (pose.isPresent()) {

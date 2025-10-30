@@ -50,12 +50,16 @@ public final class Constants {
   // Set to false to hide extended logging data.
   /** Set to true to show extended logging data for the claw subsystem. */
   public static final boolean SD_SHOW_CLAW_EXTENDED_LOGGING_DATA = true;
+
   /** Set to true to show extended logging data for the launcher subsystem. */
   public static final boolean SD_SHOW_LAUNCHER_EXTENDED_LOGGING_DATA = true;
+
   /** Set to true to show extended logging data for the climber subsystem. */
   public static final boolean SD_SHOW_CLIMBER_EXTENDED_LOGGING_DATA = true;
+
   /** Set to true to show extended logging data for the roller subsystem. */
   public static final boolean SD_SHOW_ROLLER_EXTENDED_LOGGING_DATA = true;
+
   /** Set to true to show extended logging data for the drive subsystem. */
   public static final boolean SD_SHOW_DRIVE_EXTENDED_LOGGING_DATA = true;
 
@@ -77,59 +81,81 @@ public final class Constants {
 
     /** CAN ID for the claw motor controller. */
     public static final int MOTOR_PORT = 16;
+
     /** Current limit for the claw motor in amps. */
     public static final int CURRENT_LIMIT = 40;
+
     /** Whether the motor direction should be inverted. */
     public static final boolean INVERTED = true;
 
     // Constants tunable through TunableNumbers
     /** Proportional gain for the claw PID controller. */
     public static final double CLAW_KP = 6.0;
+
     /** Static gain for the claw feedforward controller. */
     public static final double CLAW_KS = 0.0;
+
     /** Gravity gain for the claw feedforward controller. */
     public static final double CLAW_KG = 0.1;
+
     /** Velocity gain for the claw feedforward controller (volts per radian/second). */
     public static final double CLAW_KV_VOLTS_PER_RAD_PER_SEC = 3.5;
+
     /** Maximum velocity for the claw motion profile in radians per second. */
     public static final double CLAW_MAX_VELOCITY_RAD_PER_SEC = Units.degreesToRadians(180.0);
+
     /** Maximum acceleration for the claw motion profile in radians per second squared. */
     public static final double CLAW_MAX_ACCELERATION_RAD_PER_SEC2 = Units.degreesToRadians(540.0);
 
     /** Gear ratio of the claw mechanism. */
     public static final double GEAR_RATIO = 75 * 30 / 12.0;
+
     /** Radians per encoder rotation for position calculations. */
     public static final double CLAW_RAD_PER_ENCODER_ROTATION = 2.0 * Math.PI / GEAR_RATIO;
+
     /** Conversion factor from RPM to radians per second. */
     public static final double RPM_TO_RAD_PER_SEC = CLAW_RAD_PER_ENCODER_ROTATION / 60;
 
     // Claw positions.  Horizontal = 0 radians. Assume claw starts at lowest (rest) position
     /** Position for Level 1 scoring in radians. */
     public static final double CLAW_LEVEL1_RADS = Units.degreesToRadians(18.0);
+
     /** Position for Level 2 and Level 3 scoring in radians. */
     public static final double CLAW_LEVEL2_AND_LEVEL3_RADS = Units.degreesToRadians(42.0);
+
     /** Safe angle position to avoid collisions in radians. */
     public static final double CLAW_SAFE_ANGLE_RADS = Units.degreesToRadians(42.0);
+
     /** Position for Level 4 scoring in radians. */
     public static final double CLAW_LEVEL4_RADS = Units.degreesToRadians(65.0);
+
     /** Position for algae removal in radians. */
     public static final double CLAW_ALGAE_RADS = Units.degreesToRadians(178.0);
+
     /** Position for processor scoring in radians. */
     public static final double CLAW_PROCESSOR_RADS = Units.degreesToRadians(178.0);
+
     /** Offset applied to claw angle readings in radians. */
     public static final double CLAW_OFFSET_RADS = Units.degreesToRadians(18.0);
+
     /** Unsafe angle where collisions may occur in radians. */
     public static final double CLAW_UNSAFE_RADS = Units.degreesToRadians(35.0);
+
     /** Minimum allowable angle for the claw in radians. */
     public static final double MIN_ANGLE_RADS = Units.degreesToRadians(18.0);
+
     /** Maximum allowable angle for the claw in radians. */
     public static final double MAX_ANGLE_RADS = Units.degreesToRadians(180.0);
+
     /** Small increment for manual position adjustments in radians. */
     public static final double POS_INCREMENT = Units.degreesToRadians(1.0); // For small adjustments
+
     /** Position tolerance for PID control in radians. */
     public static final double POSITION_TOLERANCE = Units.degreesToRadians(4.0);
+
     /** Velocity tolerance for PID control in radians per second. */
     public static final double VELOCITY_TOLERANCE = Units.degreesToRadians(10.0);
+
     /** Offset for absolute encoder position in degrees. */
     public static final double ABSOLUTE_OFFSET_DEGREES = 222.6;
   }
@@ -144,21 +170,29 @@ public final class Constants {
     // These are fake gains; in actuality these must be determined individually for each robot
     /** CAN ID for the elevator motor controller. */
     public static final int MOTOR_PORT = 18;
+
     /** Current limit for the elevator motor in amps. */
     public static final int CURRENT_LIMIT = 40;
+
     /** Whether the motor direction should be inverted. */
     public static final boolean INVERTED = true;
+
     // Constants tunable through TunableNumbers
     /** Proportional gain for the elevator PID controller. */
     public static final double ELEVATOR_KP = 24.0;
+
     /** Static gain for the elevator feedforward controller. */
     public static final double ELEVATOR_KS = 0;
+
     /** Gravity gain for the elevator feedforward controller. */
     public static final double ELEVATOR_KG = 0.7;
+
     /** Velocity gain for the elevator feedforward controller (volts per meter/second). */
     public static final double ELEVATOR_KV_VOLTS_PER_METER_PER_SEC = 5.5;
+
     /** Maximum velocity for the elevator motion profile in meters per second. */
     public static final double ELEVATOR_MAX_VELOCITY_METERS_PER_SEC = 1.3;
+
     /** Maximum acceleration for the elevator motion profile in meters per second squared. */
     public static final double ELEVATOR_MAX_ACCELERATION_METERS_PER_SEC2 = 3.6;
 
@@ -176,33 +210,44 @@ public final class Constants {
 
     /** Conversion factor from RPM to meters per second. */
     public static final double RPM_TO_METERS_PER_SEC = ELEVATOR_METERS_PER_ENCODER_ROTATION / 60;
+
     /** Position for coral loading/intake in meters. */
     public static final double ELEVATOR_LOAD_CORAL = Units.inchesToMeters(0.0);
+
     /** Position for Level 1 scoring in meters. */
     public static final double ELEVATOR_LEVEL1 = Units.inchesToMeters(1.0);
+
     /** Position for Level 2 scoring in meters. */
     public static final double ELEVATOR_LEVEL2 = Units.inchesToMeters(11.5);
+
     /** Position for Level 3 scoring in meters. */
     public static final double ELEVATOR_LEVEL3 = Units.inchesToMeters(26.5);
+
     /** Position for Level 4 scoring in meters. */
     public static final double ELEVATOR_LEVEL4 = Units.inchesToMeters(52.0);
+
     /** Position for Level 2 algae removal in meters. */
     public static final double ELEVATOR_LEVEL2_ALGAE = Units.inchesToMeters(18.0);
+
     /** Position for Level 3 algae removal in meters. */
     public static final double ELEVATOR_LEVEL3_ALGAE = Units.inchesToMeters(33.9);
+
     /** Position for processor scoring in meters. */
     public static final double ELEVATOR_PROCESSOR = Units.inchesToMeters(2.0);
+
     /** Offset applied to elevator height readings in meters. */
     public static final double ELEVATOR_OFFSET_METERS = 0.0;
 
     // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
     /** Minimum allowable height for the elevator in meters. */
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 0.0;
+
     /** Maximum allowable height for the elevator in meters. */
     public static final double ELEVATOR_MAX_HEIGHT_METERS = Units.inchesToMeters(63);
 
     /** Position tolerance for PID control in meters. */
     public static final double POSITION_TOLERANCE_METERS = 0.04;
+
     /** Velocity tolerance for PID control in meters per second. */
     public static final double VELOCITY_TOLERANCE_METERS = 0.01;
 
@@ -219,30 +264,39 @@ public final class Constants {
 
     /** CAN ID for the roller motor controller. */
     public static final int ROLLER_MOTOR_PORT = 17;
+
     /** Current limit for the roller motor in amps. */
     public static final int CURRENT_LIMIT = 40;
 
     // Constants tunable through TunableNumbers
     /** Proportional gain for position control of the roller. */
     public static final double POSITION_KP = 0.5;
+
     /** Proportional gain for speed control of the roller. */
     public static final double SPEED_KP = 0.00075;
+
     /** Static gain for roller speed feedforward controller in volts. */
     public static final double SPEED_KS_VOLTS = 0.0;
+
     /** Velocity gain for roller speed feedforward controller (volts per RPM). */
     public static final double SPEED_KV_VOLTS_PER_RPM = 0.0055;
+
     /** Target speed for forward roller operation in RPM. */
     public static final double ROLLER_SET_POINT_FORWARD_RPM = 250.0;
+
     /** Target speed for reverse roller operation in RPM. */
     public static final double ROLLER_SET_POINT_REVERSE_RPM = -500.0;
+
     /** Target speed for coral intake operation in RPM. */
     public static final double ROLLER_LOAD_CORAL_RPM = -500.0;
 
     /** Gear ratio of the roller mechanism (motor rotations to output rotations). */
     public static final double ROLLER_GEAR_RATIO =
         30.0 / 12.0; // Ratio of motor rotations to output rotations
+
     /** Rotations per encoder rotation for position calculations. */
     public static final double ROLLER_ROTATIONS_PER_ENCODER_ROTATION = 1.0 / ROLLER_GEAR_RATIO;
+
     /** Speed tolerance for roller control in RPM. */
     public static final double ROLLER_TOLERANCE_RPM = 20;
 
@@ -259,16 +313,20 @@ public final class Constants {
 
     /** USB port ID for the driver controller (primary driver). */
     public static final int DRIVER_CONTROLLER_PORT = 0;
+
     /** USB port ID for the operator controller (secondary driver). */
     public static final int OPERATOR_CONTROLLER_PORT = 1;
 
     // Joystick Deadband
     /** General deadband value for joystick inputs to prevent noise. */
     public static final double DEADBAND = 0.1;
+
     /** Deadband for the left joystick Y-axis input. */
     public static final double LEFT_Y_DEADBAND = 0.1;
+
     /** Deadband for the right joystick X-axis input. */
     public static final double RIGHT_X_DEADBAND = 0.1;
+
     /** Scaling constant applied to turning inputs for smoother control. */
     public static final double TURN_CONSTANT = 6;
   }
@@ -282,19 +340,26 @@ public final class Constants {
 
     /** Robot mass in kilograms (40lbs converted to kg). */
     public static final double ROBOT_MASS = 40.0 * 0.453592; // 40lbs * kg per pound
+
     /** Robot chassis matter definition for swervelib physics. */
     public static final Matter CHASSIS =
         new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+
     /** Control loop time in seconds (20ms + 110ms SparkMax velocity lag). */
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms spark max velocity lag
-    /** Maximum robot speed calculated for Neo Vortex motors at 6700 RPM with 6.75:1 gears and 4" 
-     * wheels. */
+
+    /**
+     * Maximum robot speed calculated for Neo Vortex motors at 6700 RPM with 6.75:1 gears and 4"
+     * wheels.
+     */
     public static final double MAX_SPEED = Units.feetToMeters(6700 / 6.75 / 60 * 4 * Math.PI / 12);
 
     /** Center position of the blue alliance reef in meters. */
     public static final Translation2d BLUE_REEF_CENTER = new Translation2d(4.45, 4);
+
     /** Center position of the red alliance reef in meters. */
     public static final Translation2d RED_REEF_CENTER = new Translation2d(12.95, 4);
+
     /** Distance from reef center that is considered "near" the reef in meters. */
     public static final double NEAR_REEF_DISTANCE = 1.7;
 
@@ -306,8 +371,10 @@ public final class Constants {
 
     /** Enable/disable vision system for odometry correction. */
     public static final Boolean ENABLE_VISION = true;
+
     /** Maximum distance to detect AprilTags in meters. */
     public static final double MAX_TAG_DISTANCE = 2.75; // meters
+
     /** Maximum acceptable pose ambiguity from AprilTag detection. */
     public static final double MAX_POSE_AMBIGUITY = 0.1;
 
@@ -317,36 +384,47 @@ public final class Constants {
     /** Starting pose for blue alliance in meters and degrees. */
     public static final Pose2d BLUE_START_POSE =
         new Pose2d(new Translation2d(Meter.of(7.5), Meter.of(1.9)), Rotation2d.fromDegrees(180));
+
     /** Starting pose for red alliance in meters and degrees. */
     public static final Pose2d RED_START_POSE =
         new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
 
     // Constants for drive to pose initial path following
-    /** Path constraints for initial pathfinding (max velocity, acceleration, angular velocity, 
-     * angular acceleration). */
+    /**
+     * Path constraints for initial pathfinding (max velocity, acceleration, angular velocity,
+     * angular acceleration).
+     */
     public static final PathConstraints DRIVE_POSE_CONSTRAINTS =
         new PathConstraints(1.0, 4.0, Units.degreesToRadians(180), Units.degreesToRadians(720));
 
     /** Distance from target at which to switch to PID control in meters. */
     public static final double DISTANCE_UNTIL_PID = Units.inchesToMeters(3);
+
     /** Rotation tolerance before switching to PID control in degrees. */
     public static final double ROTATION_GOAL_BEFORE_PID = 1;
+
     /** Final velocity at end of pathfinding phase in m/s. */
     public static final LinearVelocity PATH_FIND_END_VELOCITY = MetersPerSecond.of(1.0);
 
     // Constants for drive to pose final Holonomic controller
     /** Rotation tolerance for final positioning in degrees. */
     public static final Rotation2d ROTATION_TOLERANCE = Rotation2d.fromDegrees(2.0);
+
     /** Position tolerance for final positioning in centimeters. */
     public static final Distance POSITION_TOLERANCE = Centimeter.of(1.0);
+
     /** Speed tolerance for final positioning in inches per second. */
     public static final LinearVelocity SPEED_TOLERANCE = InchesPerSecond.of(1);
+
     /** Debounce time for end trigger detection in seconds. */
     public static final Time END_TRIGGER_DEBOUNCE = Seconds.of(0.1);
+
     /** Timeout for auto-align adjustments in seconds. */
     public static final Time AUTO_ALIGN_ADJUST_TIMEOUT = Seconds.of(1.0);
+
     /** PID constants for translational control (P, I, D). */
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(2.5, 0.0, 0.0);
+
     /** PID constants for rotational control (P, I, D). */
     public static final PIDConstants ROTATION_PID = new PIDConstants(2.5, 0.0, 0.0);
   }
@@ -411,19 +489,24 @@ public final class Constants {
 
     /** Left side offset for the claw relative to tag center in inches. */
     public static final double CLAW_OFFSET_LEFT_INCHES = 1.25;
+
     /** Right side offset for the claw relative to tag center in inches. */
     public static final double CLAW_OFFSET_RIGHT_INCHES = 0.25;
 
     /** X-axis offset for final robot positioning at reef tags in meters. */
     public static final double REEF_FINAL_X_OFFSET = Units.inchesToMeters(16.0);
+
     /** X-axis offset for first robot positioning at reef tags in meters. */
     public static final double REEF_FIRST_X_OFFSET = REEF_FINAL_X_OFFSET + Units.inchesToMeters(12);
+
     /** Y-axis offset for right side positioning at reef tags in meters. */
     public static final double REEF_RIGHT_OFFSET =
         Units.inchesToMeters((13 / 2) - CLAW_OFFSET_RIGHT_INCHES);
+
     /** Y-axis offset for left side positioning at reef tags in meters. */
     public static final double REEF_LEFT_OFFSET =
         Units.inchesToMeters((-13 / 2) - CLAW_OFFSET_LEFT_INCHES);
+
     /** X-axis offset for center positioning at reef tags in meters. */
     public static final double REEF_CENTER_X_OFFSET = Units.inchesToMeters(8.0);
 
@@ -431,18 +514,23 @@ public final class Constants {
     /** Translation vector for robot positioning at left side of close reef tags. */
     public static final Translation2d REEF_SHIFT_FINAL_LEFT =
         new Translation2d(REEF_FINAL_X_OFFSET, REEF_LEFT_OFFSET);
+
     /** Translation vector for robot positioning at right side of close reef tags. */
     public static final Translation2d REEF_SHIFT_FINAL_RIGHT =
         new Translation2d(REEF_FINAL_X_OFFSET, REEF_RIGHT_OFFSET);
+
     /** Translation vector for robot positioning at left side of far reef tags. */
     public static final Translation2d REEF_SHIFT_FIRST_LEFT =
         new Translation2d(REEF_FIRST_X_OFFSET, REEF_LEFT_OFFSET);
+
     /** Translation vector for robot positioning at right side of far reef tags. */
     public static final Translation2d REEF_SHIFT_FIRST_RIGHT =
         new Translation2d(REEF_FIRST_X_OFFSET, REEF_RIGHT_OFFSET);
+
     /** Translation vector for robot positioning at center of far reef tags. */
     public static final Translation2d REEF_SHIFT_FIRST_CENTER =
         new Translation2d(REEF_FIRST_X_OFFSET + REEF_CENTER_X_OFFSET, 0.0);
+
     /** Translation vector for robot positioning at center of close reef tags. */
     public static final Translation2d REEF_SHIFT_FINAL_CENTER =
         new Translation2d(REEF_FINAL_X_OFFSET + REEF_CENTER_X_OFFSET, 0.0);

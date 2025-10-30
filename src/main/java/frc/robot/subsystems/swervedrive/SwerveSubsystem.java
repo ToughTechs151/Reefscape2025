@@ -56,17 +56,18 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 /**
- * Swerve drive subsystem that provides holonomic drive capabilities and integrates with vision
- * and path planning systems.
+ * Swerve drive subsystem that provides holonomic drive capabilities and integrates with vision and
+ * path planning systems.
  *
  * <p>This subsystem manages:
+ *
  * <ul>
- *   <li>Swerve drive configuration and control using the Swervelib library</li>
- *   <li>Pose odometry with optional vision integration for improved accuracy</li>
- *   <li>AutoBuilder integration for PathPlanner autonomous path following</li>
- *   <li>Alliance-aware field-relative driving and pose management</li>
- *   <li>Motor temperature monitoring and diagnostic data publishing</li>
- *   <li>Various driving modes including PID positioning, pathfinding, and targeting</li>
+ *   <li>Swerve drive configuration and control using the Swervelib library
+ *   <li>Pose odometry with optional vision integration for improved accuracy
+ *   <li>AutoBuilder integration for PathPlanner autonomous path following
+ *   <li>Alliance-aware field-relative driving and pose management
+ *   <li>Motor temperature monitoring and diagnostic data publishing
+ *   <li>Various driving modes including PID positioning, pathfinding, and targeting
  * </ul>
  *
  * <p>The subsystem initializes with drive configuration from JSON files and sets up all necessary
@@ -100,7 +101,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
       // angleConversionFactor, driveConversionFactor);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new IllegalStateException("Failed to initialize swerve drive", e);
     }
     swerveDrive.setHeadingCorrection(
         false); // Heading correction should only be used while controlling the robot via angle.
@@ -480,19 +481,17 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveCommand(
       DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     return run(
-        () -> {
-          // Make the robot move
-          swerveDrive.drive(
-              SwerveMath.scaleTranslation(
-                  new Translation2d(
-                      translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-                      translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
-                  0.8),
-              Math.pow(angularRotationX.getAsDouble(), 3)
-                  * swerveDrive.getMaximumChassisAngularVelocity(),
-              true,
-              false);
-        });
+        () ->
+            swerveDrive.drive(
+                SwerveMath.scaleTranslation(
+                    new Translation2d(
+                        translationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+                        translationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
+                    0.8),
+                Math.pow(angularRotationX.getAsDouble(), 3)
+                    * swerveDrive.getMaximumChassisAngularVelocity(),
+                true,
+                false));
   }
 
   /**

@@ -80,8 +80,8 @@ public class DataLogging {
   }
 
   /**
-   * Runs at each loop slice. Should be called in the robotPeriodic method in Robot.java as
-   * the last thing in the method.
+   * Runs at each loop slice. Should be called in the robotPeriodic method in Robot.java as the last
+   * thing in the method.
    *
    * <pre>{@code
    * //must be at end

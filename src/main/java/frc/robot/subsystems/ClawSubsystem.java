@@ -30,8 +30,8 @@ import frc.robot.Constants.ClawConstants;
 import frc.robot.util.TunableNumber;
 
 /**
-/**
- * Subsystem that controls the claw mechanism using a Profiled PID Controller for position control.
+ * /** Subsystem that controls the claw mechanism using a Profiled PID Controller for position
+ * control.
  *
  * <p>Example Usage:
  *
@@ -100,8 +100,10 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   public static class Hardware {
     /** The SparkMax motor used to control the claw. */
     SparkMax motor;
+
     /** The relative encoder for position feedback. */
     RelativeEncoder encoder;
+
     /** The absolute encoder for position verification. */
     AbsoluteEncoder absoluteEncoder;
 
@@ -277,9 +279,9 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   /**
    * Generates the motor command using the PID controller and feedforward.
-   * 
-   * <p>When enabled, calculates the PID output and feedforward to move to the goal position.
-   * When disabled, sets all outputs to zero.
+   *
+   * <p>When enabled, calculates the PID output and feedforward to move to the goal position. When
+   * disabled, sets all outputs to zero.
    */
   public void useOutput() {
     if (clawEnabled) {
@@ -581,9 +583,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
     feedforward = new ArmFeedforward(ks.get(), kg.get(), kv.get(), 0);
   }
 
-  /**
-   * Closes any Closable objects including the motor.
-   */
+  /** Closes any Closable objects including the motor. */
   @Override
   public void close() {
     motor.close();
