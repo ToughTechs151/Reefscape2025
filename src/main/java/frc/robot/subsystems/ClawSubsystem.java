@@ -177,7 +177,7 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
 
   private void initializeClaw() {
     double clawOffset;
-    
+
     initMotor();
 
     clawOffset =

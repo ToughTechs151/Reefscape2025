@@ -445,11 +445,12 @@ public class RobotContainer {
     boolean bumperPressed = operatorController.getHID().getLeftBumperButton();
     double clawAngle = robotClaw.getAbsoluteAngle();
     double elevatorHeight = robotElevator.getMeasurement();
-    boolean unsafe = (clawAngle < Constants.ClawConstants.CLAW_UNSAFE_RADS
-            && elevatorHeight > Units.inchesToMeters(5))
-        || (clawAngle > 60
-            && elevatorHeight < Units.inchesToMeters(50)
-            && elevatorHeight > Units.inchesToMeters(40));
+    boolean unsafe =
+        (clawAngle < Constants.ClawConstants.CLAW_UNSAFE_RADS
+                && elevatorHeight > Units.inchesToMeters(5))
+            || (clawAngle > 60
+                && elevatorHeight < Units.inchesToMeters(50)
+                && elevatorHeight > Units.inchesToMeters(40));
     return bumperPressed || !unsafe;
   }
 

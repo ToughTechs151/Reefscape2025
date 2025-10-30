@@ -81,9 +81,7 @@ public class TunableNumber {
     if (!hasDefault) {
       return 0.0;
     } else {
-      return Constants.TUNING_MODE
-          ? SmartDashboard.getNumber(key, defaultValue)
-          : defaultValue;
+      return Constants.TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
     }
   }
 }
