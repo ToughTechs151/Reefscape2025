@@ -158,9 +158,7 @@ public class Vision {
       // Uncomment to enable outputting of vision targets in sim.
       poseEst.ifPresentOrElse(
           est -> debugField.getObject("VisionEstimation").setPose(est.estimatedPose.toPose2d()),
-          () -> {
-            debugField.getObject("VisionEstimation").setPoses();
-          });
+          () -> debugField.getObject("VisionEstimation").setPoses());
     }
     return poseEst;
   }
@@ -465,9 +463,8 @@ public class Vision {
               ? camera.getAllUnreadResults()
               : cameraSim.getCamera().getAllUnreadResults();
       resultsList.sort(
-          (PhotonPipelineResult a, PhotonPipelineResult b) -> {
-            return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;
-          });
+          (PhotonPipelineResult a, PhotonPipelineResult b) ->
+            a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1);
       if (!resultsList.isEmpty()) {
         updateEstimatedGlobalPose();
       }
