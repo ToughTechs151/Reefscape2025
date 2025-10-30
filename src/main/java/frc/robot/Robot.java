@@ -145,9 +145,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    datalog.startLoopTime();
-    // Add code to run repeatedly during Autonomous mode.
-    robotContainer.setLedStatus();
+    // Call teleopPeriodic to share code between TeleOp and Auto.
+    teleopPeriodic();
   }
 
   /** This function is called once at the start of operator control. */
