@@ -43,7 +43,7 @@ class ClawSubsystemTest {
   private AbsoluteEncoder mockAbsoluteEncoder;
 
   @BeforeEach
-  public void initEach() {
+  void initEach() {
     // Create mock hardware devices
     mockMotor = mock(SparkMax.class);
     mockEncoder = mock(RelativeEncoder.class);
@@ -55,7 +55,7 @@ class ClawSubsystemTest {
   }
 
   @AfterEach
-  public void closeClaw() {
+  void closeClaw() {
     claw.close(); // motor is closed from the claw close method
   }
 
