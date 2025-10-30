@@ -515,48 +515,104 @@ public class Vision {
     private void updateEstimationStdDevs(
         Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
       if (estimatedPose.isEmpty()) {
-        // No pose input. Default to single-tag std devs
         curStdDevs = singleTagStdDevs;
+        return;
+      }
 
-      } else {
-        // Pose present. Start running Heuristic
-        var estStdDevs = singleTagStdDevs;
-        int numTags = 0;
-        double avgDist = 0;
+      TagMetrics metrics = calculateTagMetrics(estimatedPose.get(), targets);
+      if (metrics.numTags == 0) {
+        curStdDevs = singleTagStdDevs;
+        return;
+      }
 
-        // Precalculation - see how many tags we found, and calculate an average-distance metric
-        for (var tgt : targets) {
-          var tagPose = poseEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
-          if (tagPose.isEmpty()) {
-            continue;
-          }
-          numTags++;
-          avgDist +=
-              tagPose
-                  .get()
-                  .toPose2d()
-                  .getTranslation()
-                  .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+      curStdDevs = determineStdDevs(metrics);
+    }
+
+    /**
+     * Calculates tag metrics including count and average distance from estimated pose.
+     *
+     * @param estimatedPose The estimated robot pose.
+     * @param targets All targets in this camera frame.
+     * @return TagMetrics containing tag count and average distance.
+     */
+    private TagMetrics calculateTagMetrics(
+        EstimatedRobotPose estimatedPose, List<PhotonTrackedTarget> targets) {
+      int numTags = 0;
+      double totalDist = 0;
+
+      for (var target : targets) {
+        var tagPose = poseEstimator.getFieldTags().getTagPose(target.getFiducialId());
+        if (tagPose.isEmpty()) {
+          continue;
         }
 
-        if (numTags == 0) {
-          // No tags visible. Default to single-tag std devs
-          curStdDevs = singleTagStdDevs;
-        } else {
-          // One or more tags visible, run the full heuristic.
-          avgDist /= numTags;
-          // Decrease std devs if multiple targets are visible
-          if (numTags > 1) {
-            estStdDevs = multiTagStdDevs;
-          }
-          // Increase std devs based on (average) distance
-          if (numTags == 1 && avgDist > DriveConstants.MAX_TAG_DISTANCE) {
-            estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-          } else {
-            estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
-          }
-          curStdDevs = estStdDevs;
-        }
+        numTags++;
+        totalDist +=
+            tagPose
+                .get()
+                .toPose2d()
+                .getTranslation()
+                .getDistance(estimatedPose.estimatedPose.toPose2d().getTranslation());
+      }
+
+      double avgDist = (numTags > 0) ? totalDist / numTags : 0;
+      return new TagMetrics(numTags, avgDist);
+    }
+
+    /**
+     * Determines standard deviations based on tag metrics.
+     *
+     * @param metrics TagMetrics containing tag count and average distance.
+     * @return Standard deviation matrix.
+     */
+    private Matrix<N3, N1> determineStdDevs(TagMetrics metrics) {
+      Matrix<N3, N1> baseStdDevs = selectBaseStdDevs(metrics.numTags);
+      return applyDistanceScaling(baseStdDevs, metrics);
+    }
+
+    /**
+     * Selects base standard deviations based on number of tags detected.
+     *
+     * @param numTags Number of tags detected.
+     * @return Base standard deviation matrix.
+     */
+    private Matrix<N3, N1> selectBaseStdDevs(int numTags) {
+      return (numTags > 1) ? multiTagStdDevs : singleTagStdDevs;
+    }
+
+    /**
+     * Applies distance-based scaling to standard deviations.
+     *
+     * @param baseStdDevs Base standard deviation matrix.
+     * @param metrics TagMetrics containing tag count and average distance.
+     * @return Scaled standard deviation matrix.
+     */
+    private Matrix<N3, N1> applyDistanceScaling(Matrix<N3, N1> baseStdDevs, TagMetrics metrics) {
+      if (metrics.numTags == 1 && metrics.avgDist > DriveConstants.MAX_TAG_DISTANCE) {
+        return VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+      }
+
+      double distanceFactor = 1 + (metrics.avgDist * metrics.avgDist / 30);
+      return baseStdDevs.times(distanceFactor);
+    }
+
+    /** Helper class to encapsulate tag metrics. */
+    private static class TagMetrics {
+      /** Number of tags detected. */
+      public final int numTags;
+
+      /** Average distance to detected tags. */
+      public final double avgDist;
+
+      /**
+       * Constructor for TagMetrics.
+       *
+       * @param numTags Number of tags detected.
+       * @param avgDist Average distance to detected tags.
+       */
+      public TagMetrics(int numTags, double avgDist) {
+        this.numTags = numTags;
+        this.avgDist = avgDist;
       }
     }
   }
