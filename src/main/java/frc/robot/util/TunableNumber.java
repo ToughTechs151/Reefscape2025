@@ -8,11 +8,11 @@ import frc.robot.Constants;
  * value not in dashboard. Adapted from FRC Team 3467 Nocturne Code
  */
 public class TunableNumber {
-  private static final String m_tableKey = "TunableNumbers";
+  private static final String TABLE_KEY = "TunableNumbers";
 
-  private String m_key;
-  private double m_defaultValue;
-  private boolean m_hasDefault = false;
+  private String key;
+  private double defaultValue;
+  private boolean hasDefault = false;
 
   /**
    * Create a new TunableNumber.
@@ -20,7 +20,7 @@ public class TunableNumber {
    * @param dashboardKey Key on dashboard
    */
   public TunableNumber(String dashboardKey) {
-    this.m_key = m_tableKey + "/" + dashboardKey;
+    this.key = TABLE_KEY + "/" + dashboardKey;
   }
 
   /**
@@ -40,11 +40,11 @@ public class TunableNumber {
    * @param defaultValue The default value
    */
   public void setDefault(double defaultValue) {
-    if (!m_hasDefault) {
-      m_hasDefault = true;
-      this.m_defaultValue = defaultValue;
+    if (!hasDefault) {
+      hasDefault = true;
+      this.defaultValue = defaultValue;
       if (Constants.TUNING_MODE) {
-        SmartDashboard.putNumber(m_key, SmartDashboard.getNumber(m_key, defaultValue));
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, defaultValue));
       }
     }
   }
@@ -55,7 +55,7 @@ public class TunableNumber {
    * @return The default value
    */
   public double getDefault() {
-    return m_defaultValue;
+    return defaultValue;
   }
 
   /**
@@ -66,9 +66,9 @@ public class TunableNumber {
    */
   public void set(double value) {
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putNumber(m_key, value);
+      SmartDashboard.putNumber(key, value);
     } else {
-      m_defaultValue = value;
+      defaultValue = value;
     }
   }
 
@@ -78,12 +78,12 @@ public class TunableNumber {
    * @return The current value
    */
   public double get() {
-    if (!m_hasDefault) {
+    if (!hasDefault) {
       return 0.0;
     } else {
       return Constants.TUNING_MODE
-          ? SmartDashboard.getNumber(m_key, m_defaultValue)
-          : m_defaultValue;
+          ? SmartDashboard.getNumber(key, defaultValue)
+          : defaultValue;
     }
   }
 }
