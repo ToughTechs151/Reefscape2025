@@ -13,6 +13,8 @@ deployhost
 deploytime
 EEPROM
 Feedforward
+Feedforwards
+holonomic
 Holonomic
 Intellicode
 jacoco

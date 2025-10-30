@@ -8,7 +8,7 @@ import static edu.wpi.first.units.Units.Meter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.commands.PathFindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -67,7 +67,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
  *   <li>AutoBuilder integration for PathPlanner autonomous path following
  *   <li>Alliance-aware field-relative driving and pose management
  *   <li>Motor temperature monitoring and diagnostic data publishing
- *   <li>Various driving modes including PID positioning, pathfinding, and targeting
+ *   <li>Various driving modes including PID positioning, path finding, and targeting
  * </ul>
  *
  * <p>The subsystem initializes with drive configuration from JSON files and sets up all necessary
@@ -176,7 +176,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    // Needed to override the defult.
+    // Needed to override the default.
   }
 
   /** Setup AutoBuilder for PathPlanner. */
@@ -207,7 +207,7 @@ public class SwerveSubsystem extends SubsystemBase {
             }
           },
           // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally
-          // outputs individual module feedforwards
+          // outputs individual module feedforward
           new PPHolonomicDriveController(
               // PPHolonomicController is the built in path following controller for holonomic drive
               // trains
@@ -241,7 +241,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Preload PathPlanner Path finding
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
-    PathfindingCommand.warmupCommand().schedule();
+    PathFindingCommand.warmupCommand().schedule();
   }
 
   /**
@@ -291,7 +291,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command driveToPose(Pose2d pose) {
 
-    // Since AutoBuilder is configured, we can use it to build pathfinding commands
+    // Since AutoBuilder is configured, we can use it to build path finding commands
     return AutoBuilder.pathfindToPose(
         pose,
         DriveConstants.DRIVE_POSE_CONSTRAINTS,
@@ -303,7 +303,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Use PathPlanner Path finding to go near to a point on the field and then switch to Holonomic
    * PID control for final movement.
    *
-   * @param pose1 Target {@link Pose2d} for the pathfinding phase.
+   * @param pose1 Target {@link Pose2d} for the path finding phase.
    * @param pose2 Target {@link Pose2d} for the final PID control phase.
    * @return PathFinding and PID command sequence
    */
@@ -527,15 +527,15 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /**
-   * The primary method for controlling the drivebase. Takes a {@link Translation2d} and a rotation
+   * The primary method for controlling the drive base. Takes a {@link Translation2d} and a rotation
    * rate, and calculates and commands module states accordingly. Can use either open-loop or
    * closed-loop velocity control for the wheel velocities. Also has field- and robot-relative
    * modes, which affect how the translation vector is used.
    *
    * @param translation {@link Translation2d} that is the commanded linear velocity of the robot, in
-   *     meters per second. In robot-relative mode, positive x is torwards the bow (front) and
-   *     positive y is torwards port (left). In field-relative mode, positive x is away from the
-   *     alliance wall (field North) and positive y is torwards the left wall when looking through
+   *     meters per second. In robot-relative mode, positive x is towards the bow (front) and
+   *     positive y is towards port (left). In field-relative mode, positive x is away from the
+   *     alliance wall (field North) and positive y is towards the left wall when looking through
    *     the driver station glass (field West).
    * @param rotation Robot angular rate, in radians per second. CCW positive. Unaffected by
    *     field/robot relativity.
@@ -645,7 +645,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * This will zero (calibrate) the robot to assume the current position is facing forward.
    *
-   * <p>If red alliance rotate the robot 180 after the drviebase zero command
+   * <p>If red alliance rotate the robot 180 after the drive base zero command
    */
   public void zeroGyroWithAlliance() {
     if (isRedAlliance()) {
@@ -669,7 +669,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /**
    * Gets the current yaw angle of the robot, as reported by the swerve pose estimator in the
-   * underlying drivebase. Note, this is not the raw gyro reading, this may be corrected from calls
+   * underlying drive base. Note, this is not the raw gyro reading, this may be corrected from calls
    * to resetOdometry().
    *
    * @return The yaw angle
