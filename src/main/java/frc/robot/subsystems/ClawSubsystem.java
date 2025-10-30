@@ -147,7 +147,6 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   private double newFeedforward = 0;
   private boolean clawEnabled;
   private double voltageCommand = 0.0;
-  private double clawOffset;
   private boolean absoluteEncoderValid = true;
   private int absoluteEncoderFreezeCount = 0;
   private double absoluteEncoderLastValue = 0.0;
@@ -177,7 +176,8 @@ public class ClawSubsystem extends SubsystemBase implements AutoCloseable {
   }
 
   private void initializeClaw() {
-
+    double clawOffset;
+    
     initMotor();
 
     clawOffset =
