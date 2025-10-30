@@ -370,7 +370,7 @@ public final class Constants {
     public static final double POV_SPEED = 0.05;
 
     /** Enable/disable vision system for odometry correction. */
-    public static final Boolean ENABLE_VISION = true;
+    public static final boolean ENABLE_VISION = true;
 
     /** Maximum distance to detect AprilTags in meters. */
     public static final double MAX_TAG_DISTANCE = 2.75; // meters
@@ -379,7 +379,7 @@ public final class Constants {
     public static final double MAX_POSE_AMBIGUITY = 0.1;
 
     /** Whether to use alliance color for field mirror operations. */
-    public static final Boolean USE_ALLIANCE = true;
+    public static final boolean USE_ALLIANCE = true;
 
     /** Starting pose for blue alliance in meters and degrees. */
     public static final Pose2d BLUE_START_POSE =

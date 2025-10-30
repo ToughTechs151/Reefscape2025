@@ -403,9 +403,7 @@ public class SwerveSubsystem extends SubsystemBase {
       Supplier<ChassisSpeeds> fieldRelativeSpeeds) {
     try {
       return driveWithSetpointGenerator(
-          () -> {
-            return ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds.get(), getHeading());
-          });
+          () -> ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds.get(), getHeading()));
     } catch (Exception e) {
       DriverStation.reportError(e.toString(), true);
     }
