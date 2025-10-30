@@ -462,12 +462,12 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Replaces the swerve module feedforward with a new SimpleMotorFeedforward object.
    *
-   * @param kS the static gain of the feedforward
-   * @param kV the velocity gain of the feedforward
-   * @param kA the acceleration gain of the feedforward
+   * @param k0S the static gain of the feedforward
+   * @param k0V the velocity gain of the feedforward
+   * @param k0A the acceleration gain of the feedforward
    */
-  public void replaceSwerveModuleFeedforward(double kS, double kV, double kA) {
-    swerveDrive.replaceSwerveModuleFeedforward(new SimpleMotorFeedforward(kS, kV, kA));
+  public void replaceSwerveModuleFeedforward(double k0S, double k0V, double k0A) {
+    swerveDrive.replaceSwerveModuleFeedforward(new SimpleMotorFeedforward(k0S, k0V, k0A));
   }
 
   /**
@@ -687,15 +687,15 @@ public class SwerveSubsystem extends SubsystemBase {
    * Get the chassis speeds based on controller input of 2 joysticks. One for speeds in which
    * direction. The other for the angle of the robot.
    *
-   * @param xInput X joystick input for the robot to move in the X direction.
-   * @param yInput Y joystick input for the robot to move in the Y direction.
+   * @param x0Input X joystick input for the robot to move in the X direction.
+   * @param y0Input Y joystick input for the robot to move in the Y direction.
    * @param headingX X joystick which controls the angle of the robot.
    * @param headingY Y joystick which controls the angle of the robot.
    * @return {@link ChassisSpeeds} which can be sent to the Swerve Drive.
    */
   public ChassisSpeeds getTargetSpeeds(
-      double xInput, double yInput, double headingX, double headingY) {
-    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
+      double x0Input, double y0Input, double headingX, double headingY) {
+    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(x0Input, y0Input));
     return swerveDrive.swerveController.getTargetSpeeds(
         scaledInputs.getX(),
         scaledInputs.getY(),
@@ -709,13 +709,13 @@ public class SwerveSubsystem extends SubsystemBase {
    * Get the chassis speeds based on controller input of 1 joystick and one angle. Control the robot
    * at an offset of 90deg.
    *
-   * @param xInput X joystick input for the robot to move in the X direction.
-   * @param yInput Y joystick input for the robot to move in the Y direction.
+   * @param x0Input X joystick input for the robot to move in the X direction.
+   * @param y0Input Y joystick input for the robot to move in the Y direction.
    * @param angle The angle in as a {@link Rotation2d}.
    * @return {@link ChassisSpeeds} which can be sent to the Swerve Drive.
    */
-  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, Rotation2d angle) {
-    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
+  public ChassisSpeeds getTargetSpeeds(double x0Input, double y0Input, Rotation2d angle) {
+    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(x0Input, y0Input));
 
     return swerveDrive.swerveController.getTargetSpeeds(
         scaledInputs.getX(),
