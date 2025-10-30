@@ -267,7 +267,7 @@ public class Vision {
   /** Update the {@link Field2d} to include tracked targets. */
   public void updateVisionField() {
 
-    List<PhotonTrackedTarget> targets = new ArrayList<PhotonTrackedTarget>();
+    List<PhotonTrackedTarget> targets = new ArrayList<>();
     for (Cameras c : Cameras.values()) {
       if (!c.resultsList.isEmpty()) {
         PhotonPipelineResult latest = c.resultsList.get(0);
