@@ -337,16 +337,16 @@ public class Vision {
     private final Transform3d robotToCamTransform;
 
     /** Current standard deviations used. */
-    public Matrix<N3, N1> curStdDevs;
+    private Matrix<N3, N1> curStdDevs;
 
     /** Estimated robot pose. */
-    public Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
+    private Optional<EstimatedRobotPose> estimatedRobotPose = Optional.empty();
 
     /** Simulated camera instance which only exists during simulations. */
-    public PhotonCameraSim cameraSim;
+    private PhotonCameraSim cameraSim;
 
     /** Results list to be updated periodically and cached to avoid unnecessary queries. */
-    public List<PhotonPipelineResult> resultsList = new ArrayList<>();
+    private List<PhotonPipelineResult> resultsList = new ArrayList<>();
 
     /**
      * Construct a Photon Camera class with help. Standard deviations are fake values. Experiment
