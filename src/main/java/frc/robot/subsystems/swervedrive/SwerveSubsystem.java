@@ -644,7 +644,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance();
-    return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+    return alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
   }
 
   /**
@@ -734,19 +734,11 @@ public class SwerveSubsystem extends SubsystemBase {
   public boolean isNearReef() {
     Translation2d currentTrans = getPose().getTranslation();
     if (isRedAlliance()) {
-      if (DriveConstants.RED_REEF_CENTER.getDistance(currentTrans)
-          < DriveConstants.NEAR_REEF_DISTANCE) {
-        return true;
-      } else {
-        return false;
-      }
+      return DriveConstants.RED_REEF_CENTER.getDistance(currentTrans)
+          < DriveConstants.NEAR_REEF_DISTANCE;
     } else {
-      if (DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans)
-          < DriveConstants.NEAR_REEF_DISTANCE) {
-        return true;
-      } else {
-        return false;
-      }
+      return DriveConstants.BLUE_REEF_CENTER.getDistance(currentTrans)
+          < DriveConstants.NEAR_REEF_DISTANCE;
     }
   }
 
