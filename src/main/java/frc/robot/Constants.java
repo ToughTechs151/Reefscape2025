@@ -501,11 +501,11 @@ public final class Constants {
 
     /** Y-axis offset for right side positioning at reef tags in meters. */
     public static final double REEF_RIGHT_OFFSET =
-        Units.inchesToMeters((13 / 2) - CLAW_OFFSET_RIGHT_INCHES);
+        Units.inchesToMeters((13 / 2.0) - CLAW_OFFSET_RIGHT_INCHES);
 
     /** Y-axis offset for left side positioning at reef tags in meters. */
     public static final double REEF_LEFT_OFFSET =
-        Units.inchesToMeters((-13 / 2) - CLAW_OFFSET_LEFT_INCHES);
+        Units.inchesToMeters((-13 / 2.0) - CLAW_OFFSET_LEFT_INCHES);
 
     /** X-axis offset for center positioning at reef tags in meters. */
     public static final double REEF_CENTER_X_OFFSET = Units.inchesToMeters(8.0);
