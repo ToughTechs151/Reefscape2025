@@ -8,7 +8,7 @@ import static edu.wpi.first.units.Units.Meter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.commands.PathFindingCommand;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -241,7 +241,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Preload PathPlanner Path finding
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
-    PathFindingCommand.warmupCommand().schedule();
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   /**
