@@ -29,7 +29,8 @@ public class RobotModel {
   // Works in conjunction with RollerSubsystem
   RollerModel simRoller;
 
-  Random random = new Random();
+  Random random = new Random(); // NOSONAR(java:S2245)
+
   private final boolean isReal;
   static final double QUIESCENT_CURRENT_DRAW_A = 2.0; // Misc electronics
   static final double BATTERY_NOMINAL_VOLTAGE = 13.2; // Nicely charged battery
