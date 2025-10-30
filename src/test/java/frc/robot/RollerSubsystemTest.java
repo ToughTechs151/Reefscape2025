@@ -42,7 +42,7 @@ class RollerSubsystemTest {
   private CANrange mockCanRange;
 
   @BeforeEach
-  public void initEach() {
+  void initEach() {
     // Create mock hardware devices
     mockMotor = mock(SparkMax.class);
     mockEncoder = mock(RelativeEncoder.class);
@@ -54,7 +54,7 @@ class RollerSubsystemTest {
   }
 
   @AfterEach
-  public void closeRoller() {
+  void closeRoller() {
     roller.close(); // motor is closed from the Roller close method
   }
 

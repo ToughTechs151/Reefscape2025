@@ -130,21 +130,6 @@ class ClawSubsystemTest {
     verify(mockMotor).setVoltage(0.0);
     verify(mockMotor, times(1)).setVoltage(AdditionalMatchers.lt(0.0));
 
-    // This unused code is provided as an example of looking for a specific value.
-    // This value was cheated by running working code as an example since calculating actual
-    // controller expected values is difficult.  Instead the test above just checks direction
-    // of the command, and controller response tests are done in simulation by checking desired
-    // response over time.
-    //
-    // final double expectedCommand = 0.34092;
-    // verify(mockMotor, times(1)).setVoltage(AdditionalMatchers.eq(expectedCommand, DELTA));
-
-    // Alternative method: capture values and then use them in a test criteria
-    // ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
-    // verify(mockMotor).setVoltage(argument.capture()); // Can use this if only called once
-    // verify(mockMotor, times(2)).setVoltage(argument.capture());
-    // assertEquals(expectedCommand, argument.getValue(), DELTA);
-
     // Test position measurements from the encoders
     assertThat(claw.getMeasurement())
         .isEqualTo(
