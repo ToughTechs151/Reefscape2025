@@ -88,6 +88,7 @@
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/PathPlanner": "Alerts",
+      "/SmartDashboard/PhotonAlerts": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/RollerSubsystem": "Subsystem",
@@ -154,13 +155,12 @@
           "arrowWeight": 3.0,
           "style": "Hidden"
         },
-        "bottom": 1638,
-        "builtin": "2025 Reefscape",
-        "height": 8.051901817321777,
-        "left": 534,
-        "right": 3466,
-        "top": 291,
-        "width": 17.54825210571289,
+        "bottom": 1914,
+        "height": 8.069275856018066,
+        "left": 245,
+        "right": 3942,
+        "top": 118,
+        "width": 16.54119300842285,
         "window": {
           "visible": true
         }
@@ -189,11 +189,11 @@
             255.0
           ]
         },
-        "bottom": 1476,
-        "height": 8.210550308227539,
-        "left": 150,
-        "right": 2961,
-        "top": 79,
+        "bottom": 1914,
+        "height": 8.069275856018066,
+        "left": 245,
+        "right": 3942,
+        "top": 118,
         "visibleTargetPoses": {
           "color": [
             245.3164825439453,
@@ -202,7 +202,7 @@
             255.0
           ]
         },
-        "width": 16.541748046875,
+        "width": 16.54119300842285,
         "window": {
           "visible": true
         }

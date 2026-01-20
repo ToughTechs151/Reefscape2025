@@ -46,7 +46,7 @@ public class Vision {
 
   /** April Tag Field Layout of the year. */
   public static final AprilTagFieldLayout fieldLayout =
-      AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+      AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
 
   /** Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}. */
   private static final double MAX_AMBIGUITY = 0.25;
