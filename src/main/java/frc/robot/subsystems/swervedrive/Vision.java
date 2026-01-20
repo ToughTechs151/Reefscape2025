@@ -465,7 +465,7 @@ public class Vision {
               : cameraSim.getCamera().getAllUnreadResults();
       resultsList.sort(
           (PhotonPipelineResult a, PhotonPipelineResult b) ->
-            a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1);
+              a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1);
       if (!resultsList.isEmpty()) {
         updateEstimatedGlobalPose();
       }
