@@ -383,11 +383,11 @@ public final class Constants {
 
     /** Starting pose for blue alliance in meters and degrees. */
     public static final Pose2d BLUE_START_POSE =
-        new Pose2d(new Translation2d(Meter.of(7.5), Meter.of(1.9)), Rotation2d.fromDegrees(180));
+        new Pose2d(new Translation2d(Meter.of(3.6), Meter.of(4.0)), Rotation2d.fromDegrees(180));
 
     /** Starting pose for red alliance in meters and degrees. */
     public static final Pose2d RED_START_POSE =
-        new Pose2d(new Translation2d(Meter.of(9.9), Meter.of(6.1)), Rotation2d.fromDegrees(0));
+        new Pose2d(new Translation2d(Meter.of(13.0), Meter.of(4.0)), Rotation2d.fromDegrees(0));
 
     // Constants for drive to pose initial path following
     /**
